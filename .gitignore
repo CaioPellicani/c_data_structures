@@ -1,0 +1,5 @@
+*.o
+
+exemple_*
+!exemple*.c
+!exemple*.h
