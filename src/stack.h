@@ -18,14 +18,14 @@ typedef struct{
 
 stack* initStack();
 
-bool push( stack* stack, void* data );
+bool push( stack* _stack, void* _data );
 
-bool pop( stack* stack );
+bool pop( stack* _stack );
 
-void emptyStack( stack* stack );
+void emptyStack( stack* _stack );
 
-bool showStack( stack* stack, void (*showData) ( void* data) );
+bool showStack( stack* _stack, void (*showData) ( void* data) );
 
-void deleteStack( stack* stack );
+void deleteStack( stack* _stack );
 
 #endif

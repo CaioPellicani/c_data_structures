@@ -12,44 +12,44 @@ stack* initStack(){
     }
 }
 
-bool push( stack* stack, void* data ){
+bool push( stack* _stack, void* _data ){
     node* newNode;
 
-    if( stack == NULL ){
+    if( _stack == NULL ){
         printf( MSG_NODEF_STACK );
         return false;
     }
     newNode = malloc( sizeof( node ) );
-    newNode->data = data;
+    newNode->data = _data;
     
-    if( stack->top == NULL ){  
-        stack->top = newNode;
+    if( _stack->top == NULL ){  
+        _stack->top = newNode;
     }
     else{
-        newNode->prevNode = stack->top;
-        stack->top = newNode;
+        newNode->prevNode = _stack->top;
+        _stack->top = newNode;
     }
     return true;
 }
 
-bool pop( stack* stack ){
-    if( stack == NULL ){
+bool pop( stack* _stack ){
+    if( _stack == NULL ){
         printf( MSG_NODEF_STACK );
         return false;
     }  
-    if( stack->top == NULL ){
+    if( _stack->top == NULL ){
         printf( MSG_EMPTY_STACK );
         return false;
     }
     else{
         node* deleteNode;
-        deleteNode = stack->top;
+        deleteNode = _stack->top;
 
         if( deleteNode->prevNode != NULL ){
-            stack->top = deleteNode->prevNode;
+            _stack->top = deleteNode->prevNode;
         }
         else{
-            stack->top = NULL;
+            _stack->top = NULL;
         }
         free( deleteNode->data );
         free( deleteNode );
@@ -58,36 +58,36 @@ bool pop( stack* stack ){
 }
 
 
-void emptyStack( stack* stack ){
-    while( stack->top != NULL ){
-        pop( stack );  
+void emptyStack( stack* _stack ){
+    while( _stack->top != NULL ){
+        pop( _stack );  
     }
 }
 
-bool showStack( stack* stack, void (*showData) ( void* data )  ){
+bool showStack( stack* _stack, void (*showData) ( void* data )  ){
     node* seeingNode;
 
-    if( stack == NULL ){
+    if( _stack == NULL ){
         printf( MSG_NODEF_STACK );
         return false;
     }
-    if( stack->top == NULL ){
+    if( _stack->top == NULL ){
         printf( MSG_EMPTY_STACK );
         return false;
     }  
 
-    seeingNode = stack->top;
+    seeingNode = _stack->top;
     while ( seeingNode != NULL ){
-        showData( ( typeof(seeingNode->data) ) seeingNode->data );
+        showData( seeingNode->data );
         seeingNode = seeingNode->prevNode;
     }
     return true;
 }
 
-void deleteStack( stack* stack ){
-    emptyStack( stack );
-    free( stack );
-    stack = NULL;
+void deleteStack( stack* _stack ){
+    emptyStack( _stack );
+    free( _stack );
+    _stack = NULL;
 }
 
 

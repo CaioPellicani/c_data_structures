@@ -5,14 +5,15 @@ typedef struct data{
     int value;
 }data;
 
-data* newData( int value ){
+data* newData( int _value ){
     data* newData = ( data* ) malloc( sizeof( data ) );
-    newData->value = value;
+    newData->value = _value;
     return newData;
 }
 
-void showData( data* data ){
-    printf( "%d - ", data->value );
+void showData( void* _data ){
+    data* aData = ( data* )_data;
+    printf( "%d - ", aData->value );
 }
 
 int main( int argc, char** argv ){

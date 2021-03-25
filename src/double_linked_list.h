@@ -20,15 +20,15 @@ typedef struct{
 
 list* initList();
 
-bool pushHead( list* list, void* data );
-bool pushTail( list* list, void* data );
+bool pushHead( list* _list, void* _data );
+bool pushTail( list* _list, void* _data );
 
-bool popHead( list* list );
-bool popTail( list* list );
-void emptyList( list* list );
+bool popHead( list* _list );
+bool popTail( list* _list );
+void emptyList( list* _list );
 
-bool showList( list* list, void (*showData) ( void* data) );
+bool showList( list* _list, void (*showData) ( void* data) );
 
-void deleteList( list* list );
+void deleteList( list* _list );
 
 #endif
