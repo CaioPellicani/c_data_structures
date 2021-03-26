@@ -6,8 +6,10 @@ FLAG=-Wall
 LIBS =-lm
 
 STD=stdHeader.o 
-NAME=double_linked_list
-NAME=stack
+#NAME=stack
+NAME=queue
+#NAME=double_linked_list
+
 
 all: ${NAME}
 
