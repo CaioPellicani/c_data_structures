@@ -24,22 +24,33 @@ int main( int argc, char** argv ){
     for( int i = 0; i < 5; i++ ){
         pushTail( aList, ( data* )newData( i ) );
     }
-    printf( "\n### Push Tail ###\n");
+    printf( "\n### PushTail       -> ");
     showList( aList, &showData );
 
     for( int i = 0; i < 5; i++ ){
         pushHead( aList, ( data* )newData( i ) );
     }
-    printf( "\n### Push Head ###\n");
+    printf( "\n### PushHead       -> ");
+    showList( aList, &showData );  
+
+    insertAt( aList, ( data* )newData( 32 ), 5 );
+    printf( "\n### Insert at 5    -> ");
+    showList( aList, &showData );
+
+    removeAt( aList, 6 );
+    printf( "\n### RemoveAt 6     -> " );
     showList( aList, &showData );
 
     popHead( aList );
+    printf( "\n### PopHead        -> " );
+    showList( aList, &showData );
+
     popTail( aList );
-    printf( "\n### Pop Head and Pop Tail ###\n");
+    printf( "\n### PopTail        -> " );
     showList( aList, &showData );
 
     emptyList( aList );
-    printf( "\n### Empty the List ###\n");
+    printf( "\n### Empty the List -> ");
     showList( aList, &showData );
 
     deleteList( aList );

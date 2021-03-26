@@ -1,5 +1,9 @@
 #include "double_linked_list.h"
 
+bool validList( list* _list, bool _seeIfEmpty );
+bool insertInFontOf( list* _list, node* _thisNode, void* data );
+bool removeNode( list* _list, node* _thisNode );
+
 list* initList(){
     list* newList;
     newList = (list*) malloc( sizeof( list ) );
@@ -8,128 +12,170 @@ list* initList(){
         return NULL;   
     }
     else{
+        newList->size = 0;
         return newList;
     }
 }
-bool pushHead( list* _list, void* _data ){
-    node* newNode;
 
+bool isEmpty( list* _list ){
+    return ( _list->head == NULL ) && ( _list->tail == NULL );
+}
+
+bool validList( list* _list, bool _seeIfEmpty ){
     if( _list == NULL ){
         printf( MSG_NODEF_LIST );
         return false;
     }
-    newNode = malloc( sizeof( node ) );
-    newNode->data = _data;
-    
-    if( _list->head == NULL ){  
-        _list->head = newNode;
-        _list->tail = newNode;
+    if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
+        printf( MSG_EMPTY_LIST );
+        return false;
     }
-    else{
-        newNode->nextNode = _list->head;
-        _list->head->prevNode = newNode;
-        _list->head = newNode;
-    }
+
     return true;
 }
 
-bool pushTail( list* _list, void* _data ){
+bool insertInFontOf( list* _list, node* _thisNode, void* _data ){
     node* newNode;
-
-    if( _list == NULL ){
-        printf( MSG_NODEF_LIST );
-        return false;
-    }
     newNode = malloc( sizeof( node ) );
     newNode->data = _data;
-    
-    if( _list->head == NULL ){  
+    newNode->prevNode = newNode->nextNode = NULL;
+
+    if( isEmpty( _list ) ){ 
         _list->head = _list->tail = newNode;
     }
-    else{
+    else if( ( _thisNode == NULL ) ){ //PushTail
         newNode->prevNode = _list->tail;
         _list->tail->nextNode = newNode;
         _list->tail = newNode;
     }
+    else if( ( _list->head == NULL ) || ( _thisNode->prevNode == NULL) ){ //PushHead
+        if( _list->head != NULL ){
+            newNode->nextNode = _list->head;
+            _list->head->prevNode = newNode;
+            _list->head = newNode;
+        }
+        _list->head = newNode;
+    }
+    else{
+        newNode->nextNode = _thisNode;
+        newNode->prevNode = _thisNode->prevNode;
+        newNode->prevNode->nextNode = newNode;
+        newNode->nextNode->prevNode = newNode;
+    }
+    _list->size++;
     return true;
+}
+
+bool pushHead( list* _list, void* _data ){  
+   if( validList( _list, false ) ){
+       return insertInFontOf( _list, _list->head, _data );
+   } 
+   return false;
+}
+
+bool pushTail( list* _list, void* _data ){
+    if( validList( _list, false ) ){
+        return insertInFontOf( _list, NULL, _data );
+    }
+    return false;
+}
+
+bool insertAt( list* _list, void* _data, int pos ){
+    if( validList( _list, false ) ){
+        if( pos > _list->size ){
+            printf( "\nNot possible to insert. Position '%d' is out ouf range\n", pos );
+            return false;
+        }
+        else{
+            return insertInFontOf( _list, getNodeAt( _list, pos ), _data );
+        }
+    }
+    return false;
+}
+
+bool removeNode( list* _list, node* _thisNode ){
+    if( _list->head == _list->tail ){
+        _list->head = _list->tail = NULL;
+    }
+    else if( _thisNode == _list->head ){
+        _list->head = _thisNode->nextNode;
+        _list->head->prevNode = NULL;
+    }
+    else if( _thisNode == _list->tail ){
+        _list->tail = _thisNode->prevNode;
+        _list->tail->nextNode = NULL;
+    }
+    else{
+        _thisNode->nextNode->prevNode = _thisNode->prevNode;
+        _thisNode->prevNode->nextNode = _thisNode->nextNode;
+    }
+
+    free( _thisNode->data );
+    free( _thisNode );
+    _list->size--;
+    return true;  
+}
+
+bool removeAt( list* _list, int pos ){
+    if( validList( _list, false ) ){
+        if( pos > _list->size ){
+            printf( "\nNot possible to remove. Position '%d' is out ouf range\n", pos );
+            return false;
+        }
+        if( pos == _list->size ){
+            return popTail( _list );
+        }
+        else{
+            return removeNode( _list, getNodeAt( _list, pos ) );
+        }
+    }
+    return false;
 }
 
 bool popHead( list* _list ){
-    if( _list == NULL ){
-        printf( MSG_NODEF_LIST );
-        return false;
+    if( validList( _list, true ) ){
+        return removeNode( _list, _list->head );
     }  
-    if( _list->head == NULL ){
-        printf( MSG_EMPTY_LIST );
-        return false;
-    }
-    else{
-        node* deleteNode;
-        deleteNode = _list->head;
+    return false; 
 
-        if( deleteNode->nextNode != NULL ){
-            _list->head = _list->head->nextNode;
-            _list->head->prevNode = NULL;
-        }
-        else{
-            _list->head = _list->tail = NULL;
-        }
-        free( deleteNode->data );
-        free( deleteNode );
-    }   
-    return true;
 }
 bool popTail( list* _list ){
-    if( _list == NULL ){
-        printf( MSG_NODEF_LIST );
-        return false;
-    }  
-    if( _list->tail == NULL ){
-        printf( MSG_EMPTY_LIST );
-        return false;
-    }
-    else{
-        node* deleteNode;
-        deleteNode = _list->tail;
-
-        if( deleteNode->prevNode != NULL ){
-            _list->tail = _list->tail->prevNode;
-            _list->tail->nextNode = NULL;
-        }
-        else{
-            _list->tail = _list->head = NULL;
-        }
-        free( deleteNode->data );
-        free( deleteNode );
+    if( validList( _list, true ) ){
+        return removeNode( _list, _list->tail );
     }   
-    return true;
+    return false;
 }
 
 void emptyList( list* _list ){
     while( _list->head != NULL ){
-        popHead( _list );  
+        popTail( _list );  
     }
 }
 
+node* getNodeAt( list* _list, int pos ){
+    if( pos >= _list->size ){
+        return NULL;
+    }
+    node* seeingNode;
+    seeingNode = _list->head;
+    for( int i = 0; i < pos; i++ ){
+        seeingNode = seeingNode->nextNode;
+    }
+    return seeingNode;
+}
 
 bool showList( list* _list, void (*showData) ( void* data )  ){
     node* seeingNode;
 
-    if( _list == NULL ){
-        printf( MSG_NODEF_LIST );
-        return false;
+    if( validList( _list, true ) ){
+        seeingNode = _list->head;
+        while ( seeingNode != NULL ){
+            showData( seeingNode->data );
+            seeingNode = seeingNode->nextNode;
+        }
+        return true;
     }
-    if( _list->head == NULL ){
-        printf( MSG_EMPTY_LIST );
-        return false;
-    }  
-
-    seeingNode = _list->head;
-    while ( seeingNode != NULL ){
-        showData( ( typeof(seeingNode->data) ) seeingNode->data );
-        seeingNode = seeingNode->nextNode;
-    }
-    return true;
+    return false;
 }
 
 void deleteList( list* _list ){
