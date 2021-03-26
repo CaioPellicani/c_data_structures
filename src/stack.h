@@ -14,14 +14,13 @@ typedef struct node {
 
 typedef struct{
     node * top;
+    int size;
 }stack;
 
 stack* initStack();
 
 bool push( stack* _stack, void* _data );
-
 bool pop( stack* _stack );
-
 void emptyStack( stack* _stack );
 
 bool showStack( stack* _stack, void (*showData) ( void* data) );
