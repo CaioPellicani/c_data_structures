@@ -162,10 +162,19 @@ node* getNodeAt( list* _list, int pos ){
         return NULL;
     }
     node* seeingNode;
-    seeingNode = _list->head;
-    for( int i = 0; i < pos; i++ ){
-        seeingNode = seeingNode->nextNode;
+    if( pos <= _list->size/2 ){
+        seeingNode = _list->head;
+        for( int i = 0; i < pos; i++ ){
+            seeingNode = seeingNode->nextNode;
+        }
     }
+    else{
+        seeingNode = _list->tail;
+        for( int i = _list->size - 1; i > pos; i-- ){
+            seeingNode = seeingNode->prevNode;
+        }
+    }
+
     return seeingNode;
 }
 
