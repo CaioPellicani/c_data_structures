@@ -21,8 +21,10 @@ stack* initStack();
 
 bool push( stack* _stack, void* _data );
 bool pop( stack* _stack );
-void emptyStack( stack* _stack );
 
+void* getTopData( stack* _stack );
+
+void emptyStack( stack* _stack );
 bool showStack( stack* _stack, void (*showData) ( void* data) );
 
 void deleteStack( stack* _stack );

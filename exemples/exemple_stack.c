@@ -20,15 +20,17 @@ int main(){
     stack* aStack = NULL;
 
     aStack = initStack();
-    int i = 0;
 
+    int i = 0;
     for( ; i < 5; i++ ){
         push( aStack, ( data* )newData( i ) );
         printf( "# Push: ");
         showStack( aStack, &showData );
         printf( "\n" );
     }
-    printf( "\n" );
+    
+    data* top = (data*)getTopData( aStack );
+    printf( "\n# Top: %d\n\n", top->value );
 
     for( ; i > 1; i-- ){
         pop( aStack );

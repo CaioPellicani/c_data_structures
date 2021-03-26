@@ -66,6 +66,10 @@ bool pop( stack* _stack ){
     return false;
 }
 
+void* getTopData( stack* _stack ){
+    return _stack->top->data;
+}
+
 void emptyStack( stack* _stack ){
     while( _stack->top != NULL ){
         pop( _stack );  
