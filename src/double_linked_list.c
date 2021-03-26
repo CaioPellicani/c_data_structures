@@ -2,6 +2,7 @@
 
 bool validList( list* _list, bool _seeIfEmpty );
 bool insertInFontOf( list* _list, node* _thisNode, void* data );
+node* getNodeAt( list* _list, int pos );
 bool removeNode( list* _list, node* _thisNode );
 
 list* initList(){
@@ -83,8 +84,8 @@ bool pushTail( list* _list, void* _data ){
 bool insertAt( list* _list, void* _data, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
-            printf( "\nNot possible to insert. Position '%d' is out ouf range\n", pos );
-            return false;
+            printf( MGS_OUT_RANGE("'insert'") );
+            exit(1);
         }
         else{
             return insertInFontOf( _list, getNodeAt( _list, pos ), _data );
@@ -119,8 +120,8 @@ bool removeNode( list* _list, node* _thisNode ){
 bool removeAt( list* _list, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
-            printf( "\nNot possible to remove. Position '%d' is out ouf range\n", pos );
-            return false;
+            printf( MGS_OUT_RANGE( "'remove'"));
+            exit(1);
         }
         if( pos == _list->size ){
             return popTail( _list );
@@ -153,7 +154,11 @@ void emptyList( list* _list ){
 }
 
 node* getNodeAt( list* _list, int pos ){
-    if( pos >= _list->size ){
+    if( pos > _list->size ){
+        printf( MGS_OUT_RANGE( "'getData'" ) );
+        exit(1);
+    }
+    else if( pos == _list->size ){
         return NULL;
     }
     node* seeingNode;
@@ -162,6 +167,11 @@ node* getNodeAt( list* _list, int pos ){
         seeingNode = seeingNode->nextNode;
     }
     return seeingNode;
+}
+
+void* getDataAt( list* _list, int pos ){
+    return getNodeAt( _list, pos )->data;
+
 }
 
 bool showList( list* _list, void (*showData) ( void* data )  ){

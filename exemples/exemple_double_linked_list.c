@@ -30,6 +30,7 @@ int main( int argc, char** argv ){
     for( int i = 0; i < 5; i++ ){
         pushHead( aList, ( data* )newData( i ) );
     }
+
     printf( "\n### PushHead       -> ");
     showList( aList, &showData );  
 
@@ -37,7 +38,10 @@ int main( int argc, char** argv ){
     printf( "\n### Insert at 5    -> ");
     showList( aList, &showData );
 
-    removeAt( aList, 6 );
+    data* dataAt5 = ( data* ) getDataAt( aList, 5 );
+    printf( "\n### Data At Node 5 -> '%d'", dataAt5->value );
+
+    removeAt( aList, 60 );
     printf( "\n### RemoveAt 6     -> " );
     showList( aList, &showData );
 
