@@ -1,5 +1,5 @@
 *.o
 
-exemple_*
+exec_*
 !exemple*.c
 !exemple*.h

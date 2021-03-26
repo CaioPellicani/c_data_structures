@@ -20,10 +20,10 @@ all: ${NAME}
 	${CC} ${FLAG} -c $^ -o $@
 
 ${NAME}: ./obj/${STD} ./obj/${NAME}.o ./obj/exemple_${NAME}.o
-	${CC} ${FLAG} -o ./exemple_$@ $^
+	${CC} ${FLAG} -o ./exec_$@ $^
 
 clean:
 	rm *${NAME}* ./obj/*${NAME}*
 
 run: ${NAME}
-	./exemple_$^ 
+	./exec_$^ 
