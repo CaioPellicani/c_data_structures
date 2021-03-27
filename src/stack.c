@@ -6,8 +6,7 @@ stack* initStack(){
     stack* newStack;
     newStack = (stack*) malloc( sizeof( stack ) );
     if( newStack == NULL ){
-        die( MSG_NO_MEM ); 
-        return NULL;   
+        die( MSG_NO_MEM );  
     }
     else{
         newStack->top = NULL;
@@ -19,11 +18,9 @@ stack* initStack(){
 bool validStack( stack* _stack, bool _seeIfEmpty ){
     if( _stack == NULL ){
         die( MSG_NODEF_STACK);
-        return false;
     }
     if( ( _seeIfEmpty ) && ( _stack->top == NULL ) ){
         die( MSG_EMPTY_STACK );
-        return false;
     }
     return true;
 }

@@ -6,8 +6,7 @@ queue* initQueue(){
     queue* newQueue;
     newQueue = (queue*) malloc( sizeof( queue ) );
     if( newQueue == NULL ){
-        die( MSG_NO_MEM ); 
-        return NULL;   
+        die( MSG_NO_MEM );  
     }
     else{
         newQueue->begin = NULL;
@@ -20,11 +19,9 @@ queue* initQueue(){
 bool validQueue( queue* _queue, bool _seeIfEmpty ){
     if( _queue == NULL ){
         die( MSG_NODEF_QUEUE);
-        return false;
     }
     if( ( _seeIfEmpty ) && ( _queue->begin == NULL ) ){
         die( MSG_EMPTY_QUEUE );
-        return false;
     }
     return true;
 }

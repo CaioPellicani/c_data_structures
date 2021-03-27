@@ -2,6 +2,7 @@
 
 bool validList( list* _list, bool _seeIfEmpty );
 bool insertInFontOf( list* _list, node* _thisNode, void* data );
+node* newBlankNode();
 node* getNodeAt( list* _list, int pos );
 bool removeNode( list* _list, node* _thisNode );
 
@@ -10,7 +11,6 @@ list* initList(){
     newList = (list*) malloc( sizeof( list ) );
     if( newList == NULL ){
         die( MSG_NO_MEM ); 
-        return NULL;   
     }
     else{
         newList->head = NULL;
@@ -20,6 +20,14 @@ list* initList(){
     }
 }
 
+node* newBlankNode(){
+    node* newNode;
+    newNode = malloc( sizeof( node ) );
+    newNode->data = NULL;
+    newNode->prevNode = newNode->nextNode = NULL;
+    return newNode;
+}
+
 bool isEmpty( list* _list ){
     return ( _list->head == NULL ) && ( _list->tail == NULL );
 }
@@ -27,21 +35,17 @@ bool isEmpty( list* _list ){
 bool validList( list* _list, bool _seeIfEmpty ){
     if( _list == NULL ){
         die( MSG_NODEF_LIST );
-        return false;
     }
     if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
         die( MSG_EMPTY_LIST );
-        return false;
     }
 
     return true;
 }
 
 bool insertInFontOf( list* _list, node* _thisNode, void* _data ){
-    node* newNode;
-    newNode = malloc( sizeof( node ) );
+    node* newNode = newBlankNode();
     newNode->data = _data;
-    newNode->prevNode = newNode->nextNode = NULL;
 
     if( isEmpty( _list ) ){ 
         _list->head = _list->tail = newNode;
@@ -87,7 +91,6 @@ bool insertAt( list* _list, void* _data, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
             die( MGS_OUT_RANGE("'insert'") );
-            exit(1);
         }
         else{
             return insertInFontOf( _list, getNodeAt( _list, pos ), _data );
@@ -123,7 +126,6 @@ bool removeAt( list* _list, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
             die( MGS_OUT_RANGE( "'remove'"));
-            exit(1);
         }
         if( pos == _list->size ){
             return popTail( _list );
