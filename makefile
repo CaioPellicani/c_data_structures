@@ -7,8 +7,10 @@ LIBS =-lm
 
 STD=stdHeader.o 
 #NAME=stack
-NAME=queue
-#NAME=double_linked_list
+#NAME=queue
+NAME=double_linked_list
+#NAME=binary_tree
+
 
 
 all: ${NAME}
