@@ -6,21 +6,24 @@ queue* initQueue(){
     queue* newQueue;
     newQueue = (queue*) malloc( sizeof( queue ) );
     if( newQueue == NULL ){
-        printf( MSG_NO_MEM ); 
+        die( MSG_NO_MEM ); 
         return NULL;   
     }
     else{
+        newQueue->begin = NULL;
+        newQueue->end = NULL;
+        newQueue->size = NULL;
         return newQueue;
     }
 }
 
 bool validQueue( queue* _queue, bool _seeIfEmpty ){
     if( _queue == NULL ){
-        printf( MSG_NODEF_QUEUE);
+        die( MSG_NODEF_QUEUE);
         return false;
     }
     if( ( _seeIfEmpty ) && ( _queue->begin == NULL ) ){
-        printf( MSG_EMPTY_QUEUE );
+        die( MSG_EMPTY_QUEUE );
         return false;
     }
     return true;

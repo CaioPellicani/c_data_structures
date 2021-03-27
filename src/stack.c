@@ -6,21 +6,23 @@ stack* initStack(){
     stack* newStack;
     newStack = (stack*) malloc( sizeof( stack ) );
     if( newStack == NULL ){
-        printf( MSG_NO_MEM ); 
+        die( MSG_NO_MEM ); 
         return NULL;   
     }
     else{
+        newStack->top = NULL;
+        newStack->size = 0;
         return newStack;
     }
 }
 
 bool validStack( stack* _stack, bool _seeIfEmpty ){
     if( _stack == NULL ){
-        printf( MSG_NODEF_STACK);
+        die( MSG_NODEF_STACK);
         return false;
     }
     if( ( _seeIfEmpty ) && ( _stack->top == NULL ) ){
-        printf( MSG_EMPTY_STACK );
+        die( MSG_EMPTY_STACK );
         return false;
     }
     return true;

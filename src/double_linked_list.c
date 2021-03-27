@@ -9,10 +9,12 @@ list* initList(){
     list* newList;
     newList = (list*) malloc( sizeof( list ) );
     if( newList == NULL ){
-        printf( MSG_NO_MEM ); 
+        die( MSG_NO_MEM ); 
         return NULL;   
     }
     else{
+        newList->head = NULL;
+        newList->tail = NULL;
         newList->size = 0;
         return newList;
     }
@@ -24,11 +26,11 @@ bool isEmpty( list* _list ){
 
 bool validList( list* _list, bool _seeIfEmpty ){
     if( _list == NULL ){
-        printf( MSG_NODEF_LIST );
+        die( MSG_NODEF_LIST );
         return false;
     }
     if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
-        printf( MSG_EMPTY_LIST );
+        die( MSG_EMPTY_LIST );
         return false;
     }
 
@@ -84,7 +86,7 @@ bool pushTail( list* _list, void* _data ){
 bool insertAt( list* _list, void* _data, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
-            printf( MGS_OUT_RANGE("'insert'") );
+            die( MGS_OUT_RANGE("'insert'") );
             exit(1);
         }
         else{
@@ -120,7 +122,7 @@ bool removeNode( list* _list, node* _thisNode ){
 bool removeAt( list* _list, int pos ){
     if( validList( _list, false ) ){
         if( pos > _list->size ){
-            printf( MGS_OUT_RANGE( "'remove'"));
+            die( MGS_OUT_RANGE( "'remove'"));
             exit(1);
         }
         if( pos == _list->size ){
@@ -155,7 +157,7 @@ void emptyList( list* _list ){
 
 node* getNodeAt( list* _list, int pos ){
     if( pos > _list->size ){
-        printf( MGS_OUT_RANGE( "'getData'" ) );
+        die( MGS_OUT_RANGE( "'getData'" ) );
         exit(1);
     }
     else if( pos == _list->size ){
