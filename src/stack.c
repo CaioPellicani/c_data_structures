@@ -1,6 +1,7 @@
 #include "stack.h"
 
 bool validStack( stack* _stack, bool _seeIfEmpty );
+node* newBlankNode();
 
 stack* initStack(){
     stack* newStack;
@@ -15,6 +16,12 @@ stack* initStack(){
     }
 }
 
+node* newBlankNode(){
+    node* newNode = malloc( sizeof( node ) );
+    newNode->data = NULL;
+    newNode->prevNode = NULL;
+}
+
 bool validStack( stack* _stack, bool _seeIfEmpty ){
     if( _stack == NULL ){
         die( MSG_NODEF_STACK);
@@ -26,10 +33,8 @@ bool validStack( stack* _stack, bool _seeIfEmpty ){
 }
 
 bool push( stack* _stack, void* _data ){
-    node* newNode;
-
     if( validStack( _stack, false ) ){
-        newNode = malloc( sizeof( node ) );
+        node* newNode = newBlankNode();
         newNode->data = _data;
         
         if( _stack->top == NULL ){  

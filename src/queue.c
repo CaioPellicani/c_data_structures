@@ -1,6 +1,7 @@
 #include "queue.h"
 
 bool validQueue( queue* _queue, bool _seeIfEmpty );
+node* newBlankNode();
 
 queue* initQueue(){
     queue* newQueue;
@@ -16,6 +17,12 @@ queue* initQueue(){
     }
 }
 
+node* newBlankNode(){
+    node* newNode = malloc( sizeof( node ) );
+    newNode->data = NULL;
+    newNode->prevNode = NULL;
+}
+
 bool validQueue( queue* _queue, bool _seeIfEmpty ){
     if( _queue == NULL ){
         die( MSG_NODEF_QUEUE);
@@ -27,10 +34,10 @@ bool validQueue( queue* _queue, bool _seeIfEmpty ){
 }
 
 bool push( queue* _queue, void* _data ){
-    node* newNode;
+
 
     if( validQueue( _queue, false ) ){
-        newNode = malloc( sizeof( node ) );
+        node* newNode = newBlankNode();
         newNode->data = _data;
         
         if( _queue->begin == NULL ){  
