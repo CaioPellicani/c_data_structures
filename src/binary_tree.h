@@ -28,4 +28,5 @@ node* getRoot( node* _root );
 node* getLeft( node* _root );
 node* getRight( node* _root );
 
+void showTree( node* _root, int where, int tab, void (*func_ptr)(void* _data) );
 #endif

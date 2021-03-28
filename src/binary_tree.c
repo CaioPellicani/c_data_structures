@@ -4,7 +4,7 @@ node* newBlankNode();
 bool addNode( node* _root, void* _data, int letfNode );
 node* getNode( node* _root, int where );
 
-enum cordenates{ ROOT, LEFT, RIGHT, BOTHER };
+enum coordinates{ ROOT, LEFT, RIGHT, BOTHER };
 
 binaryTree* initBinaryTree(){
     binaryTree* newTree;
@@ -46,7 +46,11 @@ node** positioning( node* _root, int where ){
         else{
             return &_root->root->left;
         }
+        break;
+    default: 
+        return NULL;
     }
+    
 }
 
 bool addNode( node* _root, void* _data, int where ){
@@ -80,3 +84,31 @@ node* getNode( node* _root, int where ){
 node* getRoot( node* _root ){  return getNode( _root, ROOT ); }
 node* getLeft( node* _root ){  return getNode( _root, LEFT ); }
 node* getRight( node* _root ){ return getNode( _root, RIGHT ); }
+
+void showTree( node* _root, int where, int tab, void (*func_ptr)(void* _data) ){
+    for( int i = 0; i < tab; i++ ){
+        printf( "\t" );
+    }
+    char position[6] = {};
+    switch ( where ){
+    case ROOT:
+        strncpy( position, "Root ", 6 );
+        break;
+    case LEFT:
+        strncpy( position, "Left ", 6 );
+        break;
+    case RIGHT:
+        strncpy( position, "Right", 6 );
+        break;
+    }
+
+    printf( "|%s-> ", position );
+    func_ptr( _root->data );
+
+    if( _root->left != NULL ){
+        showTree( _root->left, LEFT, tab + 1, func_ptr );
+    }
+    if( _root->right != NULL ){
+        showTree( _root->right, RIGHT, tab + 1, func_ptr );
+    }
+}

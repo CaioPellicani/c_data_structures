@@ -19,31 +19,18 @@ void showData( void* _data ){
 int main( int argc, char **argv ){
     binaryTree *aTree;
     aTree = initBinaryTree();
+    node* root = aTree->mainRoot;
 
-    aTree->mainRoot->data = (data*)newData( 0 );
-    addLeftNode( aTree->mainRoot, (data*)newData( 1 ) );
-    addRightNode( aTree->mainRoot, (data*)newData( 2 ) );
-    addLeftNode( aTree->mainRoot->left, (data*)newData( 3 ));
-    addRightNode( aTree->mainRoot->left, (data*)newData( 4 ));
-    addLeftNode( aTree->mainRoot->right, (data*)newData( 5 ));
-    addRightNode( aTree->mainRoot->right, (data*)newData( 6 ));
+    root->data = (data*)newData( 0 );
+    addLeftNode( root, (data*)newData( 1 ) );
+    addRightNode( root, (data*)newData( 2 ) );
+    addLeftNode( root->left, (data*)newData( 3 ));
+    addRightNode( root->left, (data*)newData( 4 ));
+    addLeftNode( root->right, (data*)newData( 5 ));
+    addRightNode( root->right, (data*)newData( 7 ));
 
-    printf( "|Root -> " );
-    showData( (data*)aTree->mainRoot->data );
-
-    printf( "\t|Left-> " );
-    showData( (data*)getLeft( aTree->mainRoot )->data );  
-    printf( "\t\t|Left-> " );
-    showData( (data*)getLeft( aTree->mainRoot->left )->data ); 
-    printf( "\t\t|Right-> " );
-    showData( (data*)getRight( aTree->mainRoot->left )->data ); 
-
-    printf( "\t|Right-> " );
-    showData( (data*)getRight( aTree->mainRoot )->data );   
-    printf( "\t\t|Left-> " );
-    showData( (data*)getLeft( aTree->mainRoot->right )->data ); 
-    printf( "\t\t|Right-> " );
-    showData( (data*)getRight( aTree->mainRoot->right )->data ); 
+    printf( "### SHOW TREE\n" );
+    showTree( root, 0, 0, &showData );
 
     return 0;
 }
