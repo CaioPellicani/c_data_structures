@@ -21,4 +21,11 @@ typedef struct{
 
 binaryTree* initBinaryTree();
 
+bool addRightNode( node* _root, void* _data );
+bool addLeftNode( node* _root, void* _data );
+
+node* getRoot( node* _root );
+node* getLeft( node* _root );
+node* getRight( node* _root );
+
 #endif
