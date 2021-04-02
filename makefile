@@ -10,13 +10,22 @@ PATH_SRC=./src
 PATH_EXEMPLE=./exemples
 PATH_BIN=./bin
 
-STD=stdHeader.o 
+OBJS=${PATH_OBJ}/stdHeader.o ${PATH_OBJ}/${NAME}.o ${PATH_OBJ}/exemple_${NAME}.o 
+
 #NAME=stack
 #NAME=queue
 #NAME=double_linked_list
-NAME=binary_tree
+NAME=order_double_linked_list
+#NAME=binary_tree
+
+
+
+ifeq (${NAME}, order_double_linked_list)
+	OBJS+=${PATH_OBJ}/double_linked_list.o
+endif
 
 all: ${NAME}
+
 
 ${PATH_OBJ}/%.o:: ${PATH_SRC}/%.c
 	${CC} ${FLAG} -c $^ -o $@
@@ -24,7 +33,7 @@ ${PATH_OBJ}/%.o:: ${PATH_SRC}/%.c
 ${PATH_OBJ}/%.o:: ${PATH_EXEMPLE}/%.c
 	${CC} ${FLAG} -c $^ -o $@
 
-${NAME}: ${PATH_OBJ}/${STD} ${PATH_OBJ}/${NAME}.o ${PATH_OBJ}/exemple_${NAME}.o
+${NAME}: ${OBJS}
 	${CC} ${FLAG} -o ./${PATH_BIN}/exec_$@ $^
 
 clean:

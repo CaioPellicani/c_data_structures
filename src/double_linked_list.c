@@ -11,6 +11,7 @@ list* initList(){
     newList = (list*) malloc( sizeof( list ) );
     if( newList == NULL ){
         die( MSG_NO_MEM ); 
+        return false;
     }
     else{
         newList->head = NULL;
@@ -178,7 +179,6 @@ node* getNodeAt( list* _list, int pos ){
             seeingNode = seeingNode->prevNode;
         }
     }
-
     return seeingNode;
 }
 
@@ -204,7 +204,6 @@ bool showList( list* _list, void (*showData) ( void* data )  ){
 void deleteList( list* _list ){
     emptyList( _list );
     free( _list );
-    _list = NULL;
 }
 
 
