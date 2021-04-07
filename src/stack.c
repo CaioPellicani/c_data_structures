@@ -1,5 +1,19 @@
 #include "stack.h"
 
+#define MSG_NO_MEM "Not sufficient memory!\n"
+#define MSG_NODEF_STACK "Stack is not defined!\n"
+#define MSG_EMPTY_STACK "The Stack is Empty!\n"
+
+typedef struct node {
+    void * data;
+    struct node* prevNode;
+}node;
+
+typedef struct _stack{
+    node * top;
+    int size;
+}stack;
+
 bool validStack( stack* _stack, bool _seeIfEmpty );
 node* newBlankNode();
 

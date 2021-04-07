@@ -3,20 +3,7 @@
 
 #include "stdHeader.h"
 
-#define MSG_NO_MEM "Not sufficient memory!\n"
-#define MSG_NODEF_QUEUE "Queue is not defined!\n"
-#define MSG_EMPTY_QUEUE "The Queue is Empty!\n"
-
-typedef struct node {
-    void * data;
-    struct node* prevNode;
-}node;
-
-typedef struct{
-    node * begin;
-    node * end;
-    int size;
-}queue;
+typedef struct _queue queue;
 
 queue* initQueue();
 

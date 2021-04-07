@@ -1,4 +1,14 @@
 #include "order_double_linked_list.h"
+#include "double_linked_list.h"
+#include "double_linked_list.c"
+
+typedef struct _orderList{
+    node ** head;
+    node ** tail;
+    list * list;
+    int * size;
+    bool( *comparison )( void *larger, void *smaller );
+}orderList;
 
 bool insertInFontOf( list* _list, node* _thisNode, void* data );
 bool validList( list* _list, bool _seeIfEmpty );

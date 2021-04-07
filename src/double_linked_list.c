@@ -1,5 +1,24 @@
 #include "double_linked_list.h"
 
+
+#define MSG_NO_MEM "Not sufficient memory!\n"
+#define MSG_NODEF_LIST "List is not defined!\n"
+#define MSG_EMPTY_LIST "The List is Empty!\n"
+#define MGS_OUT_RANGE(TYPE) "\n\nNot possible to %s. Position '%d' is out ouf range. Size of the List is '%d'\n", TYPE, pos, _list->size 
+
+
+typedef struct node {
+    void * data;
+    struct node* nextNode;
+    struct node* prevNode;
+}node;
+
+typedef struct _list{
+    node * head;
+    node * tail;
+    int size;
+}list;
+
 bool validList( list* _list, bool _seeIfEmpty );
 bool insertInFontOf( list* _list, node* _thisNode, void* data );
 node* newBlankNode();
