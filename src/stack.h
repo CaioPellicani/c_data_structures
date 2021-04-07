@@ -12,9 +12,9 @@ bool pop( stack* _stack );
 
 void* getTopData( stack* _stack );
 
-void emptyStack( stack* _stack );
-bool showStack( stack* _stack, void (*showData) ( void* data) );
+bool stackDataUse( stack* _stack, void ( *dataUseFunction ) ( void* data ) );
 
+void emptyStack( stack* _stack );
 void deleteStack( stack* _stack );
 
 #endif

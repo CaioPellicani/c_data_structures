@@ -24,26 +24,26 @@ int main(){
 
     int i = 0;
     for( ; i < 5; i++ ){
-        push( aQueue, ( data* )newData( i ) );
-        printf( "# Push: ");
-        showQueue( aQueue, &showData );
+        enqueue( aQueue, ( data* )newData( i ) );
+        printf( "# Enqueue: ");
+        queueDataUse( aQueue, &showData );
         printf( "\n" );
     }
     
     data* end = (data*)getEndData( aQueue );
-    printf( "\n# End: %d\n\n", end->value );
+    printf( "\n# End of Queue: %d\n\n", end->value );
 
     for( ; i > 1; i-- ){
-        pop( aQueue );
-        printf( "# Pop: ");
-        showQueue( aQueue, &showData );
+        dequeue( aQueue );
+        printf( "# Dequeue: ");
+        queueDataUse( aQueue, &showData );
         printf( "\n" );
     }
     printf( "\n" );
 
     emptyQueue( aQueue );
     printf( "\n### Empty the Queue ###\n");
-    showQueue( aQueue, &showData );
+    queueDataUse( aQueue, &showData );
 
     deleteQueue( aQueue );
 

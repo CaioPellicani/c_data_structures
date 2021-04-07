@@ -25,7 +25,7 @@ int main(){
     for( ; i < 5; i++ ){
         push( aStack, ( data* )newData( i ) );
         printf( "# Push: ");
-        showStack( aStack, &showData );
+        stackDataUse( aStack, &showData );
         printf( "\n" );
     }
     
@@ -35,16 +35,13 @@ int main(){
     for( ; i > 1; i-- ){
         pop( aStack );
         printf( "# Pop: ");
-        showStack( aStack, &showData );
+        stackDataUse( aStack, &showData );
         printf( "\n" );
     }
-    printf( "\n" );
-
-    emptyStack( aStack );
-    printf( "\n### Empty the Stack ###\n");
-    showStack( aStack, &showData );
 
     deleteStack( aStack );
+    
+    puts( "\n" );
 
     return 0;
 }

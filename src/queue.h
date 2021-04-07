@@ -3,17 +3,17 @@
 
 #include "stdHeader.h"
 
-typedef struct _queue queue;
+typedef struct strQueue queue;
 
 queue* initQueue();
 
-bool push( queue* _queue, void* _data );
-bool pop( queue* _queue );
+bool enqueue( queue* _queue, void* _data );
+bool dequeue( queue* _queue );
 
 void* getEndData( queue* _queue );
 
 void emptyQueue( queue* _queue );
-bool showQueue( queue* _queue, void (*showData) ( void* data) );
+bool queueDataUse( queue* _queue, void ( *dataUseFunction ) ( void* data) );
 
 void deleteQueue( queue* _queue );
 
