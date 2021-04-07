@@ -14,15 +14,10 @@ OBJS=${PATH_OBJ}/stdHeader.o ${PATH_OBJ}/${NAME}.o ${PATH_OBJ}/exemple_${NAME}.o
 
 #NAME=stack
 #NAME=queue
+NAME=linked_list
 #NAME=double_linked_list
-NAME=order_double_linked_list
+#NAME=order_double_linked_list
 #NAME=binary_tree
-
-
-
-ifeq (${NAME}, order_double_linked_list)
-	OBJS+=${PATH_OBJ}/double_linked_list.o
-endif
 
 all: ${NAME}
 
@@ -41,3 +36,4 @@ clean:
 
 run: ${NAME}
 	./${PATH_BIN}/exec_$^ 
+
