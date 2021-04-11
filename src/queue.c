@@ -1,6 +1,9 @@
 #include "queue.h"
 #include "linked_list.h"
-#include "linked_list.c"
+
+#define MSG_NO_MEM "Not sufficient memory!\n"
+#define MSG_NODEF_STACK "Queue is not defined!\n"
+#define MSG_EMPTY_STACK "The Queue is Empty!\n"
 
 typedef struct  strQueue{
     linkedList* list;

@@ -130,7 +130,7 @@ bool removeNextNode( linkedList* _list, node* _prevNode ){
 
 bool pushHead( linkedList* _list, void* _data ){  
    if( validList( _list, false ) ){
-       return insertAt( _list, _data, 0 );//insertInBetween( _list, NULL, _data );
+       return insertAt( _list, _data, 0 );
    } 
    return false;
 }
