@@ -2,6 +2,8 @@
     "files.associations": {
         "double_linked_list.h": "c",
         "limits": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "queuetest.h": "c",
+        "base_tests.h": "c"
     }
 }
