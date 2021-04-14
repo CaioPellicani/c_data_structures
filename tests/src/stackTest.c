@@ -18,6 +18,7 @@ int runStackTest(){
     push( aStack, (data*)newData( 3 ) );
 
     EX_STR_EQ( "PUSH", "3 - 2 - 1", result ); 
+    EX_INT_EQ( "size+3", 3, getSizeStack( aStack ) );
 
     pop( aStack );
 
@@ -25,8 +26,8 @@ int runStackTest(){
     EX_INT_EQ( "Get Top of the Stack", 2, top->value );
 
     pop( aStack );
-
     EX_STR_EQ( "POP", "1", result );
+    EX_INT_EQ( "size--", 1, getSizeStack( aStack ) );
 
     END_TESTS;
 }
