@@ -6,6 +6,7 @@
 typedef struct _stack stack;
 
 stack* initStack();
+int getSizeStack( stack* _stack );
 
 bool push( stack* _stack, void* _data );
 bool pop( stack* _stack );

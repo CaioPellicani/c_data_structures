@@ -22,6 +22,10 @@ queue* initQueue(){
     }
 }
 
+int getSizeQueue( queue* _queue ){
+    return getListSize( _queue->list );
+}
+
 bool enqueue( queue* _queue, void* _data ){
     return pushHead( _queue->list, _data );
 }

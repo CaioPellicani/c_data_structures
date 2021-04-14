@@ -22,6 +22,10 @@ stack* initStack(){
     }
 }
 
+int getSizeStack( stack* _stack ){
+    return getListSize( _stack->list );
+}
+
 bool push( stack* _stack, void* _data ){
     return pushHead( _stack->list, _data );
 }

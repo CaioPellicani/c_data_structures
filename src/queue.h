@@ -6,6 +6,7 @@
 typedef struct strQueue queue;
 
 queue* initQueue();
+int getSizeQueue( queue* _queue );
 
 bool enqueue( queue* _queue, void* _data );
 bool dequeue( queue* _queue );
