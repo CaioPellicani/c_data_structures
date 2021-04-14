@@ -1,11 +1,6 @@
 #include "linked_list.h"
 #include "../core/src/core.h"
 
-#define MSG_NO_MEM "Not sufficient memory!\n"
-#define MSG_NODEF "List is not defined!\n"
-#define MSG_EMPTY "The List is Empty!\n"
-#define MGS_OUT_RANGE(TYPE) "\n\nNot possible to %s. Position '%d' is out ouf range.\n", TYPE, position + 1 
-
 typedef struct strLinkedList{
     node * head;
     int size;
@@ -37,7 +32,6 @@ bool validList( linkedList* _list, bool _seeIfEmpty ){
     if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
         die( MSG_EMPTY );
     }
-
     return true;
 }
 
@@ -81,15 +75,7 @@ void emptyList( linkedList* _list ){
 }
 
 void* getDataAt( linkedList* _list, int position ){
-    int prevNodePostion = position;
-    node* result = getNodeAt( _list->head, prevNodePostion, "get data", _list->size );
-
-    if ( result == NULL ){
-        return _list->head->data;
-    }
-    else{
-        return result->data;
-    }
+    return getNodeData( _list->head, position, _list->size );
 }
 
 void* getHeadData( linkedList* _list ){
@@ -100,15 +86,8 @@ void* getTailData( linkedList* _list ){
 }
 
 bool listDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data )  ){
-    node* seeingNode;
-
     if( validList( _list, true ) ){
-        seeingNode = _list->head;
-        while ( seeingNode != NULL ){
-            dataUseFunction( seeingNode->data );
-            seeingNode = seeingNode->nextNode;
-        }
-        return true;
+        return dataUse( _list->head, dataUseFunction );
     }
     return false;
 }

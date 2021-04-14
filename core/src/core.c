@@ -10,7 +10,6 @@ node* newBlankNode(){
     return newNode;
 }
 
-
 bool insertInBetween( node** firstNode, int* size, void* _data, node* _prevNode ){
     node* newNode = newBlankNode();
     newNode->data = _data;
@@ -71,5 +70,27 @@ node* getNodeAt( node* firstNode, int position, char* from, int size ){
         seeingNode = seeingNode->nextNode;
     }
     return seeingNode;
+}
+
+void* getNodeData( node* firstNode, int position, int size ){
+    int prevNodePostion = position;
+    node* result = getNodeAt( firstNode, prevNodePostion, "get data", size );
+
+    if ( result == NULL ){
+        return firstNode->data;
+    }
+    else{
+        return result->data;
+    }
+}
+
+bool dataUse( node* firstNode, void ( *dataUseFunction ) ( void* data ) ){
+    node* seeingNode;
+    seeingNode = firstNode;
+    while ( seeingNode != NULL ){
+        dataUseFunction( seeingNode->data );
+        seeingNode = seeingNode->nextNode;
+    }
+    return true;
 }
 
