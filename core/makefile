@@ -1,5 +1,7 @@
 #makefile libdatastructcore.a
-
+CC=gcc 
+FLAG=-Wall
+LIB =ar rcs
 AR =ar rcs
 
 PATH_CSRC=./src
