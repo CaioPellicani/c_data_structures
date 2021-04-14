@@ -9,7 +9,7 @@ void refreshStack(){
     stackDataUse( aStack, &showData );
 }
 
-int runStackTest(){
+int runStackTest(){ 
     INIT_TESTS( "Stack", refreshStack );
     aStack = initStack();
 

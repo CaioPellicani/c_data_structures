@@ -17,7 +17,7 @@ stack* initStack(){
         return false;
     }
     else{
-        newStack->list = initList();
+        newStack->list = initLinkedList();
         return newStack;
     }
 }

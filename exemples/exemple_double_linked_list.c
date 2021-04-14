@@ -1,4 +1,4 @@
-#include "../src/stdHeader.h"
+#include "../core/src/stdHeader.h"
 #include "../src/double_linked_list.h"
 
 typedef struct data{

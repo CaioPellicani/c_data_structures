@@ -14,3 +14,13 @@ void showData( void* _data ){
         sprintf( result, "%s - %d", result, aData->value );
     }
 }
+
+bool comparison( void* _larger, void* _smaller ){
+    data *larger = ( data*)_larger;
+    data *smaller = ( data* ) _smaller;
+
+    if( larger->value >= smaller->value ){
+        return true;
+    }
+    return false;
+}

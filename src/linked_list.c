@@ -5,7 +5,7 @@
 #define MSG_EMPTY "The List is Empty!\n"
 #define MGS_OUT_RANGE(TYPE) "\n\nNot possible to %s. Position '%d' is out ouf range.\n", TYPE, position + 1 
 
-typedef struct node {
+typedef struct node{
     void * data;
     struct node* nextNode;
 }node;
@@ -21,7 +21,7 @@ node* newBlankNode();
 node* getNodeAt( linkedList* _list, int position, char* from );
 bool removeNextNode( linkedList* _list, node* _prevNode );
 
-linkedList* initList(){
+linkedList* initLinkedList(){
     linkedList* newList;
     newList = ( linkedList* ) malloc( sizeof( linkedList ) );
     if( newList == NULL ){
@@ -31,8 +31,8 @@ linkedList* initList(){
     else{
         newList->head = NULL;
         newList->size = 0;
-        return newList;
-    }
+    return newList;
+}
 }
 
 int getListSize( linkedList* _list ){
@@ -130,45 +130,45 @@ bool removeNextNode( linkedList* _list, node* _prevNode ){
 
 bool pushHead( linkedList* _list, void* _data ){  
    if( validList( _list, false ) ){
-       return insertAt( _list, _data, 0 );
-   } 
+    return insertAt( _list, _data, 0 );
+}
    return false;
 }
 
 bool pushTail( linkedList* _list, void* _data ){  
    if( validList( _list, false ) ){
-       return insertAt( _list, _data, _list->size - 1 );
-   } 
+    return insertAt( _list, _data, _list->size - 1 );
+}
    return false;
 }
 
 bool insertAt( linkedList* _list, void* _data, int position ){
     int prevNodePostion = position - 1;
     if( validList( _list, false ) ){
-        return insertInBetween( _list, getNodeAt( _list, prevNodePostion, "insert" ), _data );
-    }
+    return insertInBetween( _list, getNodeAt( _list, prevNodePostion, "insert" ), _data );
+}
     return false;
 }
 
 bool removeAt( linkedList* _list, int position ){
     int prevNodePostion = position - 1;
     if( validList( _list, false ) ){
-        return removeNextNode( _list, getNodeAt( _list, prevNodePostion, "remove" ) );
-    }
+    return removeNextNode( _list, getNodeAt( _list, prevNodePostion, "remove" ) );
+}
     return false;
 }
 
 bool popHead( linkedList* _list ){
     if( validList( _list, true ) ){
-        return removeAt( _list, 0 );
-    }  
+    return removeAt( _list, 0 );
+}
     return false; 
 }
 
 bool popTail( linkedList* _list ){
     if( validList( _list, true ) ){
-        return removeAt( _list, _list->size - 1 );
-    }  
+    return removeAt( _list, _list->size - 1 );
+}
     return false;  
 }
 

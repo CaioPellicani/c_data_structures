@@ -1,4 +1,4 @@
-#include "../src/stdHeader.h"
+#include "../core/src/stdHeader.h"
 #include "../src/stack.h"
 
 typedef struct data{
@@ -29,8 +29,8 @@ int main(){
         printf( "\n" );
     }
     
-    data* top = (data*)getTopData( aStack );
-    printf( "\n# Top: %d\n\n", top->value );
+    data* end = (data*)getTopData( aStack );
+    printf( "\n# Top: %d\n\n", end->value );
 
     for( ; i > 1; i-- ){
         pop( aStack );

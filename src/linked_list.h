@@ -1,11 +1,11 @@
 #ifndef _LINKED_LIST_H_
 #define _LINKED_LIST_H_
 
-#include "stdHeader.h"
+#include "../core/src/stdHeader.h"
 
-typedef struct  strLinkedList linkedList;
+typedef struct strLinkedList linkedList;
 
-linkedList* initList();
+linkedList* initLinkedList();
 bool isEmpty( linkedList* _list );
 int getListSize( linkedList* _list );
 

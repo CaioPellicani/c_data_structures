@@ -1,4 +1,6 @@
-*.o
+
+*bin/
+*obj/
 test
 exec_*
 !exemple*.c

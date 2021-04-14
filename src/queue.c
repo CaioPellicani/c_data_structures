@@ -17,7 +17,7 @@ queue* initQueue(){
         return NULL;  
     }
     else{
-        newQueue->list = initList();
+        newQueue->list = initLinkedList();
         return newQueue;
     }
 }

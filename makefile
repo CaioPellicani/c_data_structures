@@ -1,32 +1,29 @@
 #makefile
-PROJ_NAME=app
-
 CC=gcc 
+LIB =ar rcs
 FLAG=-Wall
-LIBS =-lm
 
-NAMES=stack queue linked_list #double_linked_list order_double_linked_list
+NAMES=stack queue linked_list order_linked_list #double_linked_list order_double_linked_list
 #NAMES+=binary_tree
-NAMES+=stdHeader
-export NAMES
 
-NAME=$(word 3, ${NAMES})
+NAME=$(word 1, ${NAMES})
 
 PATH_OBJ=./obj
 PATH_SRC=./src
 PATH_EXEMPLE=./exemples
 PATH_BIN=./bin
 
-OBJS=${PATH_OBJ}/stdHeader.o ${PATH_OBJ}/${NAME}.o 
+PATH_LIBS=-Lbin -Lcore/bin
+LIBS=-ldatastructs -lcore
+
+SRC=$(foreach n, ${NAMES}, ${PATH_SRC}/${n}.c )
+SOBJS=$(patsubst ${PATH_SRC}/%.c, ${PATH_OBJ}/%.o, ${SRC} )
+
 EXEC_OBJS=${PATH_OBJ}/exemple_${NAME}.o 
 
-ifeq (${NAME}, $(word 1, ${NAMES})) 
-	OBJS+=${PATH_OBJ}/linked_list.o
-endif
-ifeq (${NAME}, $(word 2, ${NAMES}))
-	OBJS+=${PATH_OBJ}/linked_list.o
-endif
+export CC, FLAG
 
+#all: run 
 all: test
 
 ${PATH_OBJ}/%.o:: ${PATH_SRC}/%.c
@@ -35,18 +32,22 @@ ${PATH_OBJ}/%.o:: ${PATH_SRC}/%.c
 ${PATH_OBJ}/%.o:: ${PATH_EXEMPLE}/%.c
 	${CC} ${FLAG} -c $^ -o $@
 
-${NAME}: ${OBJS} ${EXEC_OBJS}
-	${CC} ${FLAG} -o ./${PATH_BIN}/exec_$@ $^
+lcore: 
+	cd core && $(MAKE)
+
+lib: ${SOBJS} lcore
+	${LIB} ${PATH_BIN}/libdatastructs.a ${SOBJS} ./core/bin/libcore.a
+
+${NAME}: lib ${EXEC_OBJS}
+	${CC} ${EXEC_OBJS} ${PATH_LIBS} ${LIBS} -o ./${PATH_BIN}/exec_$@ 
 
 clean:
-	rm ${PATH_BIN}/*${NAME}* ${PATH_OBJ}/*${NAME}*
+	rm ${PATH_BIN}/*${NAME}* ${PATH_OBJ}/*${NAME}* ${PATH_BIN}/*.a
 
 run: ${NAME}
 	${PATH_BIN}/exec_$^
 
-name: $(NAME)
-
-test: 
+test: lib
 	cd tests && $(MAKE)
 
 ctests: 

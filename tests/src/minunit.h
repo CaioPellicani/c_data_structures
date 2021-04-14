@@ -14,7 +14,6 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
   char groupTestName[20] = groupName;                \
   void (*refreshFunc)() = &nameOfRefreshFunc;
 
-
 #define EX_STR_EQ( testName, expect, result )                       \
   refreshFunc();                                                    \
   if( strcmp( expect, result ) != 0 ){                              \
@@ -40,14 +39,14 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
   }                                                                 \
   tests_run++
 
-#define EX_NULL( testName, expect, result )                         \
+
+#define EX_NULL( testName , result )                                \
   refreshFunc();                                                    \
-  if( expect != result ){                                           \
+  if( result != NULL ){                                             \
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \
     printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );        \
-    printf( "EXPECT -> %d\n", expect );                             \
-    printf( "GET    -> %d\n\n", result );                           \
+    printf( "EXPECT -> NULL" );                                     \
     return tests_run;                                               \
   }                                                                 \
   tests_run++

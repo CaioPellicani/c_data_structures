@@ -1,4 +1,4 @@
-#include "../src/stdHeader.h"
+#include "../core/src/stdHeader.h"
 #include "../src/linked_list.h"
 
 typedef struct data{
@@ -19,7 +19,7 @@ void showData( void* _data ){
 int main( int argc, char** argv ){
     linkedList* aList = NULL;
 
-    aList = initList();
+    aList = initLinkedList();
 
     printf( "\n### PushHead       -> ");
     for( int i = 0; i < 5; i++ ){

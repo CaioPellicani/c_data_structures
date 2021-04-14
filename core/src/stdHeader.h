@@ -1,6 +1,7 @@
 #ifndef _STD_HEADER_H_
 #define _STD_HEADER_H_
 
+#include <assert.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>

@@ -11,7 +11,8 @@ void refreshLinkedList(){
 
 int runLinkedListTest(){
     INIT_TESTS( "LinkedList", refreshLinkedList );
-    aList = initList(); 
+
+    aList = initLinkedList(); 
 
     pushHead( aList, ( data* )newData( 1 ) );
     EX_STR_EQ( "First PushHead", "1", result );
@@ -39,6 +40,8 @@ int runLinkedListTest(){
 
     popTail( aList );
     EX_STR_EQ( "PopHead", "5 - 1", result );
+
+    deleteList( aList );
 
     END_TESTS;
 }
