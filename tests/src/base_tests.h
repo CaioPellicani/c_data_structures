@@ -12,6 +12,6 @@ typedef struct data{
 
 data* newData( int _value ); 
 void showData( void* _data );   
-bool comparison( void* _larger, void* _smaller );
+int comparison( void* _larger, void* _smaller );
 
 #endif

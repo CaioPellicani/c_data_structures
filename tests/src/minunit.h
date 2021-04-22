@@ -46,11 +46,32 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \
     printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );        \
-    printf( "EXPECT -> NULL" );                                     \
+    printf( "EXPECT -> NULL\n" );                                   \
     return tests_run;                                               \
   }                                                                 \
   tests_run++
 
+#define EX_TRUE( testName , result )                                \
+  refreshFunc();                                                    \
+  if( !result ){                                                    \
+    printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
+    printf( "\nRun %d tests\n", tests_run );                        \
+    printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );        \
+    printf( "EXPECT -> TRUE\n" );                                   \
+    return tests_run;                                               \
+  }                                                                 \
+  tests_run++
+
+#define EX_FALSE( testName , result )                               \
+  refreshFunc();                                                    \
+  if( result ){                                                     \
+    printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
+    printf( "\nRun %d tests\n", tests_run );                        \
+    printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );        \
+    printf( "EXPECT -> FALSE\n" );                                  \
+    return tests_run;                                               \
+  }                                                                 \
+  tests_run++
 
 #define END_TESTS                                             \
   if( tests_run > 0 ){                                        \

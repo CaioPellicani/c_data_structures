@@ -15,12 +15,16 @@ void showData( void* _data ){
     }
 }
 
-bool comparison( void* _larger, void* _smaller ){
-    data *larger = ( data*)_larger;
+int comparison( void* _larger, void* _smaller ){
+    data *larger = ( data* ) _larger;
     data *smaller = ( data* ) _smaller;
 
-    if( larger->value >= smaller->value ){
-        return true;
+    if( larger->value == smaller->value ){
+        return EQUAL;
     }
-    return false;
+
+    if( larger->value >= smaller->value ){
+        return LARGER;
+    }
+    return SMALLER;
 }

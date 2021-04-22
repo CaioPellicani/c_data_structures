@@ -11,4 +11,6 @@
 
 void die(const char *fmt, ...);
 
+enum{ SMALLER, LARGER, EQUAL };
+
 #endif
