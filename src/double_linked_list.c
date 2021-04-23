@@ -1,33 +1,17 @@
 #include "double_linked_list.h"
+#include "../core/src/core_b_cardinal.h"
 
-
-#define MSG_NO_MEM "Not sufficient memory!\n"
-#define MSG_NODEF_LIST "List is not defined!\n"
-#define MSG_EMPTY_LIST "The List is Empty!\n"
-#define MGS_OUT_RANGE(TYPE) "\n\nNot possible to %s. Position '%d' is out ouf range. Size of the List is '%d'\n", TYPE, pos, _list->size 
-
-
-typedef struct node {
-    void * data;
-    struct node* nextNode;
-    struct node* prevNode;
-}node;
-
-typedef struct _list{
-    node * head;
-    node * tail;
+typedef struct strList{
+    bNode * head;
+    bNode * tail;
     int size;
-}list;
+}doubleList;
 
-bool validList( list* _list, bool _seeIfEmpty );
-bool insertInFontOf( list* _list, node* _thisNode, void* data );
-node* newBlankNode();
-node* getNodeAt( list* _list, int pos );
-bool removeNode( list* _list, node* _thisNode );
+bool _validList( doubleList* _list, bool _seeIfEmpty );
 
-list* initList(){
-    list* newList;
-    newList = (list*) malloc( sizeof( list ) );
+doubleList* _initList(){
+    doubleList* newList;
+    newList = ( doubleList* ) malloc( sizeof( doubleList ) );
     if( newList == NULL ){
         die( MSG_NO_MEM ); 
         return false;
@@ -40,176 +24,106 @@ list* initList(){
     }
 }
 
-node* newBlankNode(){
-    node* newNode;
-    newNode = malloc( sizeof( node ) );
-    newNode->data = NULL;
-    newNode->prevNode = newNode->nextNode = NULL;
-    return newNode;
+int getDListSize( doubleList* _list ){
+    return _list->size;
 }
 
-bool isEmpty( list* _list ){
+bool _isEmpty( doubleList* _list ){
     return ( _list->head == NULL ) && ( _list->tail == NULL );
 }
 
-bool validList( list* _list, bool _seeIfEmpty ){
+bool _validList( doubleList* _list, bool _seeIfEmpty ){
     if( _list == NULL ){
-        die( MSG_NODEF_LIST );
+        die( MSG_NODEF );
     }
-    if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
-        die( MSG_EMPTY_LIST );
+    if( ( _seeIfEmpty ) && ( _isEmpty( _list ) ) ){
+        die( MSG_EMPTY );
     }
 
     return true;
 }
 
-bool insertInFontOf( list* _list, node* _thisNode, void* _data ){
-    node* newNode = newBlankNode();
-    newNode->data = _data;
-
-    if( isEmpty( _list ) ){ 
-        _list->head = _list->tail = newNode;
-    }
-    else if( ( _thisNode == NULL ) ){ //PushTail
-        newNode->prevNode = _list->tail;
-        _list->tail->nextNode = newNode;
-        _list->tail = newNode;
-    }
-    else if( ( _list->head == NULL ) || ( _thisNode->prevNode == NULL) ){ //PushHead
-        if( _list->head != NULL ){
-            newNode->nextNode = _list->head;
-            _list->head->prevNode = newNode;
-            _list->head = newNode;
-        }
-        _list->head = newNode;
-    }
-    else{
-        newNode->nextNode = _thisNode;
-        newNode->prevNode = _thisNode->prevNode;
-        newNode->prevNode->nextNode = newNode;
-        newNode->nextNode->prevNode = newNode;
-    }
-    _list->size++;
-    return true;
+bool _insertInFontOf( doubleList* _list, bNode* _thisNode, void* _data ){
+    return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
+}
+bool _removeBNode( doubleList* _list, bNode* _thisNode ){
+    return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
 }
 
-bool pushHead( list* _list, void* _data ){  
-   if( validList( _list, false ) ){
-       return insertInFontOf( _list, _list->head, _data );
+bNode* _getBNodeAt( doubleList* _list, int pos ){
+    return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
+}
+
+bool _pushHead( doubleList* _list, void* _data ){  
+   if( _validList( _list, false ) ){
+       return _insertInFontOf( _list, _list->head, _data );
    } 
    return false;
 }
 
-bool pushTail( list* _list, void* _data ){
-    if( validList( _list, false ) ){
-        return insertInFontOf( _list, NULL, _data );
+bool _pushTail( doubleList* _list, void* _data ){
+    if( _validList( _list, false ) ){
+        return _insertInFontOf( _list, NULL, _data );
     }
     return false;
 }
 
-bool insertAt( list* _list, void* _data, int pos ){
-    if( validList( _list, false ) ){
+bool _insertAt( doubleList* _list, void* _data, int pos ){
+    if( _validList( _list, false ) ){
         if( pos > _list->size ){
-            die( MGS_OUT_RANGE("'insert'") );
+            //die( MGS_OUT_RANGE("'insert'") );
         }
         else{
-            return insertInFontOf( _list, getNodeAt( _list, pos ), _data );
+            return _insertInFontOf( _list, _getBNodeAt( _list, pos ), _data );
         }
     }
     return false;
 }
 
-bool removeNode( list* _list, node* _thisNode ){
-    if( _list->head == _list->tail ){
-        _list->head = _list->tail = NULL;
-    }
-    else if( _thisNode == _list->head ){
-        _list->head = _thisNode->nextNode;
-        _list->head->prevNode = NULL;
-    }
-    else if( _thisNode == _list->tail ){
-        _list->tail = _thisNode->prevNode;
-        _list->tail->nextNode = NULL;
-    }
-    else{
-        _thisNode->nextNode->prevNode = _thisNode->prevNode;
-        _thisNode->prevNode->nextNode = _thisNode->nextNode;
-    }
-
-    free( _thisNode->data );
-    free( _thisNode );
-    _list->size--;
-    return true;  
-}
-
-bool removeAt( list* _list, int pos ){
-    if( validList( _list, false ) ){
+bool _removeAt( doubleList* _list, int pos ){
+    if( _validList( _list, false ) ){
         if( pos > _list->size ){
-            die( MGS_OUT_RANGE( "'remove'"));
+            //die( MGS_OUT_RANGE( "'remove'"));
         }
         if( pos == _list->size ){
-            return popTail( _list );
+            return _popTail( _list );
         }
         else{
-            return removeNode( _list, getNodeAt( _list, pos ) );
+            return _removeBNode( _list, _getBNodeAt( _list, pos ) );
         }
     }
     return false;
 }
 
-bool popHead( list* _list ){
-    if( validList( _list, true ) ){
-        return removeNode( _list, _list->head );
+bool _popHead( doubleList* _list ){
+    if( _validList( _list, true ) ){
+        return _removeBNode( _list, _list->head );
     }  
     return false; 
 
 }
-bool popTail( list* _list ){
-    if( validList( _list, true ) ){
-        return removeNode( _list, _list->tail );
+bool _popTail( doubleList* _list ){
+    if( _validList( _list, true ) ){
+        return _removeBNode( _list, _list->tail );
     }   
     return false;
 }
 
-void emptyList( list* _list ){
+void _emptyList( doubleList* _list ){
     while( _list->head != NULL ){
-        popTail( _list );  
+        _popTail( _list );  
     }
 }
 
-node* getNodeAt( list* _list, int pos ){
-    if( pos > _list->size ){
-        die( MGS_OUT_RANGE( "'getData'" ) );
-        exit(1);
-    }
-    else if( pos == _list->size ){
-        return NULL;
-    }
-    node* seeingNode;
-    if( pos <= _list->size/2 ){
-        seeingNode = _list->head;
-        for( int i = 0; i < pos; i++ ){
-            seeingNode = seeingNode->nextNode;
-        }
-    }
-    else{
-        seeingNode = _list->tail;
-        for( int i = _list->size - 1; i > pos; i-- ){
-            seeingNode = seeingNode->prevNode;
-        }
-    }
-    return seeingNode;
-}
-
-void* getDataAt( list* _list, int pos ){
-    return getNodeAt( _list, pos )->data;
+void* _getDataAt( doubleList* _list, int pos ){
+    return _getBNodeAt( _list, pos )->data;
 
 }
 
-bool showList( list* _list, void (*showData) ( void* data )  ){
-    node* seeingNode;
+bool _showList( doubleList* _list, void (*showData) ( void* data )  ){
+    bNode* seeingNode;
 
-    if( validList( _list, true ) ){
+    if( _validList( _list, true ) ){
         seeingNode = _list->head;
         while ( seeingNode != NULL ){
             showData( seeingNode->data );
@@ -220,8 +134,8 @@ bool showList( list* _list, void (*showData) ( void* data )  ){
     return false;
 }
 
-void deleteList( list* _list ){
-    emptyList( _list );
+void _deleteList( doubleList* _list ){
+    _emptyList( _list );
     free( _list );
 }
 

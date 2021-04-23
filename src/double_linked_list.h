@@ -1,26 +1,29 @@
 #ifndef _DOUBLE_LINKED_LIST_H_
 #define _DOUBLE_LINKED_LIST_H_
 
-#include "stdHeader.h"
+#include "../core/src/stdHeader.h"
 
-typedef struct  _list list;
+typedef struct  strList doubleList;
 
-list* initList();
-bool isEmpty( list* _list );
 
-bool pushHead( list* _list, void* _data );
-bool pushTail( list* _list, void* _data );
-bool insertAt( list* _list, void* _data, int pos );
 
-bool popHead( list* _list );
-bool popTail( list* _list );
-bool removeAt( list* _list, int pos );
+doubleList* _initList();
+bool _isEmpty( doubleList* _list );
+int getDListSize( doubleList* _list );
 
-void emptyList( list* _list );
-void* getDataAt( list* _list, int pos );
+bool _pushHead( doubleList* _list, void* _data );
+bool _pushTail( doubleList* _list, void* _data );
+bool _insertAt( doubleList* _list, void* _data, int pos );
 
-bool showList( list* _list, void (*showData) ( void* data) );
+bool _popHead( doubleList* _list );
+bool _popTail( doubleList* _list );
+bool _removeAt( doubleList* _list, int pos );
 
-void deleteList( list* _list );
+void _emptyList( doubleList* _list );
+void* _getDataAt( doubleList* _list, int pos );
+
+bool _showList( doubleList* _list, void (*showData) ( void* data) );
+
+void _deleteList( doubleList* _list );
 
 #endif

@@ -3,10 +3,10 @@ CC=gcc
 FLAG=-Wall
 LIB =ar rcs
 
-NAMES=stack queue linked_list order_linked_list #double_linked_list order_double_linked_list
+NAMES=stack queue linked_list order_linked_list double_linked_list #order_double_linked_list
 #NAMES+=binary_tree
 
-NAME=$(word 1, ${NAMES})
+NAME=$(word 5, ${NAMES})
 
 PATH_OBJ=./obj
 PATH_SRC=./src
