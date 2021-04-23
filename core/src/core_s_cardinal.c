@@ -1,4 +1,4 @@
-#include "core.h"
+#include "core_s_cardinal.h"
 
 node* newBlankNode(){
     node* newNode;
@@ -59,7 +59,7 @@ node* getNodeAt( node* firstNode, int position, char* from, int size ){
         limitMax = size;
     }
 
-    assert( ( position < limitMax ) || ( position > limitMin ) );
+    //assert( ( position < limitMax ) || ( position > limitMin ) );
 
     if( position < 0 ){
         return NULL;

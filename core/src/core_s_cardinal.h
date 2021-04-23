@@ -1,5 +1,6 @@
-#ifndef __CORE_H__
-#define __CORE_H__
+#ifndef __CORE_S_CARDINAL_H__
+#define __CORE_S_CARDINAL_H__
+
     #include "stdHeader.h"
 
     #define MSG_NO_MEM "Not sufficient memory!\n"
