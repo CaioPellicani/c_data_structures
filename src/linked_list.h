@@ -25,6 +25,6 @@ void emptyList( linkedList* _list );
 
 bool listDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data) );
 
-void deleteList( linkedList* _list );
+void deleteList( linkedList** _list );
 
 #endif

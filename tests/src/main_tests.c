@@ -9,7 +9,6 @@ int main( int argc, char** argv ){
     runQueueTest(); 
     runLinkedListTest();
     runOrderLinkedListTest();
-    puts( "\nseparador" );
     runDoubleLinkedListTest();
     return 0;  
 }

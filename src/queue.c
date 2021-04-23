@@ -46,10 +46,15 @@ bool queueDataUse( queue* _queue, void ( *dataUseFunction ) ( void* data )  ){
     return listDataUse( _queue->list, dataUseFunction );
 }
 
-void deleteQueue( queue* _queue ){
-    emptyQueue( _queue );
-    free( _queue );
-    _queue = NULL;
+bool queueIsEmpty( queue* _queue ){
+    return isEmpty( _queue->list );
+}
+
+void deleteQueue( queue** _queue ){
+    deleteList( &( *_queue )->list );
+    free( *_queue );
+    *_queue = NULL;
+    assert( *_queue == NULL );
 }
 
 

@@ -46,10 +46,15 @@ bool stackDataUse( stack* _stack, void ( *dataUseFunction ) ( void* data )  ){
     return listDataUse( _stack->list, dataUseFunction );
 }
 
-void deleteStack( stack* _stack ){
-    deleteList( _stack->list );
-    free( _stack );
-    _stack = NULL;
+bool stackIsEmpty( stack* _stack ){
+    return isEmpty( _stack->list );
+}
+
+void deleteStack( stack** _stack ){
+    deleteList( &( *_stack )->list );
+    free( *_stack );
+    *_stack = NULL;
+    assert( *_stack == NULL );
 }
 
 

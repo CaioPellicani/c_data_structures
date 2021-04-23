@@ -1,4 +1,4 @@
-
+#include "../../src/double_linked_list.h"
 #include "doubleLinkedListTest.h"
 #include "minunit.h"
 #include "base_tests.h"
@@ -50,7 +50,12 @@ int runDoubleLinkedListTest(){
     EX_STR_EQ( "PopHead", "5 - 1", result );
     EX_INT_EQ( "size--", 2, getDListSize( aList ) );
     
-    deleteList( aList );
+    EX_FALSE( "before emptyList", _isEmpty( aList ) );
+    _emptyList( aList );
+    EX_TRUE( "after emptyList", _isEmpty( aList ) );
+
+    _deleteList( &aList );
+    EX_NULL( "deleteList", aList );
 
     END_TESTS;
 }

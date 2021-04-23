@@ -24,6 +24,6 @@ void* _getDataAt( doubleList* _list, int pos );
 
 bool _showList( doubleList* _list, void (*showData) ( void* data) );
 
-void _deleteList( doubleList* _list );
+void _deleteList( doubleList** _list );
 
 #endif

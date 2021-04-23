@@ -10,20 +10,13 @@ typedef struct strOrderLinkedList{
 } orderLinkedList;
 
 orderLinkedList* initOList( int( *_comparison )( void *larger, void *smaller ) ){
-    orderLinkedList* newList;
+    orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
+    assert( newList != NULL );
 
-    newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
-
-    if( newList == NULL ){
-        die( "MSG_NO_MEM" ); 
-        return NULL;
-    }
-    else{
-        newList->head = NULL;
-        newList->size = 0;
-        newList->comparison = _comparison;
-        return newList;
-    }
+    newList->head = NULL;
+    newList->size = 0;
+    newList->comparison = _comparison;
+    return newList;
 }
 
 bool oll_insertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion ){
@@ -117,5 +110,18 @@ bool removeInOrder( orderLinkedList* _list, void *_searchData ){
         return true;
     }
     return false;
+}
+
+void emptyOList( orderLinkedList* _list ){
+    while( ! oListIsEmpty( _list ) ){
+        removeNextNode( &_list->head, &_list->size, NULL ); 
+    }
+}
+
+void deleteOList( orderLinkedList** _list ){
+    emptyOList( *_list );
+    free( *_list );
+    *_list = NULL;
+    assert( *_list == NULL );
 }
 

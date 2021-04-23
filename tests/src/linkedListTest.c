@@ -50,7 +50,11 @@ int runLinkedListTest(){
     EX_STR_EQ( "PopHead", "5 - 1", result );
     EX_INT_EQ( "size--", 2, getListSize( aList ) );
     
-    deleteList( aList );
+    EX_FALSE( "before emptyList", isEmpty( aList ) );
+    emptyList( aList );
+    EX_TRUE( "emptyList", isEmpty( aList ) );
 
+    deleteList( &aList );
+    EX_NULL( "deleteList", aList );
     END_TESTS;
 }

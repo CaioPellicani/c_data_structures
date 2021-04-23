@@ -10,18 +10,12 @@ typedef struct strList{
 bool _validList( doubleList* _list, bool _seeIfEmpty );
 
 doubleList* _initList(){
-    doubleList* newList;
-    newList = ( doubleList* ) malloc( sizeof( doubleList ) );
-    if( newList == NULL ){
-        die( MSG_NO_MEM ); 
-        return false;
-    }
-    else{
-        newList->head = NULL;
-        newList->tail = NULL;
-        newList->size = 0;
-        return newList;
-    }
+    doubleList* newList = ( doubleList* ) malloc( sizeof( doubleList ) );
+    assert( newList != NULL );
+    newList->head = NULL;
+    newList->tail = NULL;
+    newList->size = 0;
+    return newList;
 }
 
 int getDListSize( doubleList* _list ){
@@ -71,7 +65,7 @@ bool _pushTail( doubleList* _list, void* _data ){
 bool _insertAt( doubleList* _list, void* _data, int pos ){
     if( _validList( _list, false ) ){
         if( pos > _list->size ){
-            //die( MGS_OUT_RANGE("'insert'") );
+            die( "'insert'" );
         }
         else{
             return _insertInFontOf( _list, _getBNodeAt( _list, pos ), _data );
@@ -83,7 +77,7 @@ bool _insertAt( doubleList* _list, void* _data, int pos ){
 bool _removeAt( doubleList* _list, int pos ){
     if( _validList( _list, false ) ){
         if( pos > _list->size ){
-            //die( MGS_OUT_RANGE( "'remove'"));
+            die( "'remove'" );
         }
         if( pos == _list->size ){
             return _popTail( _list );
@@ -134,9 +128,11 @@ bool _showList( doubleList* _list, void (*showData) ( void* data )  ){
     return false;
 }
 
-void _deleteList( doubleList* _list ){
-    _emptyList( _list );
-    free( _list );
+void _deleteList( doubleList** _list ){
+    _emptyList( *_list );
+    free( *_list );
+    *_list = NULL;
+    assert( *_list == NULL );
 }
 
 

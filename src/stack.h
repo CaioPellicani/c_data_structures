@@ -7,6 +7,7 @@ typedef struct _stack stack;
 
 stack* initStack();
 int getSizeStack( stack* _stack );
+bool stackIsEmpty( stack* _stack );
 
 bool push( stack* _stack, void* _data );
 bool pop( stack* _stack );
@@ -16,6 +17,6 @@ void* getTopData( stack* _stack );
 bool stackDataUse( stack* _stack, void ( *dataUseFunction ) ( void* data ) );
 
 void emptyStack( stack* _stack );
-void deleteStack( stack* _stack );
+void deleteStack( stack **_stack );
 
 #endif

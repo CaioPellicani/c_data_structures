@@ -28,7 +28,12 @@ int runQueueTest(){
     data* end = (data*)getEndData( aQueue );
     EX_INT_EQ( "Get End Of The Queue", 2, end->value );
 
-    deleteQueue( aQueue );
+    EX_FALSE( "before emptyQueue", queueIsEmpty( aQueue ) );
+    emptyQueue( aQueue );
+    EX_TRUE( "after emptyQueue", queueIsEmpty( aQueue ) );
+
+    deleteQueue( &aQueue);
+    EX_NULL( "deleteQueue", aQueue );
 
     END_TESTS;
     return 0;

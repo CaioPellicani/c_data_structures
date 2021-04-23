@@ -1,4 +1,4 @@
-
+#include "../../src/order_linked_list.h"
 #include "orderLinkedListTests.h"
 #include "minunit.h"
 #include "base_tests.h"
@@ -68,6 +68,13 @@ int runOrderLinkedListTest(){
 
     searchTemplate->value = 10;
     EX_FALSE( "Delete Fail", removeInOrder( aList, searchTemplate ) );
+
+    EX_FALSE( "before emptyOList", oListIsEmpty( aList ) );
+    emptyOList( aList );
+    EX_TRUE( "after emptyOList", oListIsEmpty( aList ) );
+
+    deleteList( &aList );
+    EX_NULL( "deleteList", aList );
 
     END_TESTS;
 }

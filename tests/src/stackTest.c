@@ -30,7 +30,12 @@ int runStackTest(){
     EX_STR_EQ( "POP", "1", result );
     EX_INT_EQ( "size--", 1, getSizeStack( aStack ) );
 
-    deleteStack( aStack );
+    EX_FALSE( "before emptyStack", stackIsEmpty( aStack ) );
+    emptyStack( aStack );
+    EX_TRUE( "after emptyStack", stackIsEmpty( aStack ) );
+
+    deleteStack( &aStack );
+    EX_NULL( "deleteStack", aStack );
 
     END_TESTS;
 }

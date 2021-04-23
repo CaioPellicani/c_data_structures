@@ -23,4 +23,4 @@ test: ${TOBJ}
 	./$@ 
 
 clean: 
-	rm -f ${PATH_TOBJ}/*.o
+	rm -f ${PATH_TOBJ}/*.o ./test

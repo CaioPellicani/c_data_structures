@@ -9,11 +9,11 @@ typedef struct strLinkedList{
 bool validList( linkedList* _list, bool _seeIfEmpty );
 
 linkedList* initLinkedList(){
-    linkedList* newList;
-    newList = ( linkedList* ) malloc( sizeof( linkedList ) );
+    linkedList* newList = ( linkedList* ) malloc( sizeof( linkedList ) );
     assert( newList != NULL );
-        newList->head = NULL;
-        newList->size = 0;
+
+    newList->head = NULL;    
+    newList->size = 0;
     return newList;
 }
 
@@ -37,16 +37,6 @@ int getListSize( linkedList* _list ){
 
 bool isEmpty( linkedList* _list ){
     return ( _list->head == NULL );
-}
-
-bool validList( linkedList* _list, bool _seeIfEmpty ){
-    if( _list == NULL ){
-        die( MSG_NODEF );
-    }
-    if( ( _seeIfEmpty ) && ( isEmpty( _list ) ) ){
-        die( MSG_EMPTY );
-    }
-    return true;
 }
 
 bool pushHead( linkedList* _list, void* _data ){  
@@ -76,7 +66,7 @@ bool popTail( linkedList* _list ){
 }
 
 void emptyList( linkedList* _list ){
-    while( _list->head != NULL ){
+    while( ! isEmpty( _list ) ){
         popHead( _list );  
     }
 }
@@ -93,15 +83,15 @@ void* getTailData( linkedList* _list ){
 }
 
 bool listDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data )  ){
-    if( validList( _list, true ) ){
-        return dataUse( _list->head, dataUseFunction );
-    }
-    return false;
+    assert( _list != NULL );
+    assert( ! isEmpty( _list ) );
+
+    return dataUse( _list->head, dataUseFunction );
 }
 
-void deleteList( linkedList* _list ){
-    emptyList( _list );
-    free( _list );
-    _list = NULL;
-    assert( _list == NULL );
+void deleteList( linkedList** _list ){
+    emptyList( *_list );
+    free( *_list );
+    *_list = NULL;
+    assert( *_list == NULL );
 }
