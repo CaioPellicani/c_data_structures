@@ -1,5 +1,5 @@
 #include "linked_list.h"
-#include "../core/src/core.h"
+#include "../core/src/core_s_cardinal.h"
 
 typedef struct strLinkedList{
     node * head;
@@ -15,6 +15,20 @@ linkedList* initLinkedList(){
         newList->head = NULL;
         newList->size = 0;
     return newList;
+}
+
+bool ll_insertInBetween( linkedList* _list, void *_data, int prevNodePostion ){
+    return insertInBetween( &_list->head,
+                            &_list->size,
+                            _data, 
+                            getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+}
+
+bool ll_removeNextNode( linkedList* _list, int prevNodePostion ){
+    return removeNextNode( &_list->head, 
+                           &_list->size, 
+                           getNodeAt( _list->head, prevNodePostion, "remove", _list->size ) 
+                          );
 }
 
 int getListSize( linkedList* _list ){
@@ -45,19 +59,12 @@ bool pushTail( linkedList* _list, void* _data ){
 
 bool insertAt( linkedList* _list, void* _data, int position ){
     int prevNodePostion = position - 1;
-    return insertInBetween( &_list->head,
-                             &_list->size,
-                             _data, 
-                             getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) 
-                            );
+    return ll_insertInBetween( _list, _data, prevNodePostion );
 }
 
 bool removeAt( linkedList* _list, int position ){
     int prevNodePostion = position - 1;
-    return removeNextNode( &_list->head, 
-                            &_list->size, 
-                           getNodeAt( _list->head, prevNodePostion, "remove", _list->size ) 
-                          );
+    return ll_removeNextNode( _list, prevNodePostion );
 }
 
 bool popHead( linkedList* _list ){

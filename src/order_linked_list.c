@@ -1,5 +1,5 @@
 #include "order_linked_list.h"
-#include "../core/src/core.h"
+#include "../core/src/core_s_cardinal.h"
 
 node* searchOListNode( orderLinkedList* _list, void *_searchValue );
 
@@ -26,6 +26,13 @@ orderLinkedList* initOList( int( *_comparison )( void *larger, void *smaller ) )
     }
 }
 
+bool oll_insertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion ){
+    return insertInBetween( &_list->head,
+                            &_list->size,
+                            _data, 
+                            getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+}
+
 int getOListSize( orderLinkedList* _list ){
     return _list->size;
 }
@@ -49,10 +56,7 @@ bool insertInOrder( orderLinkedList* _list, void* _data ){
     node* seeingNode = _list->head; 
     int prevNodePostion = -1;
     if( _list->head == NULL ){
-        return insertInBetween( &_list->head,
-                                &_list->size,
-                                _data, 
-                                getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+        return oll_insertInBetween( _list, _data, prevNodePostion ); 
     }
 
     while( ( _list->comparison( _data, seeingNode->data ) == LARGER ) && 
@@ -64,16 +68,10 @@ bool insertInOrder( orderLinkedList* _list, void* _data ){
 
     if( _list->comparison( _data, seeingNode->data ) == LARGER ){
         prevNodePostion++;
-        return insertInBetween( &_list->head,
-                                &_list->size,
-                                _data, 
-                                getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+        return oll_insertInBetween( _list, _data, prevNodePostion ); 
     }
 
-    return insertInBetween( &_list->head,
-                            &_list->size,
-                            _data, 
-                            getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+    return oll_insertInBetween( _list, _data, prevNodePostion ); 
 }
 
 bool oListDataUse( orderLinkedList* _list, void ( *dataUseFunction ) ( void* data )  ){
