@@ -12,7 +12,8 @@ void refreshLinkedList(){
 int runLinkedListTest(){
     INIT_TESTS( "LinkedList", refreshLinkedList );
 
-    aList = initLinkedList(); 
+    aList = initLinkedList();
+    EX_NOT_NULL( "init", aList ); 
 
     pushHead( aList, ( data* )newData( 1 ) );
     EX_STR_EQ( "First PushHead", "1", result );

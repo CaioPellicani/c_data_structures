@@ -28,7 +28,6 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
 
 
 #define EX_INT_EQ( testName, expect, result )                       \
-  refreshFunc();                                                    \
   if( expect != result ){                                           \
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \
@@ -41,7 +40,6 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
 
 
 #define EX_NULL( testName , result )                                \
-  refreshFunc();                                                    \
   if( result != NULL ){                                             \
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \
@@ -51,8 +49,17 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
   }                                                                 \
   tests_run++
 
+#define EX_NOT_NULL( testName , result )                            \
+  if( result == NULL ){                                             \
+    printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
+    printf( "\nRun %d tests\n", tests_run );                        \
+    printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );        \
+    printf( "EXPECT -> NOT NULL\n" );                               \
+    return tests_run;                                               \
+  }                                                                 \
+  tests_run++
+
 #define EX_TRUE( testName , result )                                \
-  refreshFunc();                                                    \
   if( !result ){                                                    \
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \
@@ -63,7 +70,6 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
   tests_run++
 
 #define EX_FALSE( testName , result )                               \
-  refreshFunc();                                                    \
   if( result ){                                                     \
     printf( "\nGroup: \033[33m%s\033[0m", groupTestName );          \
     printf( "\nRun %d tests\n", tests_run );                        \

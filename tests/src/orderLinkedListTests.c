@@ -1,4 +1,5 @@
-#include "../../src/order_linked_list.h"
+
+#include "orderLinkedListTests.h"
 #include "minunit.h"
 #include "base_tests.h"
 
@@ -12,6 +13,7 @@ void refreshOrderLinkedList(){
 int runOrderLinkedListTest(){
     INIT_TESTS( "OrderLinkedList", refreshOrderLinkedList );
     aList = initOList( &comparison ); 
+    EX_NOT_NULL( "init", aList ); 
 
     insertInOrder( aList, ( data* )newData( 6 ) );
     EX_STR_EQ( "First InsertInOrder", "6", result );

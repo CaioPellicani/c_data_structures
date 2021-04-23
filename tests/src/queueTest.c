@@ -11,6 +11,7 @@ void refreshQueue(){
 int runQueueTest(){
     INIT_TESTS( "Queue", refreshQueue );
     aQueue = initQueue();
+    EX_NOT_NULL( "init", aQueue ); 
 
     enqueue( aQueue, (data*)newData( 1 ) );
     enqueue( aQueue, (data*)newData( 2 ) );

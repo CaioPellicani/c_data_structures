@@ -12,6 +12,7 @@ void refreshStack(){
 int runStackTest(){ 
     INIT_TESTS( "Stack", refreshStack );
     aStack = initStack();
+    EX_NOT_NULL( "init", aStack ); 
 
     push( aStack, (data*)newData( 1 ) );
     push( aStack, (data*)newData( 2 ) );
