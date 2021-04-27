@@ -17,3 +17,6 @@ ${PATH_COBJ}/%.o: ${PATH_CSRC}/%.c
 
 lib: ${COBJ}
 	${AR} ${PATH_CBIN}/libcore.a ${COBJ}
+
+clean:
+	rm -f ${PATH_COBJ}/* ${PATH_CBIN}/*

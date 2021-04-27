@@ -44,6 +44,7 @@ ${NAME}: lib ${EXEC_OBJS}
 	${CC} ${EXEC_OBJS} ${LIBS} -o ./${PATH_BIN}/exec_$@ 
 
 clean:
+	cd core && $(MAKE) clean
 	rm ${PATH_BIN}/*${NAME}* ${PATH_OBJ}/*${NAME}* ${PATH_BIN}/*.a
 
 run: ${NAME}
