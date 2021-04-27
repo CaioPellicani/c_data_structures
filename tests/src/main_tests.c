@@ -3,6 +3,7 @@
 #include "linkedListTest.h"
 #include "orderLinkedListTests.h"
 #include "doubleLinkedListTest.h"
+#include "orderDoubleLinkedListTests.h"
    
 int main( int argc, char** argv ){ 
     runStackTest();  
@@ -10,6 +11,7 @@ int main( int argc, char** argv ){
     runLinkedListTest();
     runOrderLinkedListTest();
     runDoubleLinkedListTest();
+    runOrderDoubleLinkedListTest();
     return 0;  
 }
  

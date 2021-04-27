@@ -11,7 +11,7 @@ based on http://www.jera.com/techinfo/jtns/jtn002.html
 
 #define INIT_TESTS( groupName, nameOfRefreshFunc )   \
   int tests_run = 0;                                 \
-  char groupTestName[20] = groupName;                \
+  char groupTestName[30] = groupName;                \
   void (*refreshFunc)() = &nameOfRefreshFunc;
 
 #define EX_STR_EQ( testName, expect, result )                       \
