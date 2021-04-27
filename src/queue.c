@@ -1,12 +1,12 @@
 #include "queue.h"
-#include "linked_list.h"
+#include "double_linked_list.h"
 
 #define MSG_NO_MEM "Not sufficient memory!\n"
 #define MSG_NODEF_STACK "Queue is not defined!\n"
 #define MSG_EMPTY_STACK "The Queue is Empty!\n"
 
 typedef struct  strQueue{
-    linkedList* list;
+    doubleLinkedList* list;
 }queue;
 
 queue* initQueue(){
@@ -17,41 +17,41 @@ queue* initQueue(){
         return NULL;  
     }
     else{
-        newQueue->list = llInit();
+        newQueue->list = dllInit();
         return newQueue;
     }
 }
 
 int getSizeQueue( queue* _queue ){
-    return llGetSize( _queue->list );
+    return dllGetSize( _queue->list );
 }
 
 bool enqueue( queue* _queue, void* _data ){
-    return llPushHead( _queue->list, _data );
+    return dllPushHead( _queue->list, _data );
 }
 
 bool dequeue( queue* _queue ){
-    return llPopTail( _queue->list );
+    return dllPopTail( _queue->list );
 }
 
 void* getEndData( queue* _queue ){
-    return llGetTailData( _queue->list );
+    return dllGetTailData( _queue->list );
 }
 
 void emptyQueue( queue* _queue ){
-    llEmptyList( _queue->list );
+    dllEmptyList( _queue->list );
 }
 
 bool queueDataUse( queue* _queue, void ( *dataUseFunction ) ( void* data )  ){
-    return llDataUse( _queue->list, dataUseFunction );
+    return dllDataUse( _queue->list, dataUseFunction );
 }
 
 bool queueIsEmpty( queue* _queue ){
-    return llIsEmpty( _queue->list );
+    return dllIsEmpty( _queue->list );
 }
 
 void deleteQueue( queue** _queue ){
-    llDelete( &( *_queue )->list );
+    dllDelete( &( *_queue )->list );
     free( *_queue );
     *_queue = NULL;
     assert( *_queue == NULL );

@@ -111,7 +111,13 @@ void dllEmptyList( doubleLinkedList* _list ){
 
 void* dllGetDataAt( doubleLinkedList* _list, int pos ){
     return _dllGetBNodeAt( _list, pos )->data;
+}
 
+void* dllGetHeadData( doubleLinkedList* _list ){
+    return _list->head->data;
+}
+void* dllGetTailData( doubleLinkedList* _list ){
+    return _list->tail->data;
 }
 
 bool dllDataUse( doubleLinkedList* _list, void (*dataUseFunc) ( void* data )  ){
@@ -121,7 +127,7 @@ bool dllDataUse( doubleLinkedList* _list, void (*dataUseFunc) ( void* data )  ){
     return bNodeDataUse( _list->head, dataUseFunc );
 }
 
-void dllDeleteList( doubleLinkedList** _list ){
+void dllDelete( doubleLinkedList** _list ){
     dllEmptyList( *_list );
     free( *_list );
     *_list = NULL;

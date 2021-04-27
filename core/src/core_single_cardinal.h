@@ -1,5 +1,5 @@
-#ifndef __CORE_S_CARDINAL_H__
-#define __CORE_S_CARDINAL_H__
+#ifndef __CORE_SINGLE_CARDINAL_H__
+#define __CORE_SINGLE_CARDINAL_H__
 
     #include "stdHeader.h"
 

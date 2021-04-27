@@ -34,6 +34,12 @@ int runLinkedListTest(){
     data* dataAt = ( data* ) llGetDataAt( aList, 1 );
     EX_INT_EQ( "llGetDataAt 1", 5, dataAt->value );
 
+    dataAt = ( data* ) llGetHeadData( aList );;
+    EX_INT_EQ( "llGetHeadData", 1, dataAt->value );
+
+    dataAt = ( data* ) llGetTailData( aList );;
+    EX_INT_EQ( "llGetTailData", 10, dataAt->value );
+
     llInsertAt( aList, ( data* )newData( 9 ), 0 );
     EX_STR_EQ( "llInsertAt 0", "9 - 1 - 5 - 1 - 10", result );
     EX_INT_EQ( "size++", 5, llGetSize( aList ) );

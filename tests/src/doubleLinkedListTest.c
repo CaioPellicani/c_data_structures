@@ -34,6 +34,12 @@ int runDoubleLinkedListTest(){
     data* dataAt = ( data* ) dllGetDataAt( aList, 1 );
     EX_INT_EQ( "get Data At 1", 5, dataAt->value );
 
+    dataAt = ( data* ) dllGetHeadData( aList );;
+    EX_INT_EQ( "dllGetHeadData", 1, dataAt->value );
+
+    dataAt = ( data* ) dllGetTailData( aList );;
+    EX_INT_EQ( "dllGetTailData", 10, dataAt->value );
+
     dllInsertAt( aList, ( data* )newData( 9 ), 0 );
     EX_STR_EQ( "dllInsertAt 0", "9 - 1 - 5 - 1 - 10", result );
     EX_INT_EQ( "size++", 5, dllGetSize( aList ) );
@@ -54,8 +60,8 @@ int runDoubleLinkedListTest(){
     dllEmptyList( aList );
     EX_TRUE( "after dllEmptyList", dllIsEmpty( aList ) );
 
-    dllDeleteList( &aList );
-    EX_NULL( "dllDeleteList", aList );
+    dllDelete( &aList );
+    EX_NULL( "dllDelete", aList );
 
     END_TESTS;
 }
