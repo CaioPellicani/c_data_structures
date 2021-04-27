@@ -8,7 +8,7 @@
         "orderlinkedlisttests.h": "c",
         "order_linked_list.h": "c",
         "minunit.h": "c",
-        "core_s_cardinal.h": "c",
+        "core_single_cardinal.h": "c",
         "stdheader.h": "c",
         "doublelinkedlisttest.h": "c"
     }

@@ -7,23 +7,23 @@ typedef struct  strList doubleList;
 
 
 
-doubleList* _initList();
-bool _isEmpty( doubleList* _list );
+doubleList* initDList();
+bool dllIsEmpty( doubleList* _list );
 int getDListSize( doubleList* _list );
 
-bool _pushHead( doubleList* _list, void* _data );
-bool _pushTail( doubleList* _list, void* _data );
-bool _insertAt( doubleList* _list, void* _data, int pos );
+bool pushDLLHead( doubleList* _list, void* _data );
+bool pushDLLTail( doubleList* _list, void* _data );
+bool insertDLLAt( doubleList* _list, void* _data, int pos );
 
-bool _popHead( doubleList* _list );
-bool _popTail( doubleList* _list );
-bool _removeAt( doubleList* _list, int pos );
+bool popDLLHead( doubleList* _list );
+bool popDLLTail( doubleList* _list );
+bool removeDLLAt( doubleList* _list, int pos );
 
-void _emptyList( doubleList* _list );
-void* _getDataAt( doubleList* _list, int pos );
+void emptyDLL( doubleList* _list );
+void* getDLLDataAt( doubleList* _list, int pos );
 
-bool _showList( doubleList* _list, void (*showData) ( void* data) );
+bool dllDataUse( doubleList* _list, void (*showData) ( void* data) );
 
-void _deleteList( doubleList** _list );
+void deleteDLL( doubleList** _list );
 
 #endif

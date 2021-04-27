@@ -1,5 +1,5 @@
 #include "linked_list.h"
-#include "../core/src/core_s_cardinal.h"
+#include "../core/src/core_single_cardinal.h"
 
 typedef struct strLinkedList{
     node * head;

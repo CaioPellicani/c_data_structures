@@ -1,4 +1,4 @@
-#include "core_b_cardinal.h"
+#include "core_bi_cardinal.h"
 
 bNode* newBlankBNode(){
     bNode* newNode;
@@ -86,5 +86,19 @@ bNode* getBNodeAt( bNode** _firstNode, bNode** _lastNode, int* _size, int pos ){
         }
     }
     return seeingNode;
+}
+
+bool bNodeDataUse( bNode* _firstNode, void (*dataUseFunc) ( void* data )  ){
+    bNode* seeingNode;
+
+    if( _firstNode != NULL ){
+        seeingNode = _firstNode;
+        while ( seeingNode != NULL ){
+            dataUseFunc( seeingNode->data );
+            seeingNode = seeingNode->nextNode;
+        }
+        return true;
+    }
+    return false;
 }
 

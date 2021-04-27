@@ -18,5 +18,5 @@
     bool insertInFontOf( bNode** _firstNode, bNode** _lastNode, int* _size, bNode* _thisNode, void* _data );
     bool removeBNode( bNode** _firstNode, bNode** _lastNode, int* _size, bNode* _thisNode );
     bNode* getBNodeAt( bNode** _firstNode, bNode** _lastNode, int* _size, int pos );
-
+    bool bNodeDataUse( bNode* _firstNode, void (*dataUseFunc) ( void* data )  );
 #endif

@@ -1,5 +1,5 @@
 #include "double_linked_list.h"
-#include "../core/src/core_b_cardinal.h"
+#include "../core/src/core_bi_cardinal.h"
 
 typedef struct strList{
     bNode * head;
@@ -7,9 +7,9 @@ typedef struct strList{
     int size;
 }doubleList;
 
-bool _validList( doubleList* _list, bool _seeIfEmpty );
+bool validDList( doubleList* _list, bool _seeIfEmpty );
 
-doubleList* _initList(){
+doubleList* initDList(){
     doubleList* newList = ( doubleList* ) malloc( sizeof( doubleList ) );
     assert( newList != NULL );
     newList->head = NULL;
@@ -22,114 +22,107 @@ int getDListSize( doubleList* _list ){
     return _list->size;
 }
 
-bool _isEmpty( doubleList* _list ){
+bool dllIsEmpty( doubleList* _list ){
     return ( _list->head == NULL ) && ( _list->tail == NULL );
 }
 
-bool _validList( doubleList* _list, bool _seeIfEmpty ){
+bool validDList( doubleList* _list, bool _seeIfEmpty ){
     if( _list == NULL ){
         die( MSG_NODEF );
     }
-    if( ( _seeIfEmpty ) && ( _isEmpty( _list ) ) ){
+    if( ( _seeIfEmpty ) && ( dllIsEmpty( _list ) ) ){
         die( MSG_EMPTY );
     }
 
     return true;
 }
 
-bool _insertInFontOf( doubleList* _list, bNode* _thisNode, void* _data ){
+bool _dllInsertInFontOf( doubleList* _list, bNode* _thisNode, void* _data ){
     return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
 }
-bool _removeBNode( doubleList* _list, bNode* _thisNode ){
+bool _dllRemoveBNode( doubleList* _list, bNode* _thisNode ){
     return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
 }
 
-bNode* _getBNodeAt( doubleList* _list, int pos ){
+bNode* _dllGetBNodeAt( doubleList* _list, int pos ){
     return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
 }
 
-bool _pushHead( doubleList* _list, void* _data ){  
-   if( _validList( _list, false ) ){
-       return _insertInFontOf( _list, _list->head, _data );
+bool pushDLLHead( doubleList* _list, void* _data ){  
+   if( validDList( _list, false ) ){
+       return _dllInsertInFontOf( _list, _list->head, _data );
    } 
    return false;
 }
 
-bool _pushTail( doubleList* _list, void* _data ){
-    if( _validList( _list, false ) ){
-        return _insertInFontOf( _list, NULL, _data );
+bool pushDLLTail( doubleList* _list, void* _data ){
+    if( validDList( _list, false ) ){
+        return _dllInsertInFontOf( _list, NULL, _data );
     }
     return false;
 }
 
-bool _insertAt( doubleList* _list, void* _data, int pos ){
-    if( _validList( _list, false ) ){
+bool insertDLLAt( doubleList* _list, void* _data, int pos ){
+    if( validDList( _list, false ) ){
         if( pos > _list->size ){
             die( "'insert'" );
         }
         else{
-            return _insertInFontOf( _list, _getBNodeAt( _list, pos ), _data );
+            return _dllInsertInFontOf( _list, _dllGetBNodeAt( _list, pos ), _data );
         }
     }
     return false;
 }
 
-bool _removeAt( doubleList* _list, int pos ){
-    if( _validList( _list, false ) ){
+bool removeDLLAt( doubleList* _list, int pos ){
+    if( validDList( _list, false ) ){
         if( pos > _list->size ){
             die( "'remove'" );
         }
         if( pos == _list->size ){
-            return _popTail( _list );
+            return popDLLTail( _list );
         }
         else{
-            return _removeBNode( _list, _getBNodeAt( _list, pos ) );
+            return _dllRemoveBNode( _list, _dllGetBNodeAt( _list, pos ) );
         }
     }
     return false;
 }
 
-bool _popHead( doubleList* _list ){
-    if( _validList( _list, true ) ){
-        return _removeBNode( _list, _list->head );
+bool popDLLHead( doubleList* _list ){
+    if( validDList( _list, true ) ){
+        return _dllRemoveBNode( _list, _list->head );
     }  
     return false; 
 
 }
-bool _popTail( doubleList* _list ){
-    if( _validList( _list, true ) ){
-        return _removeBNode( _list, _list->tail );
+bool popDLLTail( doubleList* _list ){
+    if( validDList( _list, true ) ){
+        return _dllRemoveBNode( _list, _list->tail );
     }   
     return false;
 }
 
-void _emptyList( doubleList* _list ){
+void emptyDLL( doubleList* _list ){
     while( _list->head != NULL ){
-        _popTail( _list );  
+        popDLLTail( _list );  
     }
 }
 
-void* _getDataAt( doubleList* _list, int pos ){
-    return _getBNodeAt( _list, pos )->data;
+void* getDLLDataAt( doubleList* _list, int pos ){
+    return _dllGetBNodeAt( _list, pos )->data;
 
 }
 
-bool _showList( doubleList* _list, void (*showData) ( void* data )  ){
-    bNode* seeingNode;
+bool dllDataUse( doubleList* _list, void (*dataUseFunc) ( void* data )  ){
+    assert( _list != NULL );
+    assert( ! dllIsEmpty( _list ) );
 
-    if( _validList( _list, true ) ){
-        seeingNode = _list->head;
-        while ( seeingNode != NULL ){
-            showData( seeingNode->data );
-            seeingNode = seeingNode->nextNode;
-        }
-        return true;
-    }
-    return false;
+    return bNodeDataUse( _list->head, dataUseFunc );
 }
 
-void _deleteList( doubleList** _list ){
-    _emptyList( *_list );
+void deleteDLL( doubleList** _list ){
+    emptyDLL( *_list );
     free( *_list );
     *_list = NULL;
     assert( *_list == NULL );

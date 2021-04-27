@@ -1,4 +1,4 @@
-#include "core_s_cardinal.h"
+#include "core_single_cardinal.h"
 
 node* newBlankNode(){
     node* newNode;
