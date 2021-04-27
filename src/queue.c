@@ -17,41 +17,41 @@ queue* initQueue(){
         return NULL;  
     }
     else{
-        newQueue->list = initLinkedList();
+        newQueue->list = llInit();
         return newQueue;
     }
 }
 
 int getSizeQueue( queue* _queue ){
-    return getListSize( _queue->list );
+    return llGetSize( _queue->list );
 }
 
 bool enqueue( queue* _queue, void* _data ){
-    return pushHead( _queue->list, _data );
+    return llPushHead( _queue->list, _data );
 }
 
 bool dequeue( queue* _queue ){
-    return popTail( _queue->list );
+    return llPopTail( _queue->list );
 }
 
 void* getEndData( queue* _queue ){
-    return getTailData( _queue->list );
+    return llGetTailData( _queue->list );
 }
 
 void emptyQueue( queue* _queue ){
-    emptyList( _queue->list );
+    llEmptyList( _queue->list );
 }
 
 bool queueDataUse( queue* _queue, void ( *dataUseFunction ) ( void* data )  ){
-    return listDataUse( _queue->list, dataUseFunction );
+    return llDataUse( _queue->list, dataUseFunction );
 }
 
 bool queueIsEmpty( queue* _queue ){
-    return isEmpty( _queue->list );
+    return llIsEmpty( _queue->list );
 }
 
 void deleteQueue( queue** _queue ){
-    deleteList( &( *_queue )->list );
+    llDelete( &( *_queue )->list );
     free( *_queue );
     *_queue = NULL;
     assert( *_queue == NULL );

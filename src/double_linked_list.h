@@ -3,27 +3,27 @@
 
 #include "../core/src/stdHeader.h"
 
-typedef struct  strList doubleList;
+typedef struct  strList doubleLinkedList;
 
 
 
-doubleList* initDList();
-bool dllIsEmpty( doubleList* _list );
-int getDListSize( doubleList* _list );
+doubleLinkedList* dllInit();
+void dllDeleteList( doubleLinkedList** _list );
 
-bool pushDLLHead( doubleList* _list, void* _data );
-bool pushDLLTail( doubleList* _list, void* _data );
-bool insertDLLAt( doubleList* _list, void* _data, int pos );
+bool dllIsEmpty( doubleLinkedList* _list );
+int dllGetSize( doubleLinkedList* _list );
 
-bool popDLLHead( doubleList* _list );
-bool popDLLTail( doubleList* _list );
-bool removeDLLAt( doubleList* _list, int pos );
+bool dllPushHead( doubleLinkedList* _list, void* _data );
+bool dllPushTail( doubleLinkedList* _list, void* _data );
+bool dllInsertAt( doubleLinkedList* _list, void* _data, int pos );
 
-void emptyDLL( doubleList* _list );
-void* getDLLDataAt( doubleList* _list, int pos );
+bool dllPopHead( doubleLinkedList* _list );
+bool dllPopTail( doubleLinkedList* _list );
+bool dllRemoveAt( doubleLinkedList* _list, int pos );
 
-bool dllDataUse( doubleList* _list, void (*showData) ( void* data) );
+void* dllGetDataAt( doubleLinkedList* _list, int pos );
+bool dllDataUse( doubleLinkedList* _list, void (*showData) ( void* data) );
 
-void deleteDLL( doubleList** _list );
+void dllEmptyList( doubleLinkedList* _list );
 
 #endif

@@ -3,7 +3,7 @@
 #include "minunit.h"
 #include "base_tests.h"
 
-doubleList* aList;
+doubleLinkedList* aList;
 
 void refreshDoubleLinkedList(){
     strcpy( result, "\0" );
@@ -12,50 +12,50 @@ void refreshDoubleLinkedList(){
 
 int runDoubleLinkedListTest(){
     INIT_TESTS( "DoubleLinkedList", refreshDoubleLinkedList );  
-    aList = initDList(); 
-    EX_NOT_NULL( "init", aList );
+    aList = dllInit(); 
+    EX_NOT_NULL( "dllInit", aList );
 
-    pushDLLHead( aList, ( data* )newData( 1 ) );
-    EX_STR_EQ( "First PushHead", "1", result );
-    EX_INT_EQ( "size++", 1, getDListSize( aList ) );
+    dllPushHead( aList, ( data* )newData( 1 ) );
+    EX_STR_EQ( "First dllPushHead", "1", result );
+    EX_INT_EQ( "size++", 1, dllGetSize( aList ) );
 
-    pushDLLTail( aList, ( data* )newData( 1 ) );
-    EX_STR_EQ( "First PushTail", "1 - 1", result );
-    EX_INT_EQ( "size++", 2, getDListSize( aList ) );
+    dllPushTail( aList, ( data* )newData( 1 ) );
+    EX_STR_EQ( "First dllPushTail", "1 - 1", result );
+    EX_INT_EQ( "size++", 2, dllGetSize( aList ) );
     
-    insertDLLAt( aList, ( data* )newData( 5 ), 1 );
-    EX_STR_EQ( "Insert at 1", "1 - 5 - 1", result );
-    EX_INT_EQ( "size++", 3, getDListSize( aList ) );
+    dllInsertAt( aList, ( data* )newData( 5 ), 1 );
+    EX_STR_EQ( "dllInsertAt 1", "1 - 5 - 1", result );
+    EX_INT_EQ( "size++", 3, dllGetSize( aList ) );
 
-    insertDLLAt( aList, ( data* )newData( 10 ), 3 );
-    EX_STR_EQ( "Insert at 3", "1 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size++", 4, getDListSize( aList ) );
+    dllInsertAt( aList, ( data* )newData( 10 ), 3 );
+    EX_STR_EQ( "dllInsertAt 3", "1 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size++", 4, dllGetSize( aList ) );
   
-    data* dataAt = ( data* ) getDLLDataAt( aList, 1 );
+    data* dataAt = ( data* ) dllGetDataAt( aList, 1 );
     EX_INT_EQ( "get Data At 1", 5, dataAt->value );
 
-    insertDLLAt( aList, ( data* )newData( 9 ), 0 );
-    EX_STR_EQ( "Insert at 0", "9 - 1 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size++", 5, getDListSize( aList ) );
+    dllInsertAt( aList, ( data* )newData( 9 ), 0 );
+    EX_STR_EQ( "dllInsertAt 0", "9 - 1 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size++", 5, dllGetSize( aList ) );
 
-    removeDLLAt( aList, 1 );
-    EX_STR_EQ( "Remove at 1", "9 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size--", 4, getDListSize( aList ) );
+    dllRemoveAt( aList, 1 );
+    EX_STR_EQ( "dllRemoveAt 1", "9 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size--", 4, dllGetSize( aList ) );
 
-    popDLLHead( aList );
-    EX_STR_EQ( "PopHead", "5 - 1 - 10", result );
-    EX_INT_EQ( "size--", 3, getDListSize( aList ) );
+    dllPopHead( aList );
+    EX_STR_EQ( "dllPopHead", "5 - 1 - 10", result );
+    EX_INT_EQ( "size--", 3, dllGetSize( aList ) );
     
-    popDLLTail( aList );
-    EX_STR_EQ( "PopHead", "5 - 1", result );
-    EX_INT_EQ( "size--", 2, getDListSize( aList ) );
+    dllPopTail( aList );
+    EX_STR_EQ( "dllPopTail", "5 - 1", result );
+    EX_INT_EQ( "size--", 2, dllGetSize( aList ) );
     
-    EX_FALSE( "before emptyList", dllIsEmpty( aList ) );
-    emptyDLL( aList );
-    EX_TRUE( "after emptyList", dllIsEmpty( aList ) );
+    EX_FALSE( "before dllEmptyList", dllIsEmpty( aList ) );
+    dllEmptyList( aList );
+    EX_TRUE( "after dllEmptyList", dllIsEmpty( aList ) );
 
-    deleteDLL( &aList );
-    EX_NULL( "deleteList", aList );
+    dllDeleteList( &aList );
+    EX_NULL( "dllDeleteList", aList );
 
     END_TESTS;
 }

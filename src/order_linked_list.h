@@ -4,16 +4,18 @@
 
     typedef struct strOrderLinkedList orderLinkedList;
 
-    orderLinkedList* initOList( int( *comparison )( void *larger, void *smaller ) );
-    int getOListSize( orderLinkedList* _list );
-    bool oListIsEmpty( orderLinkedList* _list );
+    orderLinkedList* ollInit( int( *comparison )( void *larger, void *smaller ) );
+    void ollDelete( orderLinkedList **__list );
 
-    bool insertInOrder( orderLinkedList* _list, void* _data );
+    int ollGetSize( orderLinkedList* _list );
+    bool ollIsEmpty( orderLinkedList* _list );
 
-    bool oListDataUse( orderLinkedList* _list, void ( *dataUseFunction ) ( void* data )  );
+    bool ollInsert( orderLinkedList* _list, void* _data );
+    bool ollRemove( orderLinkedList* _list, void *_searchData );
 
-    void* searchOList( orderLinkedList* _list, void *_serchaData );
-    bool removeInOrder( orderLinkedList* _list, void *_searchData );
-    void deleteOList( orderLinkedList **__list );
+    bool ollDataUse( orderLinkedList* _list, void ( *dataUseFunction ) ( void* data )  );
+    void* ollSearch( orderLinkedList* _list, void *_serchaData );
+
+    void ollEmptyList( orderLinkedList* _list );
 
 #endif

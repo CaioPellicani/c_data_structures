@@ -6,55 +6,55 @@ linkedList* aList;
 
 void refreshLinkedList(){
     strcpy( result, "\0" );
-    listDataUse( aList, &showData );
+    llDataUse( aList, &showData );
 }
 
 int runLinkedListTest(){
     INIT_TESTS( "LinkedList", refreshLinkedList );
 
-    aList = initLinkedList();
-    EX_NOT_NULL( "init", aList ); 
+    aList = llInit();
+    EX_NOT_NULL( "llInit", aList ); 
 
-    pushHead( aList, ( data* )newData( 1 ) );
-    EX_STR_EQ( "First PushHead", "1", result );
-    EX_INT_EQ( "size++", 1, getListSize( aList ) );
+    llPushHead( aList, ( data* )newData( 1 ) );
+    EX_STR_EQ( "First llPushHead", "1", result );
+    EX_INT_EQ( "size++", 1, llGetSize( aList ) );
 
-    pushTail( aList, ( data* )newData( 1 ) );
-    EX_STR_EQ( "First PushTail", "1 - 1", result );
-    EX_INT_EQ( "size++", 2, getListSize( aList ) );
+    llPushTail( aList, ( data* )newData( 1 ) );
+    EX_STR_EQ( "First llPushTail", "1 - 1", result );
+    EX_INT_EQ( "size++", 2, llGetSize( aList ) );
     
-    insertAt( aList, ( data* )newData( 5 ), 1 );
-    EX_STR_EQ( "Insert at 1", "1 - 5 - 1", result );
-    EX_INT_EQ( "size++", 3, getListSize( aList ) );
+    llInsertAt( aList, ( data* )newData( 5 ), 1 );
+    EX_STR_EQ( "llInsertAt 1", "1 - 5 - 1", result );
+    EX_INT_EQ( "size++", 3, llGetSize( aList ) );
 
-    insertAt( aList, ( data* )newData( 10 ), 3 );
-    EX_STR_EQ( "Insert at 3", "1 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size++", 4, getListSize( aList ) );
+    llInsertAt( aList, ( data* )newData( 10 ), 3 );
+    EX_STR_EQ( "llInsertAt 3", "1 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size++", 4, llGetSize( aList ) );
   
-    data* dataAt = ( data* ) getDataAt( aList, 1 );
-    EX_INT_EQ( "get Data At 1", 5, dataAt->value );
+    data* dataAt = ( data* ) llGetDataAt( aList, 1 );
+    EX_INT_EQ( "llGetDataAt 1", 5, dataAt->value );
 
-    insertAt( aList, ( data* )newData( 9 ), 0 );
-    EX_STR_EQ( "Insert at 0", "9 - 1 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size++", 5, getListSize( aList ) );
+    llInsertAt( aList, ( data* )newData( 9 ), 0 );
+    EX_STR_EQ( "llInsertAt 0", "9 - 1 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size++", 5, llGetSize( aList ) );
 
-    removeAt( aList, 1 );
-    EX_STR_EQ( "Remove at 1", "9 - 5 - 1 - 10", result );
-    EX_INT_EQ( "size--", 4, getListSize( aList ) );
+    llRemoveAt( aList, 1 );
+    EX_STR_EQ( "llRemoveAt 1", "9 - 5 - 1 - 10", result );
+    EX_INT_EQ( "size--", 4, llGetSize( aList ) );
 
-    popHead( aList );
-    EX_STR_EQ( "PopHead", "5 - 1 - 10", result );
-    EX_INT_EQ( "size--", 3, getListSize( aList ) );
+    llPopHead( aList );
+    EX_STR_EQ( "llPopHead", "5 - 1 - 10", result );
+    EX_INT_EQ( "size--", 3, llGetSize( aList ) );
     
-    popTail( aList );
-    EX_STR_EQ( "PopHead", "5 - 1", result );
-    EX_INT_EQ( "size--", 2, getListSize( aList ) );
+    llPopTail( aList );
+    EX_STR_EQ( "llPopTail", "5 - 1", result );
+    EX_INT_EQ( "size--", 2, llGetSize( aList ) );
     
-    EX_FALSE( "before emptyList", isEmpty( aList ) );
-    emptyList( aList );
-    EX_TRUE( "emptyList", isEmpty( aList ) );
+    EX_FALSE( "before llEmptyList", llIsEmpty( aList ) );
+    llEmptyList( aList );
+    EX_TRUE( "llEmptyList", llIsEmpty( aList ) );
 
-    deleteList( &aList );
-    EX_NULL( "deleteList", aList );
+    llDelete( &aList );
+    EX_NULL( "llDelete", aList );
     END_TESTS;
 }

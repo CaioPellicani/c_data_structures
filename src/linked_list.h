@@ -5,26 +5,27 @@
 
 typedef struct strLinkedList linkedList;
 
-linkedList* initLinkedList();
-bool isEmpty( linkedList* _list );
-int getListSize( linkedList* _list );
+linkedList* llInit();
+void llDelete( linkedList** _list );
 
-void* getDataAt( linkedList* _list, int pos );
-void* getHeadData( linkedList* _list );
-void* getTailData( linkedList* _list );
+bool llIsEmpty( linkedList* _list );
+int llGetSize( linkedList* _list );
 
-bool pushHead( linkedList* _list, void* _data );
-bool pushTail( linkedList* _list, void* _data );
-bool insertAt( linkedList* _list, void* _data, int pos );
+void* llGetDataAt( linkedList* _list, int pos );
+void* llGetHeadData( linkedList* _list );
+void* llGetTailData( linkedList* _list );
 
-bool popHead( linkedList* _list );
-bool popTail( linkedList* _list );
-bool removeAt( linkedList* _list, int pos );
+bool llPushHead( linkedList* _list, void* _data );
+bool llPushTail( linkedList* _list, void* _data );
+bool llInsertAt( linkedList* _list, void* _data, int pos );
 
-void emptyList( linkedList* _list );
+bool llPopHead( linkedList* _list );
+bool llPopTail( linkedList* _list );
+bool llRemoveAt( linkedList* _list, int pos );
 
-bool listDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data) );
+void llEmptyList( linkedList* _list );
 
-void deleteList( linkedList** _list );
+bool llDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data) );
+
 
 #endif

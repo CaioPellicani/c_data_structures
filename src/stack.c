@@ -17,41 +17,41 @@ stack* initStack(){
         return false;
     }
     else{
-        newStack->list = initLinkedList();
+        newStack->list = llInit();
         return newStack;
     }
 }
 
 int getSizeStack( stack* _stack ){
-    return getListSize( _stack->list );
+    return llGetSize( _stack->list );
 }
 
 bool push( stack* _stack, void* _data ){
-    return pushHead( _stack->list, _data );
+    return llPushHead( _stack->list, _data );
 }
 
 bool pop( stack* _stack ){
-    return popHead( _stack->list );
+    return llPopHead( _stack->list );
 }
 
 void* getTopData( stack* _stack ){
-    return getDataAt( _stack->list, 0 );
+    return llGetDataAt( _stack->list, 0 );
 }
 
 void emptyStack( stack* _stack ){
-    emptyList( _stack->list );
+    llEmptyList( _stack->list );
 }
 
 bool stackDataUse( stack* _stack, void ( *dataUseFunction ) ( void* data )  ){
-    return listDataUse( _stack->list, dataUseFunction );
+    return llDataUse( _stack->list, dataUseFunction );
 }
 
 bool stackIsEmpty( stack* _stack ){
-    return isEmpty( _stack->list );
+    return llIsEmpty( _stack->list );
 }
 
 void deleteStack( stack** _stack ){
-    deleteList( &( *_stack )->list );
+    llDelete( &( *_stack )->list );
     free( *_stack );
     *_stack = NULL;
     assert( *_stack == NULL );
