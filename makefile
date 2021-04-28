@@ -3,8 +3,8 @@ CC=gcc
 FLAG=-Wall
 LIB =ar rcs
 
-NAMES=stack queue linked_list order_linked_list double_linked_list #order_double_linked_list
-#NAMES+=binary_tree
+NAMES=stack queue linked_list order_linked_list double_linked_list order_double_linked_list
+NAMES+=binary_search_tree
 
 NAME=$(word 5, ${NAMES})
 
@@ -37,7 +37,7 @@ ${PATH_OBJ}/%.o:: ${PATH_EXEMPLE}/%.c
 lcore: 
 	cd core && $(MAKE)
 
-lib: ${SOBJS} lcore
+lib: lcore ${SOBJS} 
 	${LIB} ${PATH_BIN}/${LIB_NAME} ${SOBJS} ./core/bin/libcore.a
 
 ${NAME}: lib ${EXEC_OBJS}

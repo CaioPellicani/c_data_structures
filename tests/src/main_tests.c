@@ -4,7 +4,7 @@
 #include "orderLinkedListTests.h"
 #include "doubleLinkedListTest.h"
 #include "orderDoubleLinkedListTests.h"
-#include "binaryTreeTests.h"
+#include "binarySearchTreeTests.h"
    
 int main( int argc, char** argv ){ 
     runStackTest();  
@@ -13,7 +13,7 @@ int main( int argc, char** argv ){
     runOrderLinkedListTest();
     runDoubleLinkedListTest();
     runOrderDoubleLinkedListTest();
-    runBinaryTreeTest();
+    runBinarySearchTreeTest();
     return 0;  
 }
  
