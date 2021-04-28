@@ -1,5 +1,6 @@
 #include "stack.h"
 #include "linked_list.h"
+#include "../core/src/core_single_cardinal.h"
 
 #define MSG_NO_MEM "Not sufficient memory!\n"
 #define MSG_NODEF_STACK "Stack is not defined!\n"
@@ -42,8 +43,8 @@ void emptyStack( stack* _stack ){
     llEmptyList( _stack->list );
 }
 
-bool stackDataUse( stack* _stack, void ( *dataUseFunction ) ( void* data )  ){
-    return llDataUse( _stack->list, dataUseFunction );
+bool stackDataUse( stack* _stack, dataUseFunction dataUseFunc ){
+    return llDataUse( _stack->list, dataUseFunc );
 }
 
 bool stackIsEmpty( stack* _stack ){

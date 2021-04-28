@@ -11,9 +11,10 @@ void showData( void* _data ){
         sprintf( result, "%d", aData->value );
     }
     else{
-        sprintf( result, "%s - %d", result, aData->value );
+        sprintf( result, "%s; %d", result, aData->value );
     }
 }
+
 
 int comparison( void* _larger, void* _smaller ){
     data *larger = ( data* ) _larger;

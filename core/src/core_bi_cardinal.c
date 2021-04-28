@@ -3,9 +3,10 @@
 bNode* newBlankBNode(){
     bNode* newNode;
     newNode = malloc( sizeof( bNode ) );
+    assert( newNode != NULL );
+    
     newNode->data = NULL;
     newNode->prevNode = newNode->nextNode = NULL;
-    assert( newNode != NULL );
     return newNode;
 }
 
@@ -88,7 +89,7 @@ bNode* getBNodeAt( bNode** _firstNode, bNode** _lastNode, int* _size, int pos ){
     return seeingNode;
 }
 
-bool bNodeDataUse( bNode* _firstNode, void (*dataUseFunc) ( void* data )  ){
+bool bNodeDataUse( bNode* _firstNode, dataUseFunction dataUseFunc  ){
     bNode* seeingNode;
 
     if( _firstNode != NULL ){

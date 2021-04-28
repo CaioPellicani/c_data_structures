@@ -120,7 +120,7 @@ void* dllGetTailData( doubleLinkedList* _list ){
     return _list->tail->data;
 }
 
-bool dllDataUse( doubleLinkedList* _list, void (*dataUseFunc) ( void* data )  ){
+bool dllDataUse( doubleLinkedList* _list, dataUseFunction dataUseFunc ){
     assert( _list != NULL );
     assert( ! dllIsEmpty( _list ) );
 

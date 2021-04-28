@@ -6,14 +6,17 @@ bool _odllInsertInFontOf( orderDoubleLinkedList* _list, bNode* _thisNode, void* 
 bool _odllRemoveBNode( orderDoubleLinkedList* _list, bNode* _thisNode );
 bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos );
 
+
+typedef int( *comparisonFunction )( void *larger, void *smaller );
+
 typedef struct strOrderDoubleLinkedList{
     bNode * head;
     bNode * tail;
     int size;
-    int( *comparison )( void *larger, void *smaller );
+    comparisonFunction comparison;
 } orderDoubleLinkedList;
 
-orderDoubleLinkedList* odllInit( int( *_comparison )( void *larger, void *smaller ) ){
+orderDoubleLinkedList* odllInit( comparisonFunction _comparison ){
     orderDoubleLinkedList* newList = ( orderDoubleLinkedList* ) malloc( sizeof( orderDoubleLinkedList ) );
     assert( newList != NULL );
 
@@ -76,7 +79,7 @@ bool odllInsert( orderDoubleLinkedList* _list, void* _data ){
 
 }
 
-bool odllDataUse( orderDoubleLinkedList* _list, void ( *dataUseFunc ) ( void* data )  ){
+bool odllDataUse( orderDoubleLinkedList* _list, dataUseFunction dataUseFunc ){
     assert( _list != NULL );
     assert( ! odllIsEmpty( _list ) );
 

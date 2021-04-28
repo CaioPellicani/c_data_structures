@@ -5,13 +5,15 @@ node* _ollSearchNode( orderLinkedList* _list, void *_searchValue );
 bool _ollInsertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion );
 node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue );
 
+typedef int( *comparisonFunction )( void *larger, void *smaller );
+
 typedef struct strOrderLinkedList{
     node * head;
     int size;
-    int( *comparison )( void *larger, void *smaller );
+    comparisonFunction comparison;
 } orderLinkedList;
 
-orderLinkedList* ollInit( int( *_comparison )( void *larger, void *smaller ) ){
+orderLinkedList* ollInit( comparisonFunction _comparison ){
     orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
     assert( newList != NULL );
 
@@ -69,9 +71,9 @@ bool ollInsert( orderLinkedList* _list, void* _data ){
     return _ollInsertInBetween( _list, _data, prevNodePostion ); 
 }
 
-bool ollDataUse( orderLinkedList* _list, void ( *dataUseFunction ) ( void* data )  ){
+bool ollDataUse( orderLinkedList* _list, dataUseFunction dataUseFunc ){
     if( ollvalidList( _list, true ) ){
-        return dataUse( _list->head, dataUseFunction );
+        return dataUse( _list->head, dataUseFunc );
     }
     return false;
 }

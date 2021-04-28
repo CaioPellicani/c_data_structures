@@ -82,11 +82,11 @@ void* llGetTailData( linkedList* _list ){
     return llGetDataAt( _list, _list->size - 1 );
 }
 
-bool llDataUse( linkedList* _list, void ( *dataUseFunction ) ( void* data )  ){
+bool llDataUse( linkedList* _list, dataUseFunction dataUseFunc ){
     assert( _list != NULL );
     assert( ! llIsEmpty( _list ) );
 
-    return dataUse( _list->head, dataUseFunction );
+    return dataUse( _list->head, dataUseFunc );
 }
 
 void llDelete( linkedList** _list ){

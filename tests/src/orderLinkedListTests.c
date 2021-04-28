@@ -5,34 +5,36 @@
 
 orderLinkedList* aList;
 
-void refreshOrderLinkedList(){
+char* ollRefresh(){
     strcpy( result, "\0" );
     ollDataUse( aList, &showData );
+    return result;
 }
 
 int runOrderLinkedListTest(){
-    INIT_TESTS( "OrderLinkedList", refreshOrderLinkedList );
+    INIT_TESTS( "OrderLinkedList" );
+
     aList = ollInit( &comparison ); 
     EX_NOT_NULL( "ollInit", aList ); 
 
     ollInsert( aList, ( data* )newData( 6 ) );
-    EX_STR_EQ( "First ollInsert", "6", result );
+    EX_STR_EQ( "First ollInsert", "6", ollRefresh() );
     EX_INT_EQ( "size++", 1, ollGetSize( aList ) );
 
     ollInsert( aList, ( data* )newData( 9 ) );
-    EX_STR_EQ( "ollInsert", "6 - 9", result );
+    EX_STR_EQ( "ollInsert", "6; 9", ollRefresh() );
     EX_INT_EQ( "size++", 2, ollGetSize( aList ) );
 
     ollInsert( aList, ( data* )newData( 7 ) );
-    EX_STR_EQ( "ollInsert", "6 - 7 - 9", result );
+    EX_STR_EQ( "ollInsert", "6; 7; 9", ollRefresh() );
     EX_INT_EQ( "size++", 3, ollGetSize( aList ) );
 
     ollInsert( aList, ( data* )newData( -77 ) );
-    EX_STR_EQ( "ollInsert begin", "-77 - 6 - 7 - 9", result );
+    EX_STR_EQ( "ollInsert begin", "-77; 6; 7; 9", ollRefresh() );
     EX_INT_EQ( "size++", 4, ollGetSize( aList ) );
 
-    data* searchTemplate = newData( 6 );
-    data* dataSearch = ( data* ) ollSearch( aList, searchTemplate );
+    searchTemplate->value = 6;
+    dataSearch = ( data* ) ollSearch( aList, searchTemplate );
     EX_INT_EQ( "ollSearch middle", 6, dataSearch->value );
 
     searchTemplate->value = 5;
@@ -40,12 +42,12 @@ int runOrderLinkedListTest(){
     EX_NULL( "Search fail", dataSearch );
 
     ollInsert( aList, ( data* )newData( -9 ) );
-    EX_STR_EQ( "ollInsert end", "-77 - -9 - 6 - 7 - 9", result );
+    EX_STR_EQ( "ollInsert end", "-77; -9; 6; 7; 9", ollRefresh() );
     EX_INT_EQ( "size++", 5, ollGetSize( aList ) );
 
     searchTemplate->value = 6;
     ollRemove( aList, searchTemplate );
-    EX_STR_EQ( "First ollRemove middle", "-77 - -9 - 7 - 9", result );
+    EX_STR_EQ( "First ollRemove middle", "-77; -9; 7; 9", ollRefresh() );
     EX_INT_EQ( "size--", 4, ollGetSize( aList ) );
 
     searchTemplate->value = 9;
@@ -58,12 +60,12 @@ int runOrderLinkedListTest(){
 
     searchTemplate->value = 9;
     ollRemove( aList, searchTemplate );
-    EX_STR_EQ( "ollRemove end", "-77 - -9 - 7", result );
+    EX_STR_EQ( "ollRemove end", "-77; -9; 7", ollRefresh() );
     EX_INT_EQ( "size--", 3, ollGetSize( aList ) );
 
     searchTemplate->value = -77;
     ollRemove( aList, searchTemplate );
-    EX_STR_EQ( "ollRemove", "-9 - 7", result );
+    EX_STR_EQ( "ollRemove", "-9; 7", ollRefresh() );
     EX_INT_EQ( "size--", 2, ollGetSize( aList ) );
 
     searchTemplate->value = 10;

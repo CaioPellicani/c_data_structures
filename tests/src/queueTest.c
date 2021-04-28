@@ -3,13 +3,14 @@
 #include "base_tests.h"
 queue* aQueue;
 
-void refreshQueue(){
+char* refreshQueue(){
     strcpy( result, "\0" );
     queueDataUse( aQueue, &showData );
+    return result;
 }
 
 int runQueueTest(){
-    INIT_TESTS( "Queue", refreshQueue );
+    INIT_TESTS( "Queue" );
     aQueue = initQueue();
     EX_NOT_NULL( "init", aQueue ); 
 
@@ -17,12 +18,12 @@ int runQueueTest(){
     enqueue( aQueue, (data*)newData( 2 ) );
     enqueue( aQueue, (data*)newData( 3 ) );
 
-    EX_STR_EQ( "ENQUEUE", "3 - 2 - 1", result ); 
+    EX_STR_EQ( "ENQUEUE", "3; 2; 1", refreshQueue() ); 
     EX_INT_EQ( "size+3", 3, getSizeQueue( aQueue ) );
 
     dequeue( aQueue );
 
-    EX_STR_EQ( "DEQUEUE", "3 - 2", result );
+    EX_STR_EQ( "DEQUEUE", "3; 2", refreshQueue() );
     EX_INT_EQ( "size--", 2, getSizeQueue( aQueue ) );
     
     data* end = (data*)getEndData( aQueue );

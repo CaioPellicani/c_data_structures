@@ -1,5 +1,6 @@
 #include "queue.h"
 #include "double_linked_list.h"
+#include "../core/src/core_bi_cardinal.h"
 
 #define MSG_NO_MEM "Not sufficient memory!\n"
 #define MSG_NODEF_STACK "Queue is not defined!\n"
@@ -42,8 +43,8 @@ void emptyQueue( queue* _queue ){
     dllEmptyList( _queue->list );
 }
 
-bool queueDataUse( queue* _queue, void ( *dataUseFunction ) ( void* data )  ){
-    return dllDataUse( _queue->list, dataUseFunction );
+bool queueDataUse( queue* _queue, dataUseFunction dataUseFunc  ){
+    return dllDataUse( _queue->list, dataUseFunc );
 }
 
 bool queueIsEmpty( queue* _queue ){

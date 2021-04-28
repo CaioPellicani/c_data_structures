@@ -3,10 +3,10 @@
 node* newBlankNode(){
     node* newNode;
     newNode = malloc( sizeof( node ) );
+    assert( newNode != NULL );
+
     newNode->data = NULL;
     newNode->nextNode = NULL;
-    
-    assert( newNode != NULL );
     return newNode;
 }
 
@@ -84,11 +84,11 @@ void* getNodeData( node* firstNode, int position, int size ){
     }
 }
 
-bool dataUse( node* firstNode, void ( *dataUseFunction ) ( void* data ) ){
+bool dataUse( node* firstNode,dataUseFunction dataUseFunc ){
     node* seeingNode;
     seeingNode = firstNode;
     while ( seeingNode != NULL ){
-        dataUseFunction( seeingNode->data );
+        dataUseFunc( seeingNode->data );
         seeingNode = seeingNode->nextNode;
     }
     return true;
