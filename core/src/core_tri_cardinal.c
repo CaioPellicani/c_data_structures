@@ -3,6 +3,12 @@
 void _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
 void _nullFunc( void* nullPointer ){ return; }
 
+typedef struct{
+    tNode** self;
+    tNode** root;
+    tNode** brother;
+}positions;
+
 tNode* newBlankTNode( tNode* _root ){
     tNode* newNode;
     newNode = malloc( sizeof( tNode ) );
@@ -38,21 +44,16 @@ tNode** positioning( tNode* _root, int where ){
     }  
 }
 
-bool insertTNode( tNode** _root, int _where, void* _data ){
-    tNode **position = NULL;
+bool insertNewTNode( tNode** _root, int _where, void* _data ){
+    
     tNode *newNode = newBlankTNode( *_root );
-
+    assert( newNode != NULL );
     newNode->data = _data;
-
-    if( _where == ROOT ){
-        *_root = newNode;
-        return true;
-    }
-
-    position = positioning( *_root, _where );
-    if( *position == NULL ){
-        *position = newNode;
-        newNode->root = *position;
+    
+    if( insertTNode( _root, _where, &newNode ) ){
+ //                                                         static int cont = 0;
+ //                                                         printf( "root - %p\n", newNode->root );
+ //                                                         printf( "%d - %p\n\n", cont++, newNode );
         return true;
     }
 
@@ -60,10 +61,46 @@ bool insertTNode( tNode** _root, int _where, void* _data ){
     return false;
 }
 
+bool insertTNode( tNode** _root, int _where, tNode** _thisNode ){
+    if( _where == ROOT ){
+        *_root = *_thisNode;
+        return true;
+    }
+
+    tNode **position = NULL;
+    position = positioning( *_root, _where );
+    if( *position == NULL ){
+        *position = *_thisNode;
+        ( *_thisNode )->root = *_root;
+        return true;
+    }
+    return false;
+}
+
+tNode* removeTNode_b( tNode** root, tNode** _deadNode ){
+    tNode *leftOverSubTree = *_deadNode;
+
+    if( leftOverSubTree->root != NULL ){
+        if( leftOverSubTree->root->left == *_deadNode ){
+            leftOverSubTree->root->left = NULL;
+        }
+        else{
+            leftOverSubTree->root->right = NULL;
+        }
+        leftOverSubTree->root = NULL;
+    }
+    else{
+        *root = NULL;
+    }
+
+    free( leftOverSubTree->data );
+    leftOverSubTree->data = NULL;
+    return leftOverSubTree;
+}
+
 tNode* removeTNode( tNode** _root, int _where ){
     tNode **position = NULL;
     tNode *leftOverSubTree = NULL;
-
 
     if( _where == ROOT ){
         leftOverSubTree = *_root;

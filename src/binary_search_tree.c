@@ -9,6 +9,11 @@ typedef struct strBinarySearchTree{
     comparisonFunction comparison;
 }binarySearchTree;
 
+typedef struct coordinatesToInsert{
+    tNode** root;
+    int position;
+}coordinatesToInsert;
+
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* data );
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
@@ -36,39 +41,89 @@ bool bstIsEmpty( binarySearchTree* _tree ){
 }
 
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* _data ){
-    return insertTNode( &_tree->mainRoot, ROOT, _data );
+    return insertNewTNode( &_tree->mainRoot, ROOT, _data );
 }
 
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree ){
     return removeTNode( &_tree->mainRoot, ROOT );
 }
 
-bool bstInsert( binarySearchTree*_tree, void* _data ){
-    tNode* seeingNode = NULL;
-    int position = ROOT;
+coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data ){
+    result->root = &_tree->mainRoot;
+    result->position = ROOT;
 
     if( bstIsEmpty( _tree ) ){
-        return insertTNode( &_tree->mainRoot, position, _data );
+        return result;
     }
-    seeingNode = _tree->mainRoot;
+
     while( true ){
-        if( _tree->comparison( _data, seeingNode->data ) == SMALLER ){
-            if( seeingNode->left == NULL ){
-                position = LEFT;
+        if( _tree->comparison( _data, ( *result->root )->data ) == SMALLER ){
+            if( ( *result->root )->left == NULL ){
+                result->position = LEFT;
                 break;            
             }
-            seeingNode = seeingNode->left;
+            result->root = &( *result->root )->left;
         }
-        if( ( _tree->comparison( _data, seeingNode->data ) == LARGER ) ||
-            ( _tree->comparison( _data, seeingNode->data ) == EQUAL ) ){
-            if( seeingNode->right == NULL ){
-                position = RIGHT;
+        if( ( _tree->comparison( _data, ( *result->root )->data ) == LARGER ) ||
+            ( _tree->comparison( _data, ( *result->root )->data ) == EQUAL ) ){
+            if( ( *result->root )->right == NULL ){
+                result->position = RIGHT;
                 break;            
             }
-            seeingNode = seeingNode->right;
+            result->root = &( *result->root )->right;
         }
     }
-    return insertTNode( &seeingNode, position, _data );
+    return result;
+}
+
+bool bstInsert( binarySearchTree*_tree, void* _data ){
+    bool result = false;
+    coordinatesToInsert* coords = malloc( sizeof( coordinatesToInsert ) );
+    coords = _bstGetCoordinatesToInsert( coords, _tree, _data );
+
+    if( insertNewTNode( coords->root, coords->position, _data ) ){
+        result = true;
+    }
+    free( coords );
+    return result;
+}
+
+bool _btsRealocate( binarySearchTree* _tree, tNode* _thisNode ){
+    bool result = false;
+    coordinatesToInsert* coords = malloc( sizeof( coordinatesToInsert ) );
+    coords = _bstGetCoordinatesToInsert( coords, _tree, _thisNode->data );
+
+    if( insertTNode( coords->root, coords->position, &_thisNode ) ){
+        result = true;
+    }
+    free( coords );
+    return result;  
+}
+
+bool bstRemove( binarySearchTree* _tree, void* _searchData ){
+    assert( ! bstIsEmpty( _tree ) );
+    tNode *deadNode = _bstSearchTNode( _tree, _searchData );
+    if( deadNode == NULL ){
+        return false;
+    }
+
+    tNode *leftOverSubTree = NULL;
+
+    leftOverSubTree = removeTNode_b( &_tree->mainRoot, &deadNode );
+
+    if( leftOverSubTree->right != NULL ){
+        _btsRealocate( _tree, leftOverSubTree->right );
+        leftOverSubTree->right = NULL;
+    }
+ 
+    if( leftOverSubTree->left != NULL ){
+        _btsRealocate( _tree, leftOverSubTree->left );
+        leftOverSubTree->left = NULL;
+    }
+
+    free( leftOverSubTree );
+    return true;
+
 }
 
 bool bstEmptyTree( binarySearchTree*_tree ){
@@ -90,15 +145,16 @@ void bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void*
 
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
     tNode* seeingNode = _tree->mainRoot;
+    
     while ( ( seeingNode->left != NULL ) || ( seeingNode->right != NULL ) ){
 
-        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
+        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER && puts( "\tL ") ){
             seeingNode = seeingNode->left;
         }
-        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER ){
+        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER && puts( "\tR ") ){
             seeingNode = seeingNode->right;
         }
-        if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL ){
+        if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL && puts( "\tE ")){
             return seeingNode;
         }
     }

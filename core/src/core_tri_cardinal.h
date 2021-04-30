@@ -15,7 +15,9 @@
         struct tNode* right;
     }tNode;
 
-    bool insertTNode( tNode** _root, int _where, void* _data );
+    bool insertTNode( tNode** _root, int _where, tNode** _thisNode );
+    bool insertNewTNode( tNode** _root, int _where, void* _data );
     tNode* removeTNode( tNode** _root, int _where );
+    tNode* removeTNode_b( tNode** root, tNode** _deadNode );
     void tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
 #endif
