@@ -2,10 +2,6 @@
 #include "linked_list.h"
 #include "../core/src/core_single_cardinal.h"
 
-#define MSG_NO_MEM "Not sufficient memory!\n"
-#define MSG_NODEF_STACK "Stack is not defined!\n"
-#define MSG_EMPTY_STACK "The Stack is Empty!\n"
-
 typedef struct _stack{
     linkedList* list;
 }stack;
@@ -13,14 +9,10 @@ typedef struct _stack{
 stack* initStack(){
     stack* newStack;
     newStack = (stack*) malloc( sizeof( stack ) );
-    if( newStack == NULL ){
-        die( MSG_NO_MEM );  
-        return false;
-    }
-    else{
-        newStack->list = llInit();
-        return newStack;
-    }
+    assert( newStack != NULL );
+
+    newStack->list = llInit();
+    return newStack;
 }
 
 int getSizeStack( stack* _stack ){

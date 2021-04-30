@@ -15,9 +15,14 @@ int runQueueTest(){
     EX_NOT_NULL( "init", aQueue ); 
 
     enqueue( aQueue, (data*)newData( 1 ) );
-    enqueue( aQueue, (data*)newData( 2 ) );
-    enqueue( aQueue, (data*)newData( 3 ) );
+    EX_STR_EQ( "ENQUEUE", "1", refreshQueue() ); 
+    EX_INT_EQ( "size+3", 1, getSizeQueue( aQueue ) );
 
+    enqueue( aQueue, (data*)newData( 2 ) );
+    EX_STR_EQ( "ENQUEUE", "2; 1", refreshQueue() ); 
+    EX_INT_EQ( "size+3", 2, getSizeQueue( aQueue ) );
+
+    enqueue( aQueue, (data*)newData( 3 ) );
     EX_STR_EQ( "ENQUEUE", "3; 2; 1", refreshQueue() ); 
     EX_INT_EQ( "size+3", 3, getSizeQueue( aQueue ) );
 

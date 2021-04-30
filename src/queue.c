@@ -2,10 +2,6 @@
 #include "double_linked_list.h"
 #include "../core/src/core_bi_cardinal.h"
 
-#define MSG_NO_MEM "Not sufficient memory!\n"
-#define MSG_NODEF_STACK "Queue is not defined!\n"
-#define MSG_EMPTY_STACK "The Queue is Empty!\n"
-
 typedef struct  strQueue{
     doubleLinkedList* list;
 }queue;
@@ -13,14 +9,9 @@ typedef struct  strQueue{
 queue* initQueue(){
     queue* newQueue;
     newQueue = ( queue* ) malloc( sizeof( queue ) );
-    if( newQueue == NULL ){
-        die( MSG_NO_MEM );
-        return NULL;  
-    }
-    else{
-        newQueue->list = dllInit();
-        return newQueue;
-    }
+    assert( newQueue != NULL );
+    newQueue->list = dllInit();
+    return newQueue;
 }
 
 int getSizeQueue( queue* _queue ){
