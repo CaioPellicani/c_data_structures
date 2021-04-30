@@ -1,6 +1,6 @@
 #makefile
 CC=gcc 
-FLAG=-Wall
+FLAG=-Wall -g
 LIB =ar rcs
 
 NAMES=stack queue linked_list order_linked_list double_linked_list order_double_linked_list
@@ -24,6 +24,9 @@ SOBJS=$(patsubst ${PATH_SRC}/%.c, ${PATH_OBJ}/%.o, ${SRC} )
 EXEC_OBJS=${PATH_OBJ}/exemple_${NAME}.o 
 
 export LIB_NAME
+export CC
+export FLAG
+export LIB
 
 #all: run 
 all: test

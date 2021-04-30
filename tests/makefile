@@ -1,7 +1,4 @@
 #makefile DIY unity tests
-CC=gcc 
-FLAG=-Wall
-LIB =ar rcs
 
 LIB_CORE=-L../core/bin -lcore
 LIB_DS=-L../bin -ldatastructs 
