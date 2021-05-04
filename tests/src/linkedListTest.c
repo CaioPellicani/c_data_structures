@@ -35,12 +35,16 @@ int runLinkedListTest(){
   
     dataAt = ( data* ) llGetDataAt( aList, 1 );
     EX_INT_EQ( "llGetDataAt 1", 5, dataAt->value );
+    EX_NOT_NULL( "llGetDataAt not null", dataAt );
 
     dataAt = ( data* ) llGetHeadData( aList );;
     EX_INT_EQ( "llGetHeadData", 1, dataAt->value );
 
     dataAt = ( data* ) llGetTailData( aList );;
     EX_INT_EQ( "llGetTailData", 10, dataAt->value );
+
+    dataAt = ( data* ) llGetDataAt( aList, 100 );
+    EX_NULL( "llGetDataAt fail", dataAt );
 
     llInsertAt( aList, ( data* )newData( 9 ), 0 );
     EX_STR_EQ( "llInsertAt 0", "9; 1; 5; 1; 10", llRefresh() );
@@ -61,6 +65,12 @@ int runLinkedListTest(){
     EX_FALSE( "before llEmptyList", llIsEmpty( aList ) );
     llEmptyList( aList );
     EX_TRUE( "llEmptyList", llIsEmpty( aList ) );
+
+    dataAt = ( data* ) llGetHeadData( aList );
+    EX_NULL( "llGetHeadData fail", dataAt );
+
+    dataAt = ( data* ) llGetTailData( aList );
+    EX_NULL( "llGetTailData fail", dataAt );
 
     llDelete( &aList );
     EX_NULL( "llDelete", aList );

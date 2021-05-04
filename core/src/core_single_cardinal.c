@@ -50,20 +50,18 @@ bool removeNextNode( node** firstNode, int* size, node* _prevNode ){
     assert( deadNode == NULL );
     return true;  
 }
-
-node* getNodeAt( node* firstNode, int position, char* from, int size ){
+node* getNodeAt( node* firstNode, int position, bool insert, int size ){
     int limitMax = size - 1;
     int limitMin = -1;
     
-    if( strcmp( "insert", from ) == 0 ){
+    if( insert ){
         limitMax = size;
     }
 
-    assert( ( position < limitMax ) || ( position > limitMin ) );
-
-    if( position < 0 ){
+    if( ( position > limitMax ) || ( position < limitMin ) ){
         return NULL;
     }
+
     node* seeingNode;
     seeingNode = firstNode;
     for( int i = 0; i < position; i++ ){
@@ -72,16 +70,18 @@ node* getNodeAt( node* firstNode, int position, char* from, int size ){
     return seeingNode;
 }
 
+
 void* getNodeData( node* firstNode, int position, int size ){
     int prevNodePostion = position;
-    node* result = getNodeAt( firstNode, prevNodePostion, "get data", size );
 
-    if ( result == NULL ){
+    if ( ( firstNode != NULL ) && ( position == -1 ) ){
         return firstNode->data;
     }
-    else{
+    node* result = getNodeAt( firstNode, prevNodePostion, false, size );
+    if( result != NULL ){
         return result->data;
     }
+    return NULL;
 }
 
 bool dataUse( node* firstNode,dataUseFunction dataUseFunc ){

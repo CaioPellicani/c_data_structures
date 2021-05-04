@@ -58,10 +58,18 @@ int runOrderLinkedListTest(){
     dataSearch = ( data* ) ollSearch( aList, searchTemplate );
     EX_INT_EQ( "ollSearch begin", -77, dataSearch->value );
 
+    searchTemplate->value = 100;
+    dataSearch = ( data* ) ollSearch( aList, searchTemplate );
+    EX_NULL( "ollSearch fail", dataSearch );
+
     searchTemplate->value = 9;
     ollRemove( aList, searchTemplate );
     EX_STR_EQ( "ollRemove end", "-77; -9; 7", ollRefresh() );
     EX_INT_EQ( "size--", 3, ollGetSize( aList ) );
+
+    searchTemplate->value = 9;
+    dataSearch = ( data* ) ollSearch( aList, searchTemplate );
+    EX_NULL( "ollSearch removed Node", dataSearch );
 
     searchTemplate->value = -77;
     ollRemove( aList, searchTemplate );

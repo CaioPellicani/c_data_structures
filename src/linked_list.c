@@ -18,17 +18,25 @@ linkedList* llInit(){
 }
 
 bool _llInsertInBetween( linkedList* _list, void *_data, int prevNodePostion ){
-    return insertInBetween( &_list->head,
-                            &_list->size,
-                            _data, 
-                            getNodeAt( _list->head, prevNodePostion, "insert", _list->size ) );
+    if( prevNodePostion == -1 ){
+        return insertInBetween( &_list->head, &_list->size, _data, NULL );        
+    }
+    node *getNode = getNodeAt( _list->head, prevNodePostion, true, _list->size );
+    if( getNode != NULL ){
+        return insertInBetween( &_list->head, &_list->size, _data, getNode );
+    }
+    return NULL;
 }
 
 bool _llRemoveNextNode( linkedList* _list, int prevNodePostion ){
-    return removeNextNode( &_list->head, 
-                           &_list->size, 
-                           getNodeAt( _list->head, prevNodePostion, "remove", _list->size ) 
-                          );
+    if( prevNodePostion == -1 ){
+        return removeNextNode( &_list->head, &_list->size, NULL );       
+    }
+    node *getNode = getNodeAt( _list->head, prevNodePostion, false, _list->size );
+    if( getNode != NULL ){
+        return removeNextNode( &_list->head, &_list->size, getNode );
+    }
+    return NULL;
 }
 
 int llGetSize( linkedList* _list ){
