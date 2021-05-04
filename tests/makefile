@@ -10,14 +10,16 @@ PATH_TOBJ=./obj
 TSRC=$(wildcard ${PATH_TSRC}/*.c )
 TOBJ=$(patsubst ${PATH_TSRC}/%.c, ${PATH_TOBJ}/%.o, ${TSRC} )
 
-all: test
+all: run
 
 ${PATH_TOBJ}/%.o: ${PATH_TSRC}/%.c
 	${CC} ${FLAG} -c $^ -o $@
 
 test: ${TOBJ}
 	${CC} $^ ${LIBS} -o $@ 
-	./$@ 
+
+run: test
+	./test
 
 clean: 
 	rm -f ${PATH_TOBJ}/*.o ./test

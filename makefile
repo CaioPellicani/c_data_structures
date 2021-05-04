@@ -29,7 +29,7 @@ export FLAG
 export LIB
 
 #all: run 
-all: test
+all: run_tests
 
 ${PATH_OBJ}/%.o:: ${PATH_SRC}/%.c
 	${CC} ${FLAG} -c $^ -o $@
@@ -53,8 +53,11 @@ clean:
 run: ${NAME}
 	${PATH_BIN}/exec_$^
 
-test: lib
+run_tests: lib
 	cd tests && touch ./src/main_tests.c && $(MAKE)
+
+mtests:
+	cd tests && touch ./src/main_tests.c && $(MAKE) test	
 
 ctests: 
 	cd tests && $(MAKE) clean
