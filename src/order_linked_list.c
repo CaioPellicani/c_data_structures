@@ -6,10 +6,9 @@
 #define NULL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return NULL; }
 
 bool _ollValidList( orderLinkedList *_list );
-node* _ollSearchNode( orderLinkedList* _list, void *_searchValue );
+node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue );
 bool _ollInsertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion );
 bool _ollRemove( orderLinkedList* _list, void *_searchData );
-node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue );
 
 typedef int( *comparisonFunction )( void *larger, void *smaller );
 
@@ -19,6 +18,8 @@ typedef struct strOrderLinkedList{
     comparisonFunction comparison;
 } orderLinkedList;
 
+/*  -   EXTERNAL FUNCTIONS  -   */
+
 orderLinkedList* ollInit( comparisonFunction _comparison ){
     orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
     assert( _ollValidList( newList ) );
@@ -26,24 +27,6 @@ orderLinkedList* ollInit( comparisonFunction _comparison ){
     newList->size = 0;
     newList->comparison = _comparison;
     return newList;
-}
-
-bool _ollInsertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion ){
-    if( prevNodePostion == -1 ){
-        return insertInBetween( &_list->head, &_list->size, _data, NULL );        
-    }
-
-    node *getNode = getNodeAt( _list->head, prevNodePostion, true, _list->size );
-    return insertInBetween( &_list->head, &_list->size, _data, getNode );
-}
-
-bool _ollRemove( orderLinkedList* _list, void *_searchData ){
-    node* seeingNode = _ollSearchNextNode( _list, _searchData );
-    if( ( seeingNode != NULL ) || ( _list->comparison( _list->head->data, _searchData ) == EQUAL ) ){
-        removeNextNode( &_list->head, &_list->size, seeingNode );
-        return true;
-    }
-    return false;
 }
 
 int ollGetSize( orderLinkedList* _list ){
@@ -56,10 +39,6 @@ int ollGetSize( orderLinkedList* _list ){
 bool ollIsEmpty( orderLinkedList* _list ){
     BOOL_VALID_OLL( _list );
     return ( _list->head == NULL );
-}
-
-bool _ollValidList( orderLinkedList *_list ){
-    return ( _list != NULL );
 }
 
 bool ollInsert( orderLinkedList* _list, void* _data ){
@@ -90,24 +69,6 @@ bool ollDataUse( orderLinkedList* _list, dataUseFunction dataUseFunc ){
     return dataUse( _list->head, dataUseFunc );
 }
 
-node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue ){
-    node* seeingNode = _list->head; 
-    
-    if( _list->comparison( seeingNode->nextNode->data, _searchValue ) == EQUAL ){
-        return seeingNode;
-    }
-
-    while( ( _list->comparison( seeingNode->nextNode->data, _searchValue ) != EQUAL ) && 
-             ( seeingNode->nextNode->nextNode != NULL ) ){
-        seeingNode = seeingNode->nextNode;
-    }
-
-    if( _list->comparison( seeingNode->nextNode->data, _searchValue ) == EQUAL ){
-        return seeingNode;
-    }
-    return NULL; 
-}
-
 void* ollSearch( orderLinkedList* _list, void *_searchData ){
     NULL_EMPTY_OLL( _list );
     node* seeingNode = _ollSearchNextNode( _list, _searchData );
@@ -135,5 +96,47 @@ void ollDelete( orderLinkedList** _list ){
     free( *_list );
     *_list = NULL;
     assert( *_list == NULL );
+}
+
+/*  -   INTERNAL FUNCTIONS  -   */
+
+bool _ollValidList( orderLinkedList *_list ){
+    return ( _list != NULL );
+}
+
+bool _ollInsertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion ){
+    if( prevNodePostion == -1 ){
+        return insertInBetween( &_list->head, &_list->size, _data, NULL );        
+    }
+
+    node *getNode = getNodeAt( _list->head, prevNodePostion, true, _list->size );
+    return insertInBetween( &_list->head, &_list->size, _data, getNode );
+}
+
+node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue ){
+    node* seeingNode = _list->head; 
+    
+    if( _list->comparison( seeingNode->nextNode->data, _searchValue ) == EQUAL ){
+        return seeingNode;
+    }
+
+    while( ( _list->comparison( seeingNode->nextNode->data, _searchValue ) != EQUAL ) && 
+             ( seeingNode->nextNode->nextNode != NULL ) ){
+        seeingNode = seeingNode->nextNode;
+    }
+
+    if( _list->comparison( seeingNode->nextNode->data, _searchValue ) == EQUAL ){
+        return seeingNode;
+    }
+    return NULL; 
+}
+
+bool _ollRemove( orderLinkedList* _list, void *_searchData ){
+    node* seeingNode = _ollSearchNextNode( _list, _searchData );
+    if( ( seeingNode != NULL ) || ( _list->comparison( _list->head->data, _searchData ) == EQUAL ) ){
+        removeNextNode( &_list->head, &_list->size, seeingNode );
+        return true;
+    }
+    return false;
 }
 

@@ -11,8 +11,12 @@ typedef struct strList{
     int size;
 }doubleLinkedList;
 
-bool dllValidList( doubleLinkedList* _list, bool _seeIfEmpty );
 bool _dllValidList( doubleLinkedList* _list );
+bool _dllInsertInFontOf( doubleLinkedList* _list, bNode* _thisNode, void* _data );
+bool _dllRemoveBNode( doubleLinkedList* _list, bNode* _thisNode );
+bNode* _dllGetBNodeAt( doubleLinkedList* _list, int pos );
+ 
+/*  -   EXTERNAL FUNCTIONS  -   */
 
 doubleLinkedList* dllInit(){
     doubleLinkedList* newList = ( doubleLinkedList* ) malloc( sizeof( doubleLinkedList ) );
@@ -33,21 +37,6 @@ int dllGetSize( doubleLinkedList* _list ){
 bool dllIsEmpty( doubleLinkedList* _list ){
     BOOL_VALID_DLL( _list );
     return ( _list->head == NULL ) && ( _list->tail == NULL );
-}
-
-bool _dllValidList( doubleLinkedList* _list ){
-    return ( _list != NULL );
-}
-
-bool _dllInsertInFontOf( doubleLinkedList* _list, bNode* _thisNode, void* _data ){
-    return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
-}
-bool _dllRemoveBNode( doubleLinkedList* _list, bNode* _thisNode ){
-    return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
-}
-
-bNode* _dllGetBNodeAt( doubleLinkedList* _list, int pos ){
-    return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
 }
 
 bool dllPushHead( doubleLinkedList* _list, void* _data ){   
@@ -123,6 +112,23 @@ void dllDelete( doubleLinkedList** _list ){
     free( *_list );
     *_list = NULL;
     assert( *_list == NULL );
+}
+
+/*  -   INTERNAL FUNCTIONS  -   */
+
+bool _dllValidList( doubleLinkedList* _list ){
+    return ( _list != NULL );
+}
+
+bool _dllInsertInFontOf( doubleLinkedList* _list, bNode* _thisNode, void* _data ){
+    return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
+}
+bool _dllRemoveBNode( doubleLinkedList* _list, bNode* _thisNode ){
+    return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
+}
+
+bNode* _dllGetBNodeAt( doubleLinkedList* _list, int pos ){
+    return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
 }
 
 

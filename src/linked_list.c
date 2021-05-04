@@ -11,6 +11,10 @@ typedef struct strLinkedList{
 }linkedList;
 
 bool _llValidList( linkedList* _list );
+bool _llInsertInBetween( linkedList* _list, void *_data, int prevNodePostion );
+bool _llRemoveNextNode( linkedList* _list, int prevNodePostion );
+
+/*  -   INTERNAL FUNCTIONS  -   */
 
 linkedList* llInit(){
     linkedList* newList = ( linkedList* ) malloc( sizeof( linkedList ) );
@@ -18,32 +22,6 @@ linkedList* llInit(){
     newList->head = NULL;    
     newList->size = 0;
     return newList;
-}
-
-bool _llInsertInBetween( linkedList* _list, void *_data, int prevNodePostion ){
-    if( prevNodePostion == -1 ){
-        return insertInBetween( &_list->head, &_list->size, _data, NULL );        
-    }
-    node *getNode = getNodeAt( _list->head, prevNodePostion, true, _list->size );
-    if( getNode != NULL ){
-        return insertInBetween( &_list->head, &_list->size, _data, getNode );
-    }
-    return NULL;
-}
-
-bool _llRemoveNextNode( linkedList* _list, int prevNodePostion ){
-    if( prevNodePostion == -1 ){
-        return removeNextNode( &_list->head, &_list->size, NULL );       
-    }
-    node *getNode = getNodeAt( _list->head, prevNodePostion, false, _list->size );
-    if( getNode != NULL ){
-        return removeNextNode( &_list->head, &_list->size, getNode );
-    }
-    return NULL;
-}
-
-bool _llValidList( linkedList* _list ){
-    return ( _list != NULL );
 }
 
 int llGetSize( linkedList* _list ){
@@ -121,3 +99,32 @@ void llDelete( linkedList** _list ){
     *_list = NULL;
     assert( *_list == NULL );
 }
+
+/*  -   EXTERNAL FUNCTIONS  -   */
+
+bool _llValidList( linkedList* _list ){
+    return ( _list != NULL );
+}
+
+bool _llInsertInBetween( linkedList* _list, void *_data, int prevNodePostion ){
+    if( prevNodePostion == -1 ){
+        return insertInBetween( &_list->head, &_list->size, _data, NULL );        
+    }
+    node *getNode = getNodeAt( _list->head, prevNodePostion, true, _list->size );
+    if( getNode != NULL ){
+        return insertInBetween( &_list->head, &_list->size, _data, getNode );
+    }
+    return NULL;
+}
+
+bool _llRemoveNextNode( linkedList* _list, int prevNodePostion ){
+    if( prevNodePostion == -1 ){
+        return removeNextNode( &_list->head, &_list->size, NULL );       
+    }
+    node *getNode = getNodeAt( _list->head, prevNodePostion, false, _list->size );
+    if( getNode != NULL ){
+        return removeNextNode( &_list->head, &_list->size, getNode );
+    }
+    return NULL;
+}
+

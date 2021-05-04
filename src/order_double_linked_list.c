@@ -7,9 +7,9 @@
 
 bool _odllValidList( orderDoubleLinkedList* _list );
 bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue );
+bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos );
 bool _odllInsertInFontOf( orderDoubleLinkedList* _list, bNode* _thisNode, void* _data );
 bool _odllRemoveBNode( orderDoubleLinkedList* _list, bNode* _thisNode );
-bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos );
 
 typedef int( *comparisonFunction )( void *larger, void *smaller );
 
@@ -20,6 +20,8 @@ typedef struct strOrderDoubleLinkedList{
     comparisonFunction comparison;
 } orderDoubleLinkedList;
 
+/*  -   INTERNAL FUNCTIONS  -   */
+
 orderDoubleLinkedList* odllInit( comparisonFunction _comparison ){
     orderDoubleLinkedList* newList = ( orderDoubleLinkedList* ) malloc( sizeof( orderDoubleLinkedList ) );
     assert( _odllValidList( newList ) );
@@ -27,17 +29,6 @@ orderDoubleLinkedList* odllInit( comparisonFunction _comparison ){
     newList->size = 0;
     newList->comparison = _comparison;
     return newList;
-}
-
-bool _odllInsertInFontOf( orderDoubleLinkedList* _list, bNode* _thisNode, void* _data ){
-    return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
-}
-bool _odllRemoveBNode( orderDoubleLinkedList* _list, bNode* _thisNode ){
-    return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
-}
-
-bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos ){
-    return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
 }
 
 int odllGetSize( orderDoubleLinkedList* _list ){
@@ -50,9 +41,6 @@ int odllGetSize( orderDoubleLinkedList* _list ){
 bool odllIsEmpty( orderDoubleLinkedList* _list ){
     BOOL_VALID_ODLL( _list );
     return ( _list->head == NULL );
-}
-bool _odllValidList( orderDoubleLinkedList* _list ){
-    return ( _list != NULL );
 }
 
 bool odllInsert( orderDoubleLinkedList* _list, void* _data ){
@@ -76,26 +64,11 @@ bool odllInsert( orderDoubleLinkedList* _list, void* _data ){
 
     _odllInsertInFontOf( _list, seeingNode, _data );
     return true;
-
 }
 
 bool odllDataUse( orderDoubleLinkedList* _list, dataUseFunction dataUseFunc ){
     BOOL_EMPTY_ODLL( _list );
     return bNodeDataUse( _list->head, dataUseFunc );
-}
-
-bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue ){
-    bNode* seeingNode = _list->head; 
-
-    while( ( _list->comparison( seeingNode->data, _searchValue ) != EQUAL ) && 
-             ( seeingNode->nextNode != NULL ) ){
-        seeingNode = seeingNode->nextNode;
-    }
-
-    if( _list->comparison( seeingNode->data, _searchValue ) == EQUAL ){
-        return seeingNode;
-    }
-    return NULL; 
 }
 
 void* odllSearch( orderDoubleLinkedList* _list, void *_searchData ){
@@ -130,3 +103,33 @@ void odllDelete( orderDoubleLinkedList** _list ){
     assert( *_list == NULL );
 }
 
+/*  -   EXTERNAL FUNCTIONS  -   */
+
+bool _odllValidList( orderDoubleLinkedList* _list ){
+    return ( _list != NULL );
+}
+
+bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue ){
+    bNode* seeingNode = _list->head; 
+
+    while( ( _list->comparison( seeingNode->data, _searchValue ) != EQUAL ) && 
+             ( seeingNode->nextNode != NULL ) ){
+        seeingNode = seeingNode->nextNode;
+    }
+
+    if( _list->comparison( seeingNode->data, _searchValue ) == EQUAL ){
+        return seeingNode;
+    }
+    return NULL; 
+}
+
+bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos ){
+    return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
+}
+
+bool _odllInsertInFontOf( orderDoubleLinkedList* _list, bNode* _thisNode, void* _data ){
+    return insertInFontOf( &_list->head, &_list->tail, &_list->size, _thisNode, _data );
+}
+bool _odllRemoveBNode( orderDoubleLinkedList* _list, bNode* _thisNode ){
+    return removeBNode( &_list->head, &_list->tail, &_list->size, _thisNode ); 
+}

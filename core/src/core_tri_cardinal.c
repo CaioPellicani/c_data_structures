@@ -1,7 +1,11 @@
 #include "core_tri_cardinal.h"
 
+/*  -   EXTERNAL FUNCTIONS  -   */
+
+void _nullFunc( void* nullPointer );
+tNode* _newBlankTNode( tNode* _root );
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
-void _nullFunc( void* nullPointer ){ return; }
+tNode** _positioning( tNode* _root, int where );
 
 typedef struct{
     tNode** self;
@@ -9,44 +13,11 @@ typedef struct{
     tNode** brother;
 }positions;
 
-tNode* newBlankTNode( tNode* _root ){
-    tNode* newNode;
-    newNode = malloc( sizeof( tNode ) );
-    assert( newNode != NULL );
-
-    newNode->data = NULL;
-    newNode->root = _root;
-    newNode->left = newNode->right = NULL;
-    return newNode;
-}
-
-tNode** positioning( tNode* _root, int where ){
-    switch ( where ){
-    case ROOT:
-        return &_root->root;
-        break;
-    case LEFT:
-        return &_root->left;
-        break;
-    case RIGHT:
-        return &_root->right;
-        break;
-    case BOTHER:
-        if( _root->root->left == _root ){
-            return &_root->root->right;     
-        }
-        else{
-            return &_root->root->left;
-        }
-        break;
-    default: 
-        return NULL;
-    }  
-}
+/*  -   INTERNAL FUNCTIONS  -   */
 
 bool insertNewTNode( tNode** _root, int _where, void* _data ){
     
-    tNode *newNode = newBlankTNode( *_root );
+    tNode *newNode = _newBlankTNode( *_root );
     assert( newNode != NULL );
     newNode->data = _data;
     
@@ -68,7 +39,7 @@ bool insertTNode( tNode** _root, int _where, tNode** _thisNode ){
     }
 
     tNode **position = NULL;
-    position = positioning( *_root, _where );
+    position = _positioning( *_root, _where );
     if( *position == NULL ){
         *position = *_thisNode;
         ( *_thisNode )->root = *_root;
@@ -109,7 +80,7 @@ tNode* removeTNode( tNode** _root, int _where ){
         return leftOverSubTree;
     }
 
-    position = positioning( *_root, _where );
+    position = _positioning( *_root, _where );
     if( *position != NULL ){
         leftOverSubTree = *position;
         *_root = NULL;
@@ -128,6 +99,21 @@ bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
     return _tNodeDataUse( _mainRoot, orderFunc );
 }
 
+/*  -   INTERNAL FUNCTIONS  -   */
+
+void _nullFunc( void* nullPointer ){ return; }
+
+tNode* _newBlankTNode( tNode* _root ){
+    tNode* newNode;
+    newNode = malloc( sizeof( tNode ) );
+    assert( newNode != NULL );
+
+    newNode->data = NULL;
+    newNode->root = _root;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
     _orderFunc[INORDER]( _mainRoot->data );
     
@@ -144,5 +130,30 @@ bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
     _orderFunc[POSTORDER]( _mainRoot->data );
     return true;
 }
+
+tNode** _positioning( tNode* _root, int where ){
+    switch ( where ){
+    case ROOT:
+        return &_root->root;
+        break;
+    case LEFT:
+        return &_root->left;
+        break;
+    case RIGHT:
+        return &_root->right;
+        break;
+    case BOTHER:
+        if( _root->root->left == _root ){
+            return &_root->root->right;     
+        }
+        else{
+            return &_root->root->left;
+        }
+        break;
+    default: 
+        return NULL;
+    }  
+}
+
 
 

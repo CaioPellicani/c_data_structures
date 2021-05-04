@@ -1,17 +1,11 @@
 #include "core_bi_cardinal.h"
 
-bNode* newBlankBNode(){
-    bNode* newNode;
-    newNode = malloc( sizeof( bNode ) );
-    assert( newNode != NULL );
-    
-    newNode->data = NULL;
-    newNode->prevNode = newNode->nextNode = NULL;
-    return newNode;
-}
+bNode* _newBlankBNode();
+
+/*  -   EXTERNAL FUNCTIONS  -   */
 
 bool insertInFontOf( bNode** _firstNode, bNode** _lastNode, int* _size, bNode* _thisNode, void* _data ){
-    bNode* newNode = newBlankBNode();
+    bNode* newNode = _newBlankBNode();
 
     newNode->data = _data;
 
@@ -99,3 +93,14 @@ bool bNodeDataUse( bNode* _firstNode, dataUseFunction dataUseFunc  ){
     return false;
 }
 
+/*  -   INTERNAL FUNCTIONS  -   */
+
+bNode* _newBlankBNode(){
+    bNode* newNode;
+    newNode = malloc( sizeof( bNode ) );
+    assert( newNode != NULL );
+    
+    newNode->data = NULL;
+    newNode->prevNode = newNode->nextNode = NULL;
+    return newNode;
+}

@@ -8,16 +8,14 @@ typedef struct  strQueue{
 
 bool _validQueue( queue* _queue );
 
+/*  -   EXTERNAL FUNCTIONS  -   */
+
 queue* initQueue(){
     queue* newQueue;
     newQueue = ( queue* ) malloc( sizeof( queue ) );
     assert( _validQueue( newQueue ) );
     newQueue->list = dllInit();
     return newQueue;
-}
-
-bool _validQueue( queue* _queue ){
-    return (_queue != NULL );
 }
 
 int getSizeQueue( queue* _queue ){
@@ -58,4 +56,8 @@ void deleteQueue( queue** _queue ){
     assert( *_queue == NULL );
 }
 
+/*  -   INTERNAL FUNCTIONS  -   */
 
+bool _validQueue( queue* _queue ){
+    return (_queue != NULL );
+}

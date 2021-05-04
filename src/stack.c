@@ -8,6 +8,8 @@ typedef struct _stack{
 
 bool  _validStack( stack* _stack );
 
+/*  -   EXTERNAL FUNCTIONS  -   */
+
 stack* initStack(){
     stack* newStack;
     newStack = (stack*) malloc( sizeof( stack ) );
@@ -15,10 +17,6 @@ stack* initStack(){
 
     newStack->list = llInit();
     return newStack;
-}
-
-bool  _validStack( stack* _stack ){
-    return ( _stack != NULL );
 }
 
 int getSizeStack( stack* _stack ){
@@ -59,4 +57,9 @@ void deleteStack( stack** _stack ){
     assert( *_stack == NULL );
 }
 
+/*  -   INTERNAL FUNCTIONS  -   */
+
+bool  _validStack( stack* _stack ){
+    return ( _stack != NULL );
+}
 

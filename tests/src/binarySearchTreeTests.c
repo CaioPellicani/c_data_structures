@@ -49,7 +49,7 @@ int runBinarySearchTreeTest(){
     bstInsert( aTree, ( data* )newData( -4 ) );
     bstInsert( aTree, ( data* )newData( -6 ) );
     EX_STR_EQ( "bstInsert", "-15; -10; -8; -6; -5; -4; 5; 7; 8; 10; 15", bstPreorder() );
-/*
+
     searchTemplate->value = 5;
     dataSearch = ( data* ) bstSearch( aTree, searchTemplate );
     EX_INT_EQ( "bstSearch mainRoot", 5, dataSearch->value );
@@ -67,7 +67,7 @@ int runBinarySearchTreeTest(){
     searchTemplate->value = 100;
     dataSearch = ( data* ) bstSearch( aTree, searchTemplate );
     EX_NULL( "bstSearch fail", dataSearch );
-
+/*
     searchTemplate->value = -10;
             printf( "valor %d\n", searchTemplate->value );
     bstRemove( aTree, searchTemplate );
@@ -81,11 +81,11 @@ int runBinarySearchTreeTest(){
     searchTemplate->value = 5;
             printf( "valor %d\n", searchTemplate->value );
     bstRemove( aTree, searchTemplate );
-    EX_STR_EQ( "bstRemove mainRoot", "-15; -8; -6; -5; 7; 8; 10; 15", bstPreorder() );*/
+    EX_STR_EQ( "bstRemove mainRoot", "-15; -8; -6; -5; 7; 8; 10; 15", bstPreorder() );
 
     bstInsert( aTree, ( data* )newData( 6 ) );
     bstInsert( aTree, ( data* )newData( 5 ) );
-//    EX_STR_EQ( "bstInorder", "5; -10; -8; 10; 8", bstInorder() );
+    EX_STR_EQ( "bstInorder", "5; -10; -8; 10; 8", bstInorder() );
 
     searchTemplate->value = -5;
             printf( "valor %d\n", searchTemplate->value );
@@ -93,7 +93,7 @@ int runBinarySearchTreeTest(){
       //EX_STR_EQ( "bstInorder", "5; -10; -8; 10; 8", bstInorder() );
             printf( "valor %d\n", searchTemplate->value );
     EX_FALSE( "bstRemove fail", bstRemove( aTree, searchTemplate ) );
-/*
+
     EX_STR_EQ( "bstInorder", "5; -10; -8; 10; 8", bstInorder() );
     EX_STR_EQ( "bstPostorder", "-8; -10; 8; 10; 5", bstPostorder() );
 */

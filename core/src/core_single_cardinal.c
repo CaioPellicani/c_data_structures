@@ -1,17 +1,11 @@
 #include "core_single_cardinal.h"
 
-node* newBlankNode(){
-    node* newNode;
-    newNode = malloc( sizeof( node ) );
-    assert( newNode != NULL );
+node* _newBlankNode();
 
-    newNode->data = NULL;
-    newNode->nextNode = NULL;
-    return newNode;
-}
+/*  -   EXTERNAL FUNCTIONS  -   */
 
 bool insertInBetween( node** firstNode, int* size, void* _data, node* _prevNode ){
-    node* newNode = newBlankNode();
+    node* newNode = _newBlankNode();
     newNode->data = _data;
     if( *firstNode == NULL ){ 
         *firstNode = newNode;
@@ -70,7 +64,6 @@ node* getNodeAt( node* firstNode, int position, bool insert, int size ){
     return seeingNode;
 }
 
-
 void* getNodeData( node* firstNode, int position, int size ){
     int prevNodePostion = position;
 
@@ -94,3 +87,15 @@ bool dataUse( node* firstNode,dataUseFunction dataUseFunc ){
     return true;
 }
 
+
+/*  -   INTERNAL FUNCTIONS  -   */
+
+node* _newBlankNode(){
+    node* newNode;
+    newNode = malloc( sizeof( node ) );
+    assert( newNode != NULL );
+
+    newNode->data = NULL;
+    newNode->nextNode = NULL;
+    return newNode;
+}
