@@ -22,6 +22,9 @@ bool _bstIsValid( binarySearchTree *_tree );
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* data );
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
+coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data );
+
+/*  -   EXTERNAL FUNCTIONS  -   */
 
 binarySearchTree* bstInit( comparisonFunction _comparison ){
     binarySearchTree* newTree;
@@ -40,49 +43,9 @@ void bstDelete( binarySearchTree** _tree ){
     assert( *_tree == NULL );
 }
 
-bool _bstIsValid( binarySearchTree *_tree ){
-    return ( _tree != NULL );
-}
-
 bool bstIsEmpty( binarySearchTree* _tree ){
     BOOL_VALID_BST( _tree );
     return _tree->mainRoot == NULL;
-}
-
-bool _bstInsertMainRoot( binarySearchTree* _tree, void* _data ){
-    return insertNewTNode( &_tree->mainRoot, ROOT, _data );
-}
-
-tNode* _bstRemoveMainRoot( binarySearchTree* _tree ){
-    return removeTNode( &_tree->mainRoot, ROOT );
-}
-
-coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data ){
-    result->root = &_tree->mainRoot;
-    result->position = ROOT;
-
-    if( bstIsEmpty( _tree ) ){
-        return result;
-    }
-
-    while( true ){
-        if( _tree->comparison( _data, ( *result->root )->data ) == SMALLER ){
-            if( ( *result->root )->left == NULL ){
-                result->position = LEFT;
-                break;            
-            }
-            result->root = &( *result->root )->left;
-        }
-        if( ( _tree->comparison( _data, ( *result->root )->data ) == LARGER ) ||
-            ( _tree->comparison( _data, ( *result->root )->data ) == EQUAL ) ){
-            if( ( *result->root )->right == NULL ){
-                result->position = RIGHT;
-                break;            
-            }
-            result->root = &( *result->root )->right;
-        }
-    }
-    return result;
 }
 
 bool bstInsert( binarySearchTree*_tree, void* _data ){
@@ -98,18 +61,6 @@ bool bstInsert( binarySearchTree*_tree, void* _data ){
     return result;
 }
 
-bool _btsRealocate( binarySearchTree* _tree, tNode* _thisNode ){
-    bool result = false;
-    coordinatesToInsert* coords = malloc( sizeof( coordinatesToInsert ) );
-    coords = _bstGetCoordinatesToInsert( coords, _tree, _thisNode->data );
-
-    if( insertTNode( coords->root, coords->position, &_thisNode ) ){
-        result = true;
-    }
-    free( coords );
-    return result;  
-}
-
 bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     BOOL_EMPTY_BST( _tree );
     tNode *deadNode = _bstSearchTNode( _tree, _searchData );
@@ -122,12 +73,12 @@ bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     leftOverSubTree = removeTNode_b( &_tree->mainRoot, &deadNode );
 
     if( leftOverSubTree->right != NULL ){
-        _btsRealocate( _tree, leftOverSubTree->right );
+        //_btsRealocate( _tree, leftOverSubTree->right );
         leftOverSubTree->right = NULL;
     }
  
     if( leftOverSubTree->left != NULL ){
-        _btsRealocate( _tree, leftOverSubTree->left );
+        //_btsRealocate( _tree, leftOverSubTree->left );
         leftOverSubTree->left = NULL;
     }
 
@@ -156,24 +107,6 @@ bool bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void*
     return tNodeDataUse( _tree->mainRoot, dataUseFunc, POSTORDER );
 }
 
-tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
-    tNode* seeingNode = _tree->mainRoot;
-    
-    while ( ( seeingNode->left != NULL ) || ( seeingNode->right != NULL ) ){
-
-        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER && puts( "\tL ") ){
-            seeingNode = seeingNode->left;
-        }
-        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER && puts( "\tR ") ){
-            seeingNode = seeingNode->right;
-        }
-        if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL && puts( "\tE ")){
-            return seeingNode;
-        }
-    }
-    return NULL;
-}
-
 void* bstSearch( binarySearchTree* _tree, void *_seachData ){
     NULL_EMPTY_DLL( _tree );
     tNode* searchNode = _bstSearchTNode( _tree, _seachData );
@@ -181,4 +114,67 @@ void* bstSearch( binarySearchTree* _tree, void *_seachData ){
         return searchNode->data;
     }
     return NULL;
+}
+
+/*  -   INTERNAL FUNCTIONS  -   */
+
+bool _bstIsValid( binarySearchTree *_tree ){
+    return ( _tree != NULL );
+}
+
+bool _bstInsertMainRoot( binarySearchTree* _tree, void* _data ){
+    return insertNewTNode( &_tree->mainRoot, ROOT, _data );
+}
+
+tNode* _bstRemoveMainRoot( binarySearchTree* _tree ){
+    return removeTNode( &_tree->mainRoot, ROOT );
+}
+
+tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
+    tNode* seeingNode = _tree->mainRoot;
+    
+    while ( ( seeingNode->left != NULL ) || ( seeingNode->right != NULL ) ){
+
+        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
+//            puts( "\tL ");
+            seeingNode = seeingNode->left;
+        }
+        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER ){
+//            puts( "\tR ");
+            seeingNode = seeingNode->right;
+        }
+        if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL ){
+//            puts( "\tE ");
+            return seeingNode;
+        }
+    }
+    return NULL;
+}
+
+coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data ){
+    result->root = &_tree->mainRoot;
+    result->position = ROOT;
+
+    if( bstIsEmpty( _tree ) ){
+        return result;
+    }
+
+    while( true ){
+        if( _tree->comparison( _data, ( *result->root )->data ) == SMALLER ){
+            if( ( *result->root )->left == NULL ){
+                result->position = LEFT;
+                break;            
+            }
+            result->root = &( *result->root )->left;
+        }
+        if( ( _tree->comparison( _data, ( *result->root )->data ) == LARGER ) ||
+            ( _tree->comparison( _data, ( *result->root )->data ) == EQUAL ) ){
+            if( ( *result->root )->right == NULL ){
+                result->position = RIGHT;
+                break;            
+            }
+            result->root = &( *result->root )->right;
+        }
+    }
+    return result;
 }
