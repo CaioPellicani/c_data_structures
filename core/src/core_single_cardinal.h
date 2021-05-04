@@ -3,11 +3,6 @@
 
     #include "stdHeader.h"
 
-    #define MSG_NO_MEM "Not sufficient memory!\n"
-    #define MSG_NODEF "List is not defined!\n"
-    #define MSG_EMPTY "The List is Empty!\n"
-    #define MGS_OUT_RANGE(TYPE) "\n\nNot possible to %s. Position '%d' is out ouf range.\n", TYPE, position + 1 
-
     typedef void ( *dataUseFunction ) ( void* data );
     typedef struct node{
         void * data;

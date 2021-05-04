@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_ODLL( LIST ) if( !_odllValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_ODLL( LIST ) if( odllIsEmpty( LIST ) ){ return false; }
+#define NULL_EMPTY_ODLL( LIST ) if( odllIsEmpty( LIST ) ){ return NULL; }
 
 bool _odllValidList( orderDoubleLinkedList* _list );
 bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue );
@@ -98,7 +99,7 @@ bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue ){
 }
 
 void* odllSearch( orderDoubleLinkedList* _list, void *_searchData ){
-    BOOL_EMPTY_ODLL( _list );
+    NULL_EMPTY_ODLL( _list );
     bNode* seeingNode = _odllSearchBNode( _list, _searchData );
     if( seeingNode != NULL ){
         return seeingNode->data;

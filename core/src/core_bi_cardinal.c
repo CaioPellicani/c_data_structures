@@ -66,11 +66,7 @@ bool removeBNode( bNode** _firstNode, bNode** _lastNode, int* _size, bNode* _thi
 }
 
 bNode* getBNodeAt( bNode** _firstNode, bNode** _lastNode, int* _size, int pos ){
-    if( pos > *_size ){
-        die( MGS_OUT_RANGE( "'getData'" ) );
-        exit(1);
-    }
-    else if( pos == *_size ){
+    if( pos >= *_size ){
         return NULL;
     }
     bNode* seeingNode;
