@@ -1,11 +1,14 @@
 #include "order_double_linked_list.h"
 #include "../core/src/core_bi_cardinal.h"
 
+#define BOOL_VALID_ODLL( LIST ) if( !_odllValidList( LIST ) ){ return false; }
+#define BOOL_EMPTY_ODLL( LIST ) if( odllIsEmpty( LIST ) ){ return false; }
+
+bool _odllValidList( orderDoubleLinkedList* _list );
 bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue );
 bool _odllInsertInFontOf( orderDoubleLinkedList* _list, bNode* _thisNode, void* _data );
 bool _odllRemoveBNode( orderDoubleLinkedList* _list, bNode* _thisNode );
 bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos );
-
 
 typedef int( *comparisonFunction )( void *larger, void *smaller );
 
@@ -18,8 +21,7 @@ typedef struct strOrderDoubleLinkedList{
 
 orderDoubleLinkedList* odllInit( comparisonFunction _comparison ){
     orderDoubleLinkedList* newList = ( orderDoubleLinkedList* ) malloc( sizeof( orderDoubleLinkedList ) );
-    assert( newList != NULL );
-
+    assert( _odllValidList( newList ) );
     newList->head = NULL;
     newList->size = 0;
     newList->comparison = _comparison;
@@ -38,25 +40,22 @@ bNode* _odllGetBNodeAt( orderDoubleLinkedList* _list, int pos ){
 }
 
 int odllGetSize( orderDoubleLinkedList* _list ){
-    return _list->size;
+    if( !odllIsEmpty( _list ) ){
+        return _list->size;
+    }
+    return 0;
 }
 
 bool odllIsEmpty( orderDoubleLinkedList* _list ){
+    BOOL_VALID_ODLL( _list );
     return ( _list->head == NULL );
 }
-
-
-bool odllvalidList( orderDoubleLinkedList* _list, bool _seeIfEmpty ){
-    if( _list == NULL ){
-        die( MSG_NODEF );
-    }
-    if( ( _seeIfEmpty ) && ( odllIsEmpty( _list ) ) ){
-        die( MSG_EMPTY );
-    }
-    return true;
+bool _odllValidList( orderDoubleLinkedList* _list ){
+    return ( _list != NULL );
 }
 
 bool odllInsert( orderDoubleLinkedList* _list, void* _data ){
+    BOOL_VALID_ODLL( _list );
     bNode* seeingNode = _list->head; 
 
     if( _list->head == NULL ){
@@ -80,9 +79,7 @@ bool odllInsert( orderDoubleLinkedList* _list, void* _data ){
 }
 
 bool odllDataUse( orderDoubleLinkedList* _list, dataUseFunction dataUseFunc ){
-    assert( _list != NULL );
-    assert( ! odllIsEmpty( _list ) );
-
+    BOOL_EMPTY_ODLL( _list );
     return bNodeDataUse( _list->head, dataUseFunc );
 }
 
@@ -101,6 +98,7 @@ bNode* _odllSearchBNode( orderDoubleLinkedList *_list, void *_searchValue ){
 }
 
 void* odllSearch( orderDoubleLinkedList* _list, void *_searchData ){
+    BOOL_EMPTY_ODLL( _list );
     bNode* seeingNode = _odllSearchBNode( _list, _searchData );
     if( seeingNode != NULL ){
         return seeingNode->data;
@@ -109,6 +107,7 @@ void* odllSearch( orderDoubleLinkedList* _list, void *_searchData ){
 }
 
 bool odllRemove( orderDoubleLinkedList* _list, void *_searchData ){
+    BOOL_EMPTY_ODLL( _list );
     bNode* seeingNode = _odllSearchBNode( _list, _searchData );
     if( seeingNode != NULL ){
         _odllRemoveBNode( _list, seeingNode );

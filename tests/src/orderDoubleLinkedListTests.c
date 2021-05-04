@@ -16,22 +16,23 @@ int runOrderDoubleLinkedListTest(){
 
     aList = odllInit( &comparison ); 
     EX_NOT_NULL( "odllInit", aList ); 
+    EX_INT_EQ( "odllGetSize 0", 0, odllGetSize( aList ) );
 
     odllInsert( aList, ( data* )newData( 6 ) );
     EX_STR_EQ( "First odllInsert", "6", odllRefresh() );
-    EX_INT_EQ( "size++", 1, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize ++", 1, odllGetSize( aList ) );
 
     odllInsert( aList, ( data* )newData( 9 ) );
     EX_STR_EQ( "odllInsert", "6; 9", odllRefresh() );
-    EX_INT_EQ( "size++", 2, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize ++", 2, odllGetSize( aList ) );
 
     odllInsert( aList, ( data* )newData( 7 ) );
     EX_STR_EQ( "odllInsert", "6; 7; 9", odllRefresh() );
-    EX_INT_EQ( "size++", 3, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize ++", 3, odllGetSize( aList ) );
 
     odllInsert( aList, ( data* )newData( -77 ) );
     EX_STR_EQ( "odllInsert begin", "-77; 6; 7; 9", odllRefresh() );
-    EX_INT_EQ( "size++", 4, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize ++", 4, odllGetSize( aList ) );
 
     searchTemplate->value = 6;
     dataSearch = ( data* ) odllSearch( aList, searchTemplate );
@@ -43,12 +44,12 @@ int runOrderDoubleLinkedListTest(){
 
     odllInsert( aList, ( data* )newData( -9 ) );
     EX_STR_EQ( "odllInsert end", "-77; -9; 6; 7; 9", odllRefresh() );
-    EX_INT_EQ( "size++", 5, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize ++", 5, odllGetSize( aList ) );
 
     searchTemplate->value = 6;
     odllRemove( aList, searchTemplate );
     EX_STR_EQ( "First odllRemove middle", "-77; -9; 7; 9", odllRefresh() );
-    EX_INT_EQ( "size--", 4, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize --", 4, odllGetSize( aList ) );
 
     searchTemplate->value = 9;
     dataSearch = ( data* ) odllSearch( aList, searchTemplate );
@@ -61,12 +62,12 @@ int runOrderDoubleLinkedListTest(){
     searchTemplate->value = 9;
     odllRemove( aList, searchTemplate );
     EX_STR_EQ( "odllRemove end", "-77; -9; 7", odllRefresh() );
-    EX_INT_EQ( "size--", 3, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize --", 3, odllGetSize( aList ) );
 
     searchTemplate->value = -77;
     odllRemove( aList, searchTemplate );
     EX_STR_EQ( "odllRemove", "-9; 7", odllRefresh() );
-    EX_INT_EQ( "size--", 2, odllGetSize( aList ) );
+    EX_INT_EQ( "odllGetSize --", 2, odllGetSize( aList ) );
 
     searchTemplate->value = 10;
     EX_FALSE( "odllRemove Fail", odllRemove( aList, searchTemplate ) );

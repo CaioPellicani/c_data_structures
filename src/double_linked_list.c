@@ -1,6 +1,9 @@
 #include "double_linked_list.h"
 #include "../core/src/core_bi_cardinal.h"
 
+#define BOOL_VALID_DLL( LIST ) if( !_dllValidList( LIST ) ){ return false; }
+#define BOOL_EMPTY_DLL( LIST ) if( dllIsEmpty( LIST ) ){ return false; }
+
 typedef struct strList{
     bNode * head;
     bNode * tail;
@@ -8,10 +11,11 @@ typedef struct strList{
 }doubleLinkedList;
 
 bool dllValidList( doubleLinkedList* _list, bool _seeIfEmpty );
+bool _dllValidList( doubleLinkedList* _list );
 
 doubleLinkedList* dllInit(){
     doubleLinkedList* newList = ( doubleLinkedList* ) malloc( sizeof( doubleLinkedList ) );
-    assert( newList != NULL );
+    assert( _dllValidList( newList ) );
     newList->head = NULL;
     newList->tail = NULL;
     newList->size = 0;
@@ -19,22 +23,19 @@ doubleLinkedList* dllInit(){
 }
 
 int dllGetSize( doubleLinkedList* _list ){
-    return _list->size;
+    if( !dllIsEmpty( _list ) ){
+        return _list->size;
+    }
+    return 0;
 }
 
 bool dllIsEmpty( doubleLinkedList* _list ){
+    BOOL_VALID_DLL( _list );
     return ( _list->head == NULL ) && ( _list->tail == NULL );
 }
 
-bool dllValidList( doubleLinkedList* _list, bool _seeIfEmpty ){
-    if( _list == NULL ){
-        die( MSG_NODEF );
-    }
-    if( ( _seeIfEmpty ) && ( dllIsEmpty( _list ) ) ){
-        die( MSG_EMPTY );
-    }
-
-    return true;
+bool _dllValidList( doubleLinkedList* _list ){
+    return ( _list != NULL );
 }
 
 bool _dllInsertInFontOf( doubleLinkedList* _list, bNode* _thisNode, void* _data ){
@@ -48,59 +49,47 @@ bNode* _dllGetBNodeAt( doubleLinkedList* _list, int pos ){
     return getBNodeAt( &_list->head, &_list->tail, &_list->size, pos );
 }
 
-bool dllPushHead( doubleLinkedList* _list, void* _data ){  
-   if( dllValidList( _list, false ) ){
-       return _dllInsertInFontOf( _list, _list->head, _data );
-   } 
-   return false;
+bool dllPushHead( doubleLinkedList* _list, void* _data ){   
+    BOOL_VALID_DLL( _list );
+    return _dllInsertInFontOf( _list, _list->head, _data );
 }
 
 bool dllPushTail( doubleLinkedList* _list, void* _data ){
-    if( dllValidList( _list, false ) ){
-        return _dllInsertInFontOf( _list, NULL, _data );
-    }
-    return false;
+    BOOL_VALID_DLL( _list );
+    return _dllInsertInFontOf( _list, NULL, _data );
 }
 
 bool dllInsertAt( doubleLinkedList* _list, void* _data, int pos ){
-    if( dllValidList( _list, false ) ){
-        if( pos > _list->size ){
-            die( "'insert'" );
-        }
-        else{
-            return _dllInsertInFontOf( _list, _dllGetBNodeAt( _list, pos ), _data );
-        }
+    BOOL_VALID_DLL( _list );
+    if( pos > _list->size ){
+        die( "'insert'" );
+        return false;
     }
-    return false;
+    else{
+        return _dllInsertInFontOf( _list, _dllGetBNodeAt( _list, pos ), _data );
+    }
 }
 
 bool dllRemoveAt( doubleLinkedList* _list, int pos ){
-    if( dllValidList( _list, false ) ){
-        if( pos > _list->size ){
-            die( "'remove'" );
-        }
-        if( pos == _list->size ){
-            return dllPopTail( _list );
-        }
-        else{
-            return _dllRemoveBNode( _list, _dllGetBNodeAt( _list, pos ) );
-        }
+    BOOL_EMPTY_DLL( _list );
+    if( pos > _list->size ){
+        die( "'remove'" );
     }
-    return false;
+    if( pos == _list->size ){
+        return dllPopTail( _list );
+    }
+    else{
+        return _dllRemoveBNode( _list, _dllGetBNodeAt( _list, pos ) );
+    }
 }
 
 bool dllPopHead( doubleLinkedList* _list ){
-    if( dllValidList( _list, true ) ){
-        return _dllRemoveBNode( _list, _list->head );
-    }  
-    return false; 
-
+    BOOL_EMPTY_DLL( _list );
+    return _dllRemoveBNode( _list, _list->head );
 }
 bool dllPopTail( doubleLinkedList* _list ){
-    if( dllValidList( _list, true ) ){
-        return _dllRemoveBNode( _list, _list->tail );
-    }   
-    return false;
+    BOOL_EMPTY_DLL( _list );
+    return _dllRemoveBNode( _list, _list->tail );
 }
 
 void dllEmptyList( doubleLinkedList* _list ){
@@ -121,9 +110,7 @@ void* dllGetTailData( doubleLinkedList* _list ){
 }
 
 bool dllDataUse( doubleLinkedList* _list, dataUseFunction dataUseFunc ){
-    assert( _list != NULL );
-    assert( ! dllIsEmpty( _list ) );
-
+    BOOL_EMPTY_DLL( _list );
     return bNodeDataUse( _list->head, dataUseFunc );
 }
 

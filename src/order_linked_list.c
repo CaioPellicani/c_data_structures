@@ -1,6 +1,10 @@
 #include "order_linked_list.h"
 #include "../core/src/core_single_cardinal.h"
 
+#define BOOL_VALID_OLL( LIST ) if( !_ollValidList( LIST ) ){ return false; }
+#define BOOL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return false; }
+
+bool _ollValidList( orderLinkedList *_list );
 node* _ollSearchNode( orderLinkedList* _list, void *_searchValue );
 bool _ollInsertInBetween( orderLinkedList* _list, void *_data, int prevNodePostion );
 bool _ollRemove( orderLinkedList* _list, void *_searchData );
@@ -16,8 +20,7 @@ typedef struct strOrderLinkedList{
 
 orderLinkedList* ollInit( comparisonFunction _comparison ){
     orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
-    assert( newList != NULL );
-
+    assert( _ollValidList( newList ) );
     newList->head = NULL;
     newList->size = 0;
     newList->comparison = _comparison;
@@ -42,27 +45,24 @@ bool _ollRemove( orderLinkedList* _list, void *_searchData ){
     return false;
 }
 
-
 int ollGetSize( orderLinkedList* _list ){
-    return _list->size;
+    if( !ollIsEmpty( _list ) ){
+        return _list->size;
+    }
+    return 0;
 }
 
 bool ollIsEmpty( orderLinkedList* _list ){
+    BOOL_VALID_OLL( _list );
     return ( _list->head == NULL );
 }
 
-
-bool ollvalidList( orderLinkedList* _list, bool _seeIfEmpty ){
-    if( _list == NULL ){
-        return false;
-    }
-    if( ( _seeIfEmpty ) && ( ollIsEmpty( _list ) ) ){
-        return false;
-    }
-    return true;
+bool _ollValidList( orderLinkedList *_list ){
+    return ( _list != NULL );
 }
 
 bool ollInsert( orderLinkedList* _list, void* _data ){
+    BOOL_VALID_OLL( _list );
     node* seeingNode = _list->head; 
     int prevNodePostion = -1;
     if( _list->head == NULL ){
@@ -85,14 +85,11 @@ bool ollInsert( orderLinkedList* _list, void* _data ){
 }
 
 bool ollDataUse( orderLinkedList* _list, dataUseFunction dataUseFunc ){
-    if( ollvalidList( _list, true ) ){
-        return dataUse( _list->head, dataUseFunc );
-    }
-    return false;
+    BOOL_EMPTY_OLL( _list );
+    return dataUse( _list->head, dataUseFunc );
 }
 
 node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue ){
-    assert( ollvalidList( _list, true ) );
     node* seeingNode = _list->head; 
     
     if( _list->comparison( seeingNode->nextNode->data, _searchValue ) == EQUAL ){
@@ -111,6 +108,10 @@ node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue ){
 }
 
 void* ollSearch( orderLinkedList* _list, void *_searchData ){
+    if( ( _ollValidList( _list ) ) && ( ollIsEmpty( _list ) ) ){
+        return NULL;
+    }
+
     node* seeingNode = _ollSearchNextNode( _list, _searchData );
     if( seeingNode != NULL ){
         return seeingNode->nextNode->data;

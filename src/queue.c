@@ -6,16 +6,25 @@ typedef struct  strQueue{
     doubleLinkedList* list;
 }queue;
 
+bool _validQueue( queue* _queue );
+
 queue* initQueue(){
     queue* newQueue;
     newQueue = ( queue* ) malloc( sizeof( queue ) );
-    assert( newQueue != NULL );
+    assert( _validQueue( newQueue ) );
     newQueue->list = dllInit();
     return newQueue;
 }
 
+bool _validQueue( queue* _queue ){
+    return (_queue != NULL );
+}
+
 int getSizeQueue( queue* _queue ){
-    return dllGetSize( _queue->list );
+    if( !queueIsEmpty( _queue ) ){
+        return dllGetSize( _queue->list );
+    }
+    return 0;
 }
 
 bool enqueue( queue* _queue, void* _data ){
