@@ -6,17 +6,26 @@ typedef struct _stack{
     linkedList* list;
 }stack;
 
+bool  _validStack( stack* _stack );
+
 stack* initStack(){
     stack* newStack;
     newStack = (stack*) malloc( sizeof( stack ) );
-    assert( newStack != NULL );
+    assert( _validStack( newStack ) );
 
     newStack->list = llInit();
     return newStack;
 }
 
+bool  _validStack( stack* _stack ){
+    return ( _stack != NULL );
+}
+
 int getSizeStack( stack* _stack ){
-    return llGetSize( _stack->list );
+    if( !stackIsEmpty( _stack ) ){
+        return llGetSize( _stack->list );
+    }
+    return 0;
 }
 
 bool push( stack* _stack, void* _data ){

@@ -1,6 +1,10 @@
 #include "binary_search_tree.h"
 #include "../core/src/core_tri_cardinal.h"
 
+#define BOOL_VALID_BST( TREE ) if( ! _bstIsValid( TREE ) ){ return false; }
+#define BOOL_EMPTY_BST( TREE ) if( bstIsEmpty( TREE ) ){ return false; }
+#define NULL_EMPTY_DLL( TREE ) if( bstIsEmpty( TREE ) ){ return NULL; }
+
 typedef int( *comparisonFunction )( void *larger, void *smaller );
 
 typedef struct strBinarySearchTree{
@@ -14,6 +18,7 @@ typedef struct coordinatesToInsert{
     int position;
 }coordinatesToInsert;
 
+bool _bstIsValid( binarySearchTree *_tree );
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* data );
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
@@ -21,8 +26,7 @@ tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
 binarySearchTree* bstInit( comparisonFunction _comparison ){
     binarySearchTree* newTree;
     newTree = ( binarySearchTree* ) malloc( sizeof( binarySearchTree ) );
-    assert( newTree != NULL );
-
+    assert( _bstIsValid( newTree ) );
     newTree->size = 0;
     newTree->mainRoot = NULL;
     newTree->comparison = _comparison;
@@ -36,7 +40,12 @@ void bstDelete( binarySearchTree** _tree ){
     assert( *_tree == NULL );
 }
 
+bool _bstIsValid( binarySearchTree *_tree ){
+    return ( _tree != NULL );
+}
+
 bool bstIsEmpty( binarySearchTree* _tree ){
+    BOOL_VALID_BST( _tree );
     return _tree->mainRoot == NULL;
 }
 
@@ -77,6 +86,7 @@ coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, bi
 }
 
 bool bstInsert( binarySearchTree*_tree, void* _data ){
+    BOOL_VALID_BST( _tree );
     bool result = false;
     coordinatesToInsert* coords = malloc( sizeof( coordinatesToInsert ) );
     coords = _bstGetCoordinatesToInsert( coords, _tree, _data );
@@ -101,7 +111,7 @@ bool _btsRealocate( binarySearchTree* _tree, tNode* _thisNode ){
 }
 
 bool bstRemove( binarySearchTree* _tree, void* _searchData ){
-    assert( ! bstIsEmpty( _tree ) );
+    BOOL_EMPTY_BST( _tree );
     tNode *deadNode = _bstSearchTNode( _tree, _searchData );
     if( deadNode == NULL ){
         return false;
@@ -133,14 +143,17 @@ bool bstEmptyTree( binarySearchTree*_tree ){
     return true;
 }
 
-void bstInorderDataUse( binarySearchTree* _tree, dataUseFunction dataUseFunc ){
-    tNodeDataUse( _tree->mainRoot, dataUseFunc, INORDER );
+bool bstInorderDataUse( binarySearchTree* _tree, dataUseFunction dataUseFunc ){
+    BOOL_EMPTY_BST( _tree );
+    return tNodeDataUse( _tree->mainRoot, dataUseFunc, INORDER );
 }
-void bstPreorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  ){
-    tNodeDataUse( _tree->mainRoot, dataUseFunc, PREORDER );
+bool bstPreorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  ){
+    BOOL_EMPTY_BST( _tree );
+    return tNodeDataUse( _tree->mainRoot, dataUseFunc, PREORDER );
 }
-void bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  ){
-    tNodeDataUse( _tree->mainRoot, dataUseFunc, POSTORDER );
+bool bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  ){
+    BOOL_EMPTY_BST( _tree );
+    return tNodeDataUse( _tree->mainRoot, dataUseFunc, POSTORDER );
 }
 
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
@@ -162,6 +175,7 @@ tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
 }
 
 void* bstSearch( binarySearchTree* _tree, void *_seachData ){
+    NULL_EMPTY_DLL( _tree );
     tNode* searchNode = _bstSearchTNode( _tree, _seachData );
     if( searchNode != NULL ){
         return searchNode->data;

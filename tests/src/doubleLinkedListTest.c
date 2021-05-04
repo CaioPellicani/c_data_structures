@@ -17,7 +17,6 @@ int runDoubleLinkedListTest(){
     data* dataAt = NULL; 
     aList = dllInit(); 
     EX_NOT_NULL( "dllInit", aList );
-
     EX_INT_EQ( "dllGetSize 0", 0, dllGetSize( aList ) );
 
     dllPushHead( aList, ( data* )newData( 1 ) );

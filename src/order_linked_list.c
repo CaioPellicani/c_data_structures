@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_OLL( LIST ) if( !_ollValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return false; }
+#define NULL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return NULL; }
 
 bool _ollValidList( orderLinkedList *_list );
 node* _ollSearchNode( orderLinkedList* _list, void *_searchValue );
@@ -108,10 +109,7 @@ node* _ollSearchNextNode( orderLinkedList *_list, void *_searchValue ){
 }
 
 void* ollSearch( orderLinkedList* _list, void *_searchData ){
-    if( ( _ollValidList( _list ) ) && ( ollIsEmpty( _list ) ) ){
-        return NULL;
-    }
-
+    NULL_EMPTY_OLL( _list );
     node* seeingNode = _ollSearchNextNode( _list, _searchData );
     if( seeingNode != NULL ){
         return seeingNode->nextNode->data;

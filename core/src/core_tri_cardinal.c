@@ -1,6 +1,6 @@
 #include "core_tri_cardinal.h"
 
-void _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
+bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
 void _nullFunc( void* nullPointer ){ return; }
 
 typedef struct{
@@ -120,15 +120,15 @@ tNode* removeTNode( tNode** _root, int _where ){
     return leftOverSubTree;
 }
 
-void tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
+bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
     assert( _mainRoot != NULL );
     dataUseFunction orderFunc[3] = { &_nullFunc,  &_nullFunc,  &_nullFunc };
     orderFunc[type] = dataUseFunc;
 
-    _tNodeDataUse( _mainRoot, orderFunc );
+    return _tNodeDataUse( _mainRoot, orderFunc );
 }
 
-void _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
+bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
     _orderFunc[INORDER]( _mainRoot->data );
     
     if( _mainRoot->left != NULL ){
@@ -142,6 +142,7 @@ void _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
     }
 
     _orderFunc[POSTORDER]( _mainRoot->data );
+    return true;
 }
 
 

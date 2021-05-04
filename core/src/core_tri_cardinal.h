@@ -19,5 +19,5 @@
     bool insertNewTNode( tNode** _root, int _where, void* _data );
     tNode* removeTNode( tNode** _root, int _where );
     tNode* removeTNode_b( tNode** root, tNode** _deadNode );
-    void tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
+    bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
 #endif

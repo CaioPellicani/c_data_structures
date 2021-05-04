@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_LL( LIST ) if( !_llValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_LL( LIST ) if( llIsEmpty( LIST ) ){ return false; }
+#define NULL_EMPTY_LL( LIST ) if( llIsEmpty( LIST ) ){ return NULL; }
 
 typedef struct strLinkedList{
     node * head;
@@ -96,16 +97,16 @@ void llEmptyList( linkedList* _list ){
 }
 
 void* llGetDataAt( linkedList* _list, int position ){
-    if( llIsEmpty( _list ) ){
-        return NULL;
-    }
+    NULL_EMPTY_LL( _list );
     return getNodeData( _list->head, position, _list->size );
 }
 
 void* llGetHeadData( linkedList* _list ){
+    NULL_EMPTY_LL( _list );
     return llGetDataAt( _list, 0 );
 }
 void* llGetTailData( linkedList* _list ){
+    NULL_EMPTY_LL( _list );
     return llGetDataAt( _list, _list->size - 1 );
 }
 

@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_DLL( LIST ) if( !_dllValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_DLL( LIST ) if( dllIsEmpty( LIST ) ){ return false; }
+#define NULL_EMPTY_DLL( LIST ) if( dllIsEmpty( LIST ) ){ return NULL; }
 
 typedef struct strList{
     bNode * head;
@@ -61,26 +62,26 @@ bool dllPushTail( doubleLinkedList* _list, void* _data ){
 
 bool dllInsertAt( doubleLinkedList* _list, void* _data, int pos ){
     BOOL_VALID_DLL( _list );
-    if( pos > _list->size ){
-        die( "'insert'" );
-        return false;
+    if( pos == _list->size ){
+        return _dllInsertInFontOf( _list, NULL, _data );
     }
-    else{
-        return _dllInsertInFontOf( _list, _dllGetBNodeAt( _list, pos ), _data );
+    bNode* getNode = _dllGetBNodeAt( _list, pos );
+    if( getNode != NULL ){
+        return _dllInsertInFontOf( _list, getNode, _data );
     }
+    return false;
 }
 
 bool dllRemoveAt( doubleLinkedList* _list, int pos ){
     BOOL_EMPTY_DLL( _list );
-    if( pos > _list->size ){
-        die( "'remove'" );
-    }
     if( pos == _list->size ){
-        return dllPopTail( _list );
+        return _dllRemoveBNode( _list, _list->tail );
     }
-    else{
-        return _dllRemoveBNode( _list, _dllGetBNodeAt( _list, pos ) );
+    bNode* getNode = _dllGetBNodeAt( _list, pos );
+    if( getNode != NULL ){
+        return _dllRemoveBNode( _list, getNode );
     }
+    return false;
 }
 
 bool dllPopHead( doubleLinkedList* _list ){
@@ -99,13 +100,16 @@ void dllEmptyList( doubleLinkedList* _list ){
 }
 
 void* dllGetDataAt( doubleLinkedList* _list, int pos ){
+    NULL_EMPTY_DLL( _list );
     return _dllGetBNodeAt( _list, pos )->data;
 }
 
 void* dllGetHeadData( doubleLinkedList* _list ){
+    NULL_EMPTY_DLL( _list );
     return _list->head->data;
 }
 void* dllGetTailData( doubleLinkedList* _list ){
+    NULL_EMPTY_DLL( _list );
     return _list->tail->data;
 }
 

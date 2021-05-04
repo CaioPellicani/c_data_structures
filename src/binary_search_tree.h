@@ -13,9 +13,9 @@ bool bstIsEmpty( binarySearchTree* _tree );
 bool bstInsert( binarySearchTree*_tree, void* _data );
 bool bstRemove( binarySearchTree*_tree, void* _searchData );
 
-void bstInorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
-void bstPreorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
-void bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
+bool bstInorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
+bool bstPreorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
+bool bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
 void* bstSearch( binarySearchTree* _tree, void *_searchData );
 
 bool bstEmptyTree( binarySearchTree*_tree );
