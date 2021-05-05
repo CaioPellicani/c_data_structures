@@ -15,8 +15,6 @@ typedef struct strBinarySearchTree{
 
 
 bool _bstIsValid( binarySearchTree *_tree );
-bool _bstInsertMainRoot( binarySearchTree* _tree, void* data );
-bool _bstRemoveMainRoot( binarySearchTree* _tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
 tNode *_getLimits( binarySearchTree *_tree, int direction );
 coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, void* _data );
@@ -66,6 +64,9 @@ bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     
     coords = _bstGetCoordinates( coords, _tree, _searchData );
 
+    if( removeTNode( coords, NULL ) ){
+        result = true;
+    }
 
     printf( "\n\nl -> %p\nr -> %p\n\n", treeLeftOver->left, treeLeftOver->right );
     free( coords );
@@ -75,7 +76,7 @@ bool bstRemove( binarySearchTree* _tree, void* _searchData ){
 
 bool bstEmptyTree( binarySearchTree*_tree ){
     if( ! bstIsEmpty( _tree ) ){
-        _bstRemoveMainRoot( _tree );
+        bstRemove( _tree, _tree->mainRoot->data );
     }
     return true;
 }
@@ -116,30 +117,6 @@ void* bstGetBiggerData( binarySearchTree *_tree ){
 
 bool _bstIsValid( binarySearchTree *_tree ){
     return ( _tree != NULL );
-}
-
-bool _bstInsertMainRoot( binarySearchTree* _tree, void* _data ){
-    assert( _bstIsValid( _tree ) );
-    bool result = false;
-    coordinates *coords = allocCoordinates();
-    coords->position = ROOT;
-    coords->root = &_tree->mainRoot;
-    if( insertNewTNode( coords, _data ) ){
-        result = true;
-    }
-    return result;
-}
-
-bool _bstRemoveMainRoot( binarySearchTree* _tree ){
-    assert( ! bstIsEmpty( _tree ) );
-    bool result = false;
-    coordinates *coords = allocCoordinates();
-    coords->position = ROOT;
-    coords->root = &_tree->mainRoot;
-    if( removeTNode( coords, NULL ) ){
-        result = true;
-    }
-    return result;
 }
 
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
@@ -191,7 +168,7 @@ coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, vo
     result->root = &_tree->mainRoot;
     result->position = ROOT;
 
-    if( bstIsEmpty( _tree ) ){
+    if( bstIsEmpty( _tree ) || ( _tree->comparison( _data, ( *result->root )->data ) == EQUAL ) ){
         return result;
     }
 
