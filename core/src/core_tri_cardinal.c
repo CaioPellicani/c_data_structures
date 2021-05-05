@@ -1,30 +1,22 @@
 #include "core_tri_cardinal.h"
 
-/*  -   EXTERNAL FUNCTIONS  -   */
-
 void _nullFunc( void* nullPointer );
 tNode* _newBlankTNode( tNode* _root );
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
-tNode** _positioning( tNode* _root, int where );
+tNode** _positioning( coordinates *_coords  );
 
-typedef struct{
-    tNode** self;
-    tNode** root;
-    tNode** brother;
-}positions;
+/*  -   EXTERNAL FUNCTIONS  -   */
 
-/*  -   INTERNAL FUNCTIONS  -   */
+bool isLeaf( tNode *_thisNode ){
+    return( ( _thisNode->left == NULL ) && ( _thisNode->right == NULL ) );
+}
 
-bool insertNewTNode( tNode** _root, int _where, void* _data ){
-    
-    tNode *newNode = _newBlankTNode( *_root );
+bool insertNewTNode( coordinates *_coords, void* _data ){
+    tNode *newNode = _newBlankTNode( *_coords->root );
     assert( newNode != NULL );
     newNode->data = _data;
     
-    if( insertTNode( _root, _where, &newNode ) ){
- //                                                         static int cont = 0;
- //                                                         printf( "root - %p\n", newNode->root );
- //                                                         printf( "%d - %p\n\n", cont++, newNode );
+    if( insertTNode( _coords, &newNode ) ){
         return true;
     }
 
@@ -32,20 +24,37 @@ bool insertNewTNode( tNode** _root, int _where, void* _data ){
     return false;
 }
 
-bool insertTNode( tNode** _root, int _where, tNode** _thisNode ){
-    if( _where == ROOT ){
-        *_root = *_thisNode;
+bool insertTNode( coordinates *_coords, tNode** _thisNode ){
+    if( _coords->position == ROOT ){
+        *_coords->root = *_thisNode;
         return true;
     }
 
     tNode **position = NULL;
-    position = _positioning( *_root, _where );
+    position = _positioning( _coords );
     if( *position == NULL ){
         *position = *_thisNode;
-        ( *_thisNode )->root = *_root;
+        ( *_thisNode )->root = *_coords->root;
         return true;
     }
     return false;
+}
+coordinates *allocCoordinates(){
+    coordinates *result = calloc( 0, sizeof( coordinates ) );
+    assert( result != NULL );
+    assert( ( result->root == NULL ) && ( result->position == 0 ) );
+    return result;
+}
+
+leftOver *allocLeftOver(){
+    leftOver *result = calloc( 0, sizeof( leftOver ) );
+    assert( result != NULL );
+    assert( ( result->right == NULL) && ( result->left == NULL ) );
+    return result;
+}
+
+leftOver* removeTNode_c( tNode** root, tNode** _deadNode ){
+    return NULL;
 }
 
 tNode* removeTNode_b( tNode** root, tNode** _deadNode ){
@@ -69,21 +78,22 @@ tNode* removeTNode_b( tNode** root, tNode** _deadNode ){
     return leftOverSubTree;
 }
 
-tNode* removeTNode( tNode** _root, int _where ){
+tNode* removeTNode( coordinates *_coords ){
     tNode **position = NULL;
     tNode *leftOverSubTree = NULL;
+    coordinates* coords = allocCoordinates();
 
-    if( _where == ROOT ){
-        leftOverSubTree = *_root;
-        *_root = NULL;
+    if( coords->position == ROOT ){
+        leftOverSubTree = *coords->root;
+        *coords->root = NULL;
         free( leftOverSubTree->data );
         return leftOverSubTree;
     }
 
-    position = _positioning( *_root, _where );
+    position = _positioning( coords );
     if( *position != NULL ){
         leftOverSubTree = *position;
-        *_root = NULL;
+        *coords->root = NULL;
         free( leftOverSubTree->data );
         leftOverSubTree->data = NULL;
         return leftOverSubTree;
@@ -131,8 +141,10 @@ bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
     return true;
 }
 
-tNode** _positioning( tNode* _root, int where ){
-    switch ( where ){
+tNode** _positioning( coordinates *_coords ){
+    tNode* _root = *_coords->root;
+    
+    switch ( _coords->position  ){
     case ROOT:
         return &_root->root;
         break;
@@ -154,6 +166,4 @@ tNode** _positioning( tNode* _root, int where ){
         return NULL;
     }  
 }
-
-
 

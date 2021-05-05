@@ -16,7 +16,10 @@ bool bstRemove( binarySearchTree*_tree, void* _searchData );
 bool bstInorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
 bool bstPreorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
 bool bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void* data )  );
+
 void* bstSearch( binarySearchTree* _tree, void *_searchData );
+void* bstGetLowerData( binarySearchTree *_tree );
+void* bstGetBiggerData( binarySearchTree *_tree );
 
 bool bstEmptyTree( binarySearchTree*_tree );
 

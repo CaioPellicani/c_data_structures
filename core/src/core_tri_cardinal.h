@@ -15,9 +15,23 @@
         struct tNode* right;
     }tNode;
 
-    bool insertTNode( tNode** _root, int _where, tNode** _thisNode );
-    bool insertNewTNode( tNode** _root, int _where, void* _data );
-    tNode* removeTNode( tNode** _root, int _where );
+    typedef struct strCoordinates{
+        tNode** root;
+        int position;
+    }coordinates;
+    
+    typedef struct leftOver{
+        struct tNode* left;
+        struct tNode* right;
+    }leftOver;
+
+    bool isLeaf( tNode *_thisNode );
+    bool insertTNode( coordinates *_coords, tNode** _thisNode );
+    bool insertNewTNode( coordinates *_coords, void* _data );
+    tNode* removeTNode( coordinates *_coords );
     tNode* removeTNode_b( tNode** root, tNode** _deadNode );
     bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
+
+    leftOver *allocLeftOver();  
+    coordinates *allocCoordinates();
 #endif

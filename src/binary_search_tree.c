@@ -13,16 +13,13 @@ typedef struct strBinarySearchTree{
     comparisonFunction comparison;
 }binarySearchTree;
 
-typedef struct coordinatesToInsert{
-    tNode** root;
-    int position;
-}coordinatesToInsert;
 
 bool _bstIsValid( binarySearchTree *_tree );
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* data );
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
-coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data );
+tNode *_getLimits( binarySearchTree *_tree, int direction );
+coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, void* _data );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -51,19 +48,34 @@ bool bstIsEmpty( binarySearchTree* _tree ){
 bool bstInsert( binarySearchTree*_tree, void* _data ){
     BOOL_VALID_BST( _tree );
     bool result = false;
-    coordinatesToInsert* coords = malloc( sizeof( coordinatesToInsert ) );
-    coords = _bstGetCoordinatesToInsert( coords, _tree, _data );
+    coordinates* coords = allocCoordinates();
+    coords = _bstGetCoordinates( coords, _tree, _data );
 
-    if( insertNewTNode( coords->root, coords->position, _data ) ){
+    if( insertNewTNode( coords, _data ) ){
         result = true;
     }
     free( coords );
     return result;
 }
 
+bool bstRemove_b( binarySearchTree* _tree, void* _searchData ){
+    BOOL_EMPTY_BST( _tree );
+    bool result = false;
+    leftOver *treeLeftOver = allocLeftOver();
+    coordinates * coords = allocCoordinates();
+    
+    coords = _bstGetCoordinates( coords, _tree, _searchData );
+
+
+    printf( "\n\nl -> %p\nr -> %p\n\n", treeLeftOver->left, treeLeftOver->right );
+    free( coords );
+    free( treeLeftOver );
+    return result;
+}
+
 bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     BOOL_EMPTY_BST( _tree );
-    tNode *deadNode = _bstSearchTNode( _tree, _searchData );
+/*    tNode *deadNode = _bstSearchTNode( _tree, _searchData );
     if( deadNode == NULL ){
         return false;
     }
@@ -83,8 +95,7 @@ bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     }
 
     free( leftOverSubTree );
-    return true;
-
+*/    return true;
 }
 
 bool bstEmptyTree( binarySearchTree*_tree ){
@@ -116,6 +127,16 @@ void* bstSearch( binarySearchTree* _tree, void *_seachData ){
     return NULL;
 }
 
+void* bstGetLowerData( binarySearchTree *_tree ){
+    NULL_EMPTY_DLL( _tree );
+    return _getLimits( _tree, LEFT )->data;
+}
+
+void* bstGetBiggerData( binarySearchTree *_tree ){
+    NULL_EMPTY_DLL( _tree );
+    return _getLimits( _tree, RIGHT )->data;
+}
+
 /*  -   INTERNAL FUNCTIONS  -   */
 
 bool _bstIsValid( binarySearchTree *_tree ){
@@ -123,35 +144,73 @@ bool _bstIsValid( binarySearchTree *_tree ){
 }
 
 bool _bstInsertMainRoot( binarySearchTree* _tree, void* _data ){
-    return insertNewTNode( &_tree->mainRoot, ROOT, _data );
+    assert( _bstIsValid( _tree ) );
+    coordinates *coords = allocCoordinates();
+    coords->position = ROOT;
+    coords->root = &_tree->mainRoot;
+    if( insertNewTNode( coords, _data ) ){
+        return true;
+    }
+    return false;
 }
 
 tNode* _bstRemoveMainRoot( binarySearchTree* _tree ){
-    return removeTNode( &_tree->mainRoot, ROOT );
+    assert( ! bstIsEmpty( _tree ) );
+    coordinates *coords = allocCoordinates();
+    coords->position = ROOT;
+    coords->root = &_tree->mainRoot;
+    if( removeTNode( coords ) ){
+        return true;
+    }
+    return false;
 }
 
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
+    assert( ! bstIsEmpty( _tree ) );
     tNode* seeingNode = _tree->mainRoot;
     
-    while ( ( seeingNode->left != NULL ) || ( seeingNode->right != NULL ) ){
-
+    while ( !isLeaf( seeingNode ) ){            
         if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
-//            puts( "\tL ");
             seeingNode = seeingNode->left;
         }
         if( _tree->comparison( _searchData, seeingNode->data ) == LARGER ){
-//            puts( "\tR ");
             seeingNode = seeingNode->right;
         }
         if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL ){
-//            puts( "\tE ");
             return seeingNode;
         }
     }
     return NULL;
 }
 
-coordinatesToInsert* _bstGetCoordinatesToInsert( coordinatesToInsert* result, binarySearchTree*_tree, void* _data ){
+tNode *_getLimits( binarySearchTree *_tree, int direction ){
+    assert( ! bstIsEmpty( _tree ) );
+    assert( ( direction == LEFT) || ( direction == RIGHT ) );
+    tNode *seeingNode = _tree->mainRoot;    
+
+    if( direction == LEFT ){
+        while ( seeingNode->left != NULL ){
+            seeingNode = seeingNode->left;
+        }
+        if( isLeaf( seeingNode ) ){
+            return seeingNode;
+        }
+        return seeingNode->right;
+    }
+
+    if( direction == RIGHT ){
+        while ( seeingNode->right != NULL ){
+            seeingNode = seeingNode->right;
+        }
+        if( isLeaf( seeingNode ) ){
+            return seeingNode;
+        }
+        return seeingNode->left;
+    }
+    return NULL;
+}
+
+coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, void* _data ){
     result->root = &_tree->mainRoot;
     result->position = ROOT;
 
