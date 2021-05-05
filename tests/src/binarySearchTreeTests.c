@@ -82,7 +82,7 @@ int runBinarySearchTreeTest(){
     EX_NULL( "bstSearch fail", dataSearch );
 
     searchTemplate->value = -10;
-    bstRemove_b( aTree, searchTemplate );
+    bstRemove( aTree, searchTemplate );
     EX_STR_EQ( "bstRemove middle", "-15; -8; -6; -5; -4; 5; 7; 8; 10; 15", bstPreorder() );
 
 /*

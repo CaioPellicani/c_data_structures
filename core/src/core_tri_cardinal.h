@@ -28,8 +28,7 @@
     bool isLeaf( tNode *_thisNode );
     bool insertTNode( coordinates *_coords, tNode** _thisNode );
     bool insertNewTNode( coordinates *_coords, void* _data );
-    tNode* removeTNode( coordinates *_coords );
-    tNode* removeTNode_b( tNode** root, tNode** _deadNode );
+    tNode* removeTNode( coordinates *_coords, leftOver* _leftOver );
     bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
 
     leftOver *allocLeftOver();  

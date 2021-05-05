@@ -53,47 +53,21 @@ leftOver *allocLeftOver(){
     return result;
 }
 
-leftOver* removeTNode_c( tNode** root, tNode** _deadNode ){
-    return NULL;
-}
-
-tNode* removeTNode_b( tNode** root, tNode** _deadNode ){
-    tNode *leftOverSubTree = *_deadNode;
-
-    if( leftOverSubTree->root != NULL ){
-        if( leftOverSubTree->root->left == *_deadNode ){
-            leftOverSubTree->root->left = NULL;
-        }
-        else{
-            leftOverSubTree->root->right = NULL;
-        }
-        leftOverSubTree->root = NULL;
-    }
-    else{
-        *root = NULL;
-    }
-
-    free( leftOverSubTree->data );
-    leftOverSubTree->data = NULL;
-    return leftOverSubTree;
-}
-
-tNode* removeTNode( coordinates *_coords ){
+tNode* removeTNode( coordinates *_coords, leftOver* _leftOver ){
     tNode **position = NULL;
     tNode *leftOverSubTree = NULL;
-    coordinates* coords = allocCoordinates();
 
-    if( coords->position == ROOT ){
-        leftOverSubTree = *coords->root;
-        *coords->root = NULL;
+    if( _coords->position == ROOT ){
+        leftOverSubTree = *_coords->root;
+        *_coords->root = NULL;
         free( leftOverSubTree->data );
         return leftOverSubTree;
     }
 
-    position = _positioning( coords );
+    position = _positioning( _coords );
     if( *position != NULL ){
         leftOverSubTree = *position;
-        *coords->root = NULL;
+        *_coords->root = NULL;
         free( leftOverSubTree->data );
         leftOverSubTree->data = NULL;
         return leftOverSubTree;
