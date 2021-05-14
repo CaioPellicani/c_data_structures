@@ -5,3 +5,4 @@ test
 exec_*
 !exemple*.c
 !exemple*.h
+*.gdb

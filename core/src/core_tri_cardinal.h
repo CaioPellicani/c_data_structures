@@ -21,14 +21,14 @@
     }coordinates;
     
     typedef struct leftOver{
-        struct tNode* left;
-        struct tNode* right;
+        tNode* left;
+        tNode* right;
     }leftOver;
 
     bool isLeaf( tNode *_thisNode );
     bool insertTNode( coordinates *_coords, tNode** _thisNode );
     bool insertNewTNode( coordinates *_coords, void* _data );
-    tNode* removeTNode( coordinates *_coords, leftOver* _leftOver );
+    void removeTNode( tNode** _thisNode );
     bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
 
     leftOver *allocLeftOver();  

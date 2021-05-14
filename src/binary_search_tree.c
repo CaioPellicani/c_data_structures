@@ -17,7 +17,10 @@ typedef struct strBinarySearchTree{
 bool _bstIsValid( binarySearchTree *_tree );
 tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
 tNode *_getLimits( binarySearchTree *_tree, int direction );
-coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, void* _data );
+coordinates* _bstGetInsertCoordinates( coordinates* coords, binarySearchTree*_tree, void* _data );
+coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _tree, void *_searchData );
+bool _rellocateLeftOver( binarySearchTree* _tree, tNode** _oldRoot, leftOver* _treeLeftOver );
+tNode* _test( binarySearchTree* _tree, coordinates* coords );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -47,7 +50,7 @@ bool bstInsert( binarySearchTree*_tree, void* _data ){
     BOOL_VALID_BST( _tree );
     bool result = false;
     coordinates* coords = allocCoordinates();
-    coords = _bstGetCoordinates( coords, _tree, _data );
+    coords = _bstGetInsertCoordinates( coords, _tree, _data );
 
     if( insertNewTNode( coords, _data ) ){
         result = true;
@@ -59,24 +62,68 @@ bool bstInsert( binarySearchTree*_tree, void* _data ){
 bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     BOOL_EMPTY_BST( _tree );
     bool result = false;
-    leftOver *treeLeftOver = allocLeftOver();
-    coordinates * coords = allocCoordinates();
-    
-    coords = _bstGetCoordinates( coords, _tree, _searchData );
+    coordinates* coords = allocCoordinates();
+    coords = _bstGetSearchCoordinates( coords, _tree, _searchData );
 
-    if( removeTNode( coords, NULL ) ){
+    tNode** firstNode = &_tree->mainRoot;    
+    tNode** positionInRoot = NULL;
+    tNode* deadNode = NULL;
+    if( coords->root != NULL ){
+        tNode* seeingNode = NULL;
+
+        switch ( coords->position ) { 
+            case RIGHT : 
+                deadNode = ( *coords->root )->right;
+                positionInRoot = &( *coords->root )->right;
+                break;
+
+            case LEFT : 
+                deadNode = ( *coords->root )->left;
+                positionInRoot = &( *coords->root )->left;
+                break;
+            
+            case ROOT : 
+                deadNode = ( *coords->root );
+                positionInRoot = firstNode;
+                break;          
+        }   
+        if( ( deadNode->left == NULL ) && ( deadNode->right == NULL ) ){
+            *positionInRoot = NULL;
+        } 
+        if( ( deadNode->right != NULL ) && (deadNode->left == NULL ) ){
+            *positionInRoot = deadNode->right;
+            deadNode->right->root = deadNode->root;
+        }
+        if( ( deadNode->left != NULL ) && (deadNode->right == NULL ) ){
+            *positionInRoot = deadNode->left;
+            deadNode->left->root = deadNode->root;
+        }
+        if( ( deadNode->right != NULL ) && (deadNode->left != NULL ) ){
+            *positionInRoot= deadNode->right;
+            deadNode->right->root = deadNode->root;
+            seeingNode = deadNode->right;
+            while( seeingNode->left != NULL ){
+                seeingNode = seeingNode->left;
+            }
+            seeingNode->left = deadNode->left;
+        }
+    }  
+
+    if( deadNode != NULL ){
+        free( deadNode->data );
+        free( deadNode );
         result = true;
     }
 
-    printf( "\n\nl -> %p\nr -> %p\n\n", treeLeftOver->left, treeLeftOver->right );
     free( coords );
-    free( treeLeftOver );
     return result;
 }
 
 bool bstEmptyTree( binarySearchTree*_tree ){
-    if( ! bstIsEmpty( _tree ) ){
-        bstRemove( _tree, _tree->mainRoot->data );
+    void* deadNode = NULL;
+    while( ! bstIsEmpty( _tree ) ){
+        deadNode = bstGetBiggerData( _tree );
+        bstRemove( _tree, deadNode );
     }
     return true;
 }
@@ -94,12 +141,21 @@ bool bstPostorderDataUse( binarySearchTree* _tree, void ( *dataUseFunc ) ( void*
     return tNodeDataUse( _tree->mainRoot, dataUseFunc, POSTORDER );
 }
 
-void* bstSearch( binarySearchTree* _tree, void *_seachData ){
+void* bstSearch( binarySearchTree* _tree, void* _searchData ){
     NULL_EMPTY_DLL( _tree );
-    tNode* searchNode = _bstSearchTNode( _tree, _seachData );
-    if( searchNode != NULL ){
-        return searchNode->data;
+    coordinates* coords = allocCoordinates();
+    coords = _bstGetSearchCoordinates( coords, _tree, _searchData );
+
+    if( coords->root != NULL ){
+        switch ( coords->position ) {
+            case RIGHT : return ( *coords->root )->right->data;
+                break;
+            case LEFT : return ( *coords->root )->left->data;
+                break;
+            default : return ( *coords->root )->data;   
+        }
     }
+    free( coords );
     return NULL;
 }
 
@@ -119,56 +175,81 @@ bool _bstIsValid( binarySearchTree *_tree ){
     return ( _tree != NULL );
 }
 
-tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData ){
-    assert( ! bstIsEmpty( _tree ) );
-    tNode* seeingNode = _tree->mainRoot;
-    
-    while ( !isLeaf( seeingNode ) ){            
-        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
-            seeingNode = seeingNode->left;
-        }
-        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER ){
-            seeingNode = seeingNode->right;
-        }
-        if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL ){
-            return seeingNode;
-        }
-    }
-    return NULL;
-}
-
 tNode *_getLimits( binarySearchTree *_tree, int direction ){
     assert( ! bstIsEmpty( _tree ) );
     assert( ( direction == LEFT) || ( direction == RIGHT ) );
-    tNode *seeingNode = _tree->mainRoot;    
+   
+    if( isLeaf( _tree->mainRoot ) ){
+        return _tree->mainRoot;
+    }
+
+    tNode *seeingNode = _tree->mainRoot; 
 
     if( direction == LEFT ){
         while ( seeingNode->left != NULL ){
             seeingNode = seeingNode->left;
         }
-        if( isLeaf( seeingNode ) ){
-            return seeingNode;
-        }
-        return seeingNode->right;
+        return seeingNode;
     }
 
     if( direction == RIGHT ){
         while ( seeingNode->right != NULL ){
             seeingNode = seeingNode->right;
         }
-        if( isLeaf( seeingNode ) ){
-            return seeingNode;
-        }
-        return seeingNode->left;
+        return seeingNode;
+
     }
     return NULL;
 }
 
-coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, void* _data ){
+coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _tree, void *_searchData ){
+    assert( ! bstIsEmpty( _tree ) );
+
+    coordinates* result = coords;
+    result->root = NULL;
+    result->position = ROOT;
+    tNode* seeingNode = _tree->mainRoot;
+
+    if( _tree->comparison( _searchData, seeingNode->data ) == EQUAL ){
+        result->root = &_tree->mainRoot;
+        result->position = ROOT;
+        return result;
+    }
+
+    while ( !isLeaf( seeingNode ) ){            
+        if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
+            if( seeingNode->right == NULL ){ break; }
+            if( _tree->comparison( _searchData, seeingNode->left->data ) == EQUAL ){
+                result->root = &seeingNode;
+                result->position = LEFT;
+                break;
+            } else{
+                seeingNode = seeingNode->left;
+            }
+        }
+
+        if( _tree->comparison( _searchData, seeingNode->data ) == LARGER ){
+            if( seeingNode->right == NULL ){ break; }
+            if( ( _tree->comparison( _searchData, seeingNode->right->data ) ) == EQUAL ){
+               result->root = &seeingNode;
+               result->position = RIGHT;
+               break;
+            } else{
+                seeingNode = seeingNode->right;
+            }
+        }
+    }
+    
+    return result;
+}
+
+coordinates* _bstGetInsertCoordinates( coordinates* coords, binarySearchTree*_tree, void* _data ){
+    coordinates *result = coords;
+
     result->root = &_tree->mainRoot;
     result->position = ROOT;
 
-    if( bstIsEmpty( _tree ) || ( _tree->comparison( _data, ( *result->root )->data ) == EQUAL ) ){
+    if( bstIsEmpty( _tree ) ){
         return result;
     }
 
@@ -189,5 +270,7 @@ coordinates* _bstGetCoordinates( coordinates* result, binarySearchTree*_tree, vo
             result->root = &( *result->root )->right;
         }
     }
+    assert( result->root != NULL );
     return result;
 }
+

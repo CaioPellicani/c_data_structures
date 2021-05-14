@@ -4,11 +4,26 @@ void _nullFunc( void* nullPointer );
 tNode* _newBlankTNode( tNode* _root );
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
 tNode** _positioning( coordinates *_coords  );
+void _disconnectFromRoot(  tNode** _mainRoot, tNode *_thisNode );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 bool isLeaf( tNode *_thisNode ){
     return( ( _thisNode->left == NULL ) && ( _thisNode->right == NULL ) );
+}
+
+coordinates *allocCoordinates(){
+    coordinates *result = calloc( 0, sizeof( coordinates ) );
+    assert( result != NULL );
+    assert( ( result->root == NULL ) && ( result->position == 0 ) );
+    return result;
+}
+
+leftOver *allocLeftOver(){
+    leftOver *result = calloc( 0, sizeof( leftOver ) );
+    assert( result != NULL );
+    assert( ( result->right == NULL) && ( result->left == NULL ) );
+    return result;
 }
 
 bool insertNewTNode( coordinates *_coords, void* _data ){
@@ -32,47 +47,12 @@ bool insertTNode( coordinates *_coords, tNode** _thisNode ){
 
     tNode **position = NULL;
     position = _positioning( _coords );
-    if( *position == NULL ){
+    if( *position == NULL ){ //assert possition is vacancy of node
         *position = *_thisNode;
         ( *_thisNode )->root = *_coords->root;
         return true;
     }
     return false;
-}
-coordinates *allocCoordinates(){
-    coordinates *result = calloc( 0, sizeof( coordinates ) );
-    assert( result != NULL );
-    assert( ( result->root == NULL ) && ( result->position == 0 ) );
-    return result;
-}
-
-leftOver *allocLeftOver(){
-    leftOver *result = calloc( 0, sizeof( leftOver ) );
-    assert( result != NULL );
-    assert( ( result->right == NULL) && ( result->left == NULL ) );
-    return result;
-}
-
-tNode* removeTNode( coordinates *_coords, leftOver* _leftOver ){
-    tNode **position = NULL;
-    tNode *leftOverSubTree = NULL;
-
-    if( _coords->position == ROOT ){
-        leftOverSubTree = *_coords->root;
-        *_coords->root = NULL;
-        free( leftOverSubTree->data );
-        return leftOverSubTree;
-    }
-
-    position = _positioning( _coords );
-    if( *position != NULL ){
-        leftOverSubTree = *position;
-        *_coords->root = NULL;
-        free( leftOverSubTree->data );
-        leftOverSubTree->data = NULL;
-        return leftOverSubTree;
-    }
-    return leftOverSubTree;
 }
 
 bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
@@ -116,6 +96,8 @@ bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
 }
 
 tNode** _positioning( coordinates *_coords ){
+    assert( *_coords->root != NULL );
+    tNode **result = NULL;
     tNode* _root = *_coords->root;
     
     switch ( _coords->position  ){
@@ -136,8 +118,8 @@ tNode** _positioning( coordinates *_coords ){
             return &_root->root->left;
         }
         break;
-    default: 
-        return NULL;
     }  
+    printf( "\npostioning %p", result );
+    return result;
 }
 

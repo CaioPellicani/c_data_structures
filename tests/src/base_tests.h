@@ -7,7 +7,6 @@ char result[500];
 
 typedef struct data{
     int value;
-    
 }data;
 
 data* newData( int _value ); 

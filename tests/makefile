@@ -21,5 +21,8 @@ test: ${TOBJ}
 run: test
 	./test
 
+gdb: test
+	gdb ./test -x ./init.gdb
+
 clean: 
 	rm -f ${PATH_TOBJ}/*.o ./test
