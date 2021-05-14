@@ -147,13 +147,12 @@ void* bstSearch( binarySearchTree* _tree, void* _searchData ){
     coords = _bstGetSearchCoordinates( coords, _tree, _searchData );
 
     if( coords->root != NULL ){
-        switch ( coords->position ) {
-            case RIGHT : return ( *coords->root )->right->data;
-                break;
-            case LEFT : return ( *coords->root )->left->data;
-                break;
-            default : return ( *coords->root )->data;   
-        }
+        void* lookUpTable[3];
+        lookUpTable[ROOT] = ( *coords->root )->data;
+        lookUpTable[RIGHT] = ( *coords->root )->right->data;
+        lookUpTable[LEFT] = ( *coords->root )->left->data;
+
+        return lookUpTable[ coords->position ]; 
     }
     free( coords );
     return NULL;
