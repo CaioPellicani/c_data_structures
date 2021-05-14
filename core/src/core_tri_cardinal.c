@@ -97,29 +97,13 @@ bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
 
 tNode** _positioning( coordinates *_coords ){
     assert( *_coords->root != NULL );
-    tNode **result = NULL;
     tNode* _root = *_coords->root;
+
+    tNode **lookUpTable[3];
+    lookUpTable[ROOT] = &_root->root;
+    lookUpTable[LEFT] = &_root->left;
+    lookUpTable[RIGHT] = &_root->right;
     
-    switch ( _coords->position  ){
-    case ROOT:
-        return &_root->root;
-        break;
-    case LEFT:
-        return &_root->left;
-        break;
-    case RIGHT:
-        return &_root->right;
-        break;
-    case BOTHER:
-        if( _root->root->left == _root ){
-            return &_root->root->right;     
-        }
-        else{
-            return &_root->root->left;
-        }
-        break;
-    }  
-    printf( "\npostioning %p", result );
-    return result;
+    return lookUpTable[ _coords->position ];
 }
 
