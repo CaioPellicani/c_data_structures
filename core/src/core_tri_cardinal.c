@@ -4,7 +4,8 @@ void _nullFunc( void* nullPointer );
 tNode* _newBlankTNode( tNode* _root );
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
 tNode** _positioning( coordinates *_coords  );
-void _disconnectFromRoot(  tNode** _mainRoot, tNode *_thisNode );
+tNode *_diconnectTNode( tNode** _mainRoot, coordinates *coords );
+
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -55,12 +56,23 @@ bool insertTNode( coordinates *_coords, tNode** _thisNode ){
     return false;
 }
 
+bool removeTNode( tNode** _mainRoot, coordinates *coords ){
+    tNode* deadNode = _diconnectTNode( _mainRoot, coords );
+
+    if( deadNode != NULL ){
+        free( deadNode->data );
+        free( deadNode );
+        return true;
+    }
+    return false;
+}
+
 bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
     assert( _mainRoot != NULL );
-    dataUseFunction orderFunc[3] = { &_nullFunc,  &_nullFunc,  &_nullFunc };
-    orderFunc[type] = dataUseFunc;
+    dataUseFunction lookUpTable[3] = { &_nullFunc,  &_nullFunc,  &_nullFunc };
+    lookUpTable[type] = dataUseFunc;
 
-    return _tNodeDataUse( _mainRoot, orderFunc );
+    return _tNodeDataUse( _mainRoot, lookUpTable );
 }
 
 /*  -   INTERNAL FUNCTIONS  -   */
@@ -105,5 +117,54 @@ tNode** _positioning( coordinates *_coords ){
     lookUpTable[RIGHT] = &_root->right;
     
     return lookUpTable[ _coords->position ];
+}
+
+tNode *_diconnectTNode( tNode** firstNode, coordinates * coords ){
+    tNode* deadNode = NULL;
+    tNode** positionInRoot;
+
+    enum { DEAD_NODE, ROOT_POS };    
+    tNode** lookUpTable[2][3];
+    int position = coords->position;
+
+    if( coords->root != NULL ){
+        lookUpTable[DEAD_NODE][RIGHT] = &( *coords->root )->right;
+        lookUpTable[ROOT_POS][RIGHT] = &( *coords->root )->right;
+
+        lookUpTable[DEAD_NODE][LEFT] = &( *coords->root )->left;
+        lookUpTable[ROOT_POS][LEFT] = &( *coords->root )->left;
+
+        lookUpTable[DEAD_NODE][ROOT] = &( *coords->root );
+        lookUpTable[ROOT_POS][ROOT] = firstNode;
+
+        deadNode = *( lookUpTable[DEAD_NODE][position] );
+        positionInRoot = lookUpTable[ROOT_POS][position];
+    }  
+
+    if( deadNode != NULL ){
+        tNode* seeingNode = NULL;
+        if( ( deadNode->left == NULL ) && ( deadNode->right == NULL ) ){
+            *positionInRoot = NULL;
+        } 
+        if( ( deadNode->right != NULL ) && (deadNode->left == NULL ) ){
+            *positionInRoot = deadNode->right;
+            deadNode->right->root = deadNode->root;
+        }
+        if( ( deadNode->left != NULL ) && (deadNode->right == NULL ) ){
+            *positionInRoot = deadNode->left;
+            deadNode->left->root = deadNode->root;
+        }
+        if( ( deadNode->right != NULL ) && (deadNode->left != NULL ) ){
+            *positionInRoot= deadNode->right;
+            deadNode->right->root = deadNode->root;
+            seeingNode = deadNode->right;
+            while( seeingNode->left != NULL ){
+                seeingNode = seeingNode->left;
+            }
+            seeingNode->left = deadNode->left;
+        }
+        return deadNode;
+    }
+    return NULL;
 }
 

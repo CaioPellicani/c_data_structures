@@ -9,7 +9,6 @@ typedef int( *comparisonFunction )( void *larger, void *smaller );
 
 typedef struct strBinarySearchTree{
     tNode * mainRoot;
-    int size;
     comparisonFunction comparison;
 }binarySearchTree;
 
@@ -19,17 +18,13 @@ tNode* _bstSearchTNode( binarySearchTree* _tree, void *_searchData );
 tNode *_getLimits( binarySearchTree *_tree, int direction );
 coordinates* _bstGetInsertCoordinates( coordinates* coords, binarySearchTree*_tree, void* _data );
 coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _tree, void *_searchData );
-bool _rellocateLeftOver( binarySearchTree* _tree, tNode** _oldRoot, leftOver* _treeLeftOver );
-tNode* _test( binarySearchTree* _tree, coordinates* coords );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 binarySearchTree* bstInit( comparisonFunction _comparison ){
     binarySearchTree* newTree;
-    newTree = ( binarySearchTree* ) malloc( sizeof( binarySearchTree ) );
-    assert( _bstIsValid( newTree ) );
-    newTree->size = 0;
-    newTree->mainRoot = NULL;
+    newTree = ( binarySearchTree* ) calloc( 0, sizeof( binarySearchTree ) );
+    assert( ( _bstIsValid( newTree ) ) && ( newTree->mainRoot == NULL ) );
     newTree->comparison = _comparison;
     return newTree;
 }
@@ -62,70 +57,24 @@ bool bstInsert( binarySearchTree*_tree, void* _data ){
 bool bstRemove( binarySearchTree* _tree, void* _searchData ){
     BOOL_EMPTY_BST( _tree );
     bool result = false;
+
     coordinates* coords = allocCoordinates();
     coords = _bstGetSearchCoordinates( coords, _tree, _searchData );
 
-    tNode** firstNode = &_tree->mainRoot;    
-    tNode** positionInRoot = NULL;
-    tNode* deadNode = NULL;
-    if( coords->root != NULL ){
-        tNode* seeingNode = NULL;
-
-        switch ( coords->position ) { 
-            case RIGHT : 
-                deadNode = ( *coords->root )->right;
-                positionInRoot = &( *coords->root )->right;
-                break;
-
-            case LEFT : 
-                deadNode = ( *coords->root )->left;
-                positionInRoot = &( *coords->root )->left;
-                break;
-            
-            case ROOT : 
-                deadNode = ( *coords->root );
-                positionInRoot = firstNode;
-                break;          
-        }   
-        if( ( deadNode->left == NULL ) && ( deadNode->right == NULL ) ){
-            *positionInRoot = NULL;
-        } 
-        if( ( deadNode->right != NULL ) && (deadNode->left == NULL ) ){
-            *positionInRoot = deadNode->right;
-            deadNode->right->root = deadNode->root;
-        }
-        if( ( deadNode->left != NULL ) && (deadNode->right == NULL ) ){
-            *positionInRoot = deadNode->left;
-            deadNode->left->root = deadNode->root;
-        }
-        if( ( deadNode->right != NULL ) && (deadNode->left != NULL ) ){
-            *positionInRoot= deadNode->right;
-            deadNode->right->root = deadNode->root;
-            seeingNode = deadNode->right;
-            while( seeingNode->left != NULL ){
-                seeingNode = seeingNode->left;
-            }
-            seeingNode->left = deadNode->left;
-        }
-    }  
-
-    if( deadNode != NULL ){
-        free( deadNode->data );
-        free( deadNode );
-        result = true;
-    }
+    result = removeTNode( &_tree->mainRoot, coords );
 
     free( coords );
     return result;
 }
 
 bool bstEmptyTree( binarySearchTree*_tree ){
-    void* deadNode = NULL;
     while( ! bstIsEmpty( _tree ) ){
-        deadNode = bstGetBiggerData( _tree );
-        bstRemove( _tree, deadNode );
+        bstRemove( _tree, bstGetBiggerData( _tree ) );
     }
-    return true;
+    if( bstIsEmpty( _tree ) ){
+        return true;
+    }
+    return false;
 }
 
 bool bstInorderDataUse( binarySearchTree* _tree, dataUseFunction dataUseFunc ){
