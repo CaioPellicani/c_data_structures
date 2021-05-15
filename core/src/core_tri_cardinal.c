@@ -3,9 +3,9 @@
 void _nullFunc( void* nullPointer );
 tNode* _newBlankTNode( tNode* _root );
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
+bool _insertTNode( coordinates *_coords, tNode** _thisNode );
 tNode** _positioning( coordinates *_coords  );
 tNode *_diconnectTNode( tNode** _mainRoot, coordinates *coords );
-
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -16,23 +16,16 @@ bool isLeaf( tNode *_thisNode ){
 coordinates *allocCoordinates(){
     coordinates *result = calloc( 0, sizeof( coordinates ) );
     assert( result != NULL );
-    assert( ( result->root == NULL ) && ( result->position == 0 ) );
-    return result;
-}
-
-leftOver *allocLeftOver(){
-    leftOver *result = calloc( 0, sizeof( leftOver ) );
-    assert( result != NULL );
-    assert( ( result->right == NULL) && ( result->left == NULL ) );
+    assert( result->root == NULL );
+    assert( result->position == 0 );
     return result;
 }
 
 bool insertNewTNode( coordinates *_coords, void* _data ){
     tNode *newNode = _newBlankTNode( *_coords->root );
-    assert( newNode != NULL );
     newNode->data = _data;
     
-    if( insertTNode( _coords, &newNode ) ){
+    if( _insertTNode( _coords, &newNode ) ){
         return true;
     }
 
@@ -40,21 +33,6 @@ bool insertNewTNode( coordinates *_coords, void* _data ){
     return false;
 }
 
-bool insertTNode( coordinates *_coords, tNode** _thisNode ){
-    if( _coords->position == ROOT ){
-        *_coords->root = *_thisNode;
-        return true;
-    }
-
-    tNode **position = NULL;
-    position = _positioning( _coords );
-    if( *position == NULL ){ //assert possition is vacancy of node
-        *position = *_thisNode;
-        ( *_thisNode )->root = *_coords->root;
-        return true;
-    }
-    return false;
-}
 
 bool removeTNode( tNode** _mainRoot, coordinates *coords ){
     tNode* deadNode = _diconnectTNode( _mainRoot, coords );
@@ -90,21 +68,38 @@ tNode* _newBlankTNode( tNode* _root ){
     return newNode;
 }
 
-bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] ){
-    _orderFunc[INORDER]( _mainRoot->data );
+bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction lookUpTable[] ){
+    lookUpTable[INORDER]( _mainRoot->data );
     
     if( _mainRoot->left != NULL ){
-       _tNodeDataUse( _mainRoot->left, _orderFunc );
+       _tNodeDataUse( _mainRoot->left, lookUpTable );
     }
 
-    _orderFunc[PREORDER]( _mainRoot->data );
+    lookUpTable[PREORDER]( _mainRoot->data );
 
     if( _mainRoot->right != NULL ){
-        _tNodeDataUse( _mainRoot->right, _orderFunc );
+        _tNodeDataUse( _mainRoot->right, lookUpTable );
     }
 
-    _orderFunc[POSTORDER]( _mainRoot->data );
+    lookUpTable[POSTORDER]( _mainRoot->data );
     return true;
+}
+
+
+bool _insertTNode( coordinates *_coords, tNode** _thisNode ){
+    if( _coords->position == ROOT ){
+        *_coords->root = *_thisNode;
+        return true;
+    }
+
+    tNode **position = NULL;
+    position = _positioning( _coords );
+    if( *position == NULL ){ //assert possition is vacancy of node
+        *position = *_thisNode;
+        ( *_thisNode )->root = *_coords->root;
+        return true;
+    }
+    return false;
 }
 
 tNode** _positioning( coordinates *_coords ){
@@ -123,7 +118,8 @@ tNode *_diconnectTNode( tNode** firstNode, coordinates * coords ){
     tNode* deadNode = NULL;
     tNode** positionInRoot;
 
-    enum { DEAD_NODE, ROOT_POS };    
+    enum { DEAD_NODE, ROOT_POS };   
+     
     tNode** lookUpTable[2][3];
     int position = coords->position;
 

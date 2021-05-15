@@ -19,18 +19,11 @@
         tNode** root;
         int position;
     }coordinates;
-    
-    typedef struct leftOver{
-        tNode* left;
-        tNode* right;
-    }leftOver;
 
     bool isLeaf( tNode *_thisNode );
-    bool insertTNode( coordinates *_coords, tNode** _thisNode );
     bool insertNewTNode( coordinates *_coords, void* _data );
     bool removeTNode( tNode** _mainRoot, coordinates *coords );
     bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type );
 
-    leftOver *allocLeftOver();  
     coordinates *allocCoordinates();
 #endif
