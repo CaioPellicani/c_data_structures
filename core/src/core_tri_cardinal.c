@@ -1,7 +1,7 @@
 #include "core_tri_cardinal.h"
 
 void _nullFunc( void* nullPointer );
-tNode* _newBlankTNode( tNode* _root );
+tNode* _newBlankTNode();
 bool _tNodeDataUse( tNode* _mainRoot, dataUseFunction _orderFunc[] );
 bool _insertTNode( coordinates *_coords, tNode** _thisNode );
 tNode** _positioning( coordinates *_coords  );
@@ -22,13 +22,13 @@ coordinates *allocCoordinates(){
 }
 
 bool insertNewTNode( coordinates *_coords, void* _data ){
-    tNode *newNode = _newBlankTNode( *_coords->root );
+    tNode *newNode = _newBlankTNode();
+    newNode->root = ( *_coords->root );
     newNode->data = _data;
     
     if( _insertTNode( _coords, &newNode ) ){
         return true;
     }
-
     free( newNode );
     return false;
 }
@@ -57,14 +57,20 @@ bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
 
 void _nullFunc( void* nullPointer ){ return; }
 
-tNode* _newBlankTNode( tNode* _root ){
+tNode* _newBlankTNode(){
     tNode* newNode;
     newNode = malloc( sizeof( tNode ) );
     assert( newNode != NULL );
 
     newNode->data = NULL;
-    newNode->root = _root;
-    newNode->left = newNode->right = NULL;
+    newNode->root = NULL;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    assert( newNode->data == NULL );
+    assert( newNode->left == NULL );
+    assert( newNode->right == NULL );
+    assert( newNode->root == NULL );
     return newNode;
 }
 
