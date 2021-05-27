@@ -6,6 +6,7 @@
 #include "doubleLinkedListTest.h"
 #include "orderDoubleLinkedListTests.h"
 #include "binarySearchTreeTests.h"
+#include "trieTests.h"
    
 int main( int argc, char** argv ){ 
     getData( NULL );
@@ -16,6 +17,7 @@ int main( int argc, char** argv ){
     runDoubleLinkedListTest();
     runOrderDoubleLinkedListTest();
     runBinarySearchTreeTest();
+    runTrieTest();
     return 0;  
 }
  

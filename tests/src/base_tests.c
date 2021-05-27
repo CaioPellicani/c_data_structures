@@ -15,7 +15,6 @@ void showData( void* _data ){
     }
 }
 
-
 int comparison( void* _larger, void* _smaller ){
     data *larger = ( data* ) _larger;
     data *smaller = ( data* ) _smaller;
