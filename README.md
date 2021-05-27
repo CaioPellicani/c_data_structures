@@ -9,12 +9,12 @@
 
 * The data structures is not focus on the securite, with this understanding that it comes with NO WARRANTY
 
-* * The project needed automatized tests that was developed based on [minunit tests](http://www.jera.com/techinfo/jtns/jtn002.html)
+* The project needed automatized tests that was developed based on [minunit tests](http://www.jera.com/techinfo/jtns/jtn002.html)
 
  -------
 
 | Complete | Data Structure
-| :-----:   | :----
+| :-----:  | :----
 |[X]       |  Stack
 |[X]       |  Queue
 |[X]       |  Linked List
