@@ -96,11 +96,15 @@ bool bNodeDataUse( bNode* _firstNode, dataUseFunction dataUseFunc  ){
 /*  -   INTERNAL FUNCTIONS  -   */
 
 bNode* _newBlankBNode(){
-    bNode* newNode;
-    newNode = malloc( sizeof( bNode ) );
+    bNode* newNode = malloc( sizeof( bNode ) );
     assert( newNode != NULL );
-    
+
     newNode->data = NULL;
-    newNode->prevNode = newNode->nextNode = NULL;
+    newNode->prevNode = NULL;
+    newNode->prevNode = NULL;
+
+    assert( newNode->data == NULL );
+    assert( newNode->prevNode == NULL );
+    assert( newNode->prevNode == NULL );
     return newNode;
 }

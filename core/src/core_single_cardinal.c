@@ -91,11 +91,13 @@ bool dataUse( node* firstNode,dataUseFunction dataUseFunc ){
 /*  -   INTERNAL FUNCTIONS  -   */
 
 node* _newBlankNode(){
-    node* newNode;
-    newNode = malloc( sizeof( node ) );
+    node* newNode = calloc( 0, sizeof( node ) );
     assert( newNode != NULL );
 
-    newNode->data = NULL;
-    newNode->nextNode = NULL;
+    newNode->data == NULL;
+    newNode->nextNode == NULL;
+
+    assert( newNode->data == NULL );
+    assert( newNode->nextNode == NULL );
     return newNode;
 }

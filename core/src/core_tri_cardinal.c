@@ -58,8 +58,7 @@ bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
 void _nullFunc( void* nullPointer ){ return; }
 
 tNode* _newBlankTNode(){
-    tNode* newNode;
-    newNode = malloc( sizeof( tNode ) );
+    tNode* newNode = malloc( sizeof( tNode ) );
     assert( newNode != NULL );
 
     newNode->data = NULL;
