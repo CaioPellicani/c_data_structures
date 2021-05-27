@@ -5,11 +5,11 @@
 
 * There's no clear objectives beside learning.
 
-* One of the requisite of my aproach for the data structures is that they function as an library for generic types, so learning about __void pointers__ and __function pointers__ was needed
+* One of the requisite of my aproach for the data structures is that they function as an library for generic types, so learning about __void pointers__ and __function pointers__ was needed.
 
-* The data structures is not focus on the securite, with this understanding that it comes with NO WARRANTY
+* The data structures is not focus on the security, with this understanding that it comes with NO WARRANTY.
 
-* The project needed automatized tests that was developed based on [minunit tests](http://www.jera.com/techinfo/jtns/jtn002.html)
+* The project needed automatized tests that was developed based on [minunit tests](http://www.jera.com/techinfo/jtns/jtn002.html).
 
  -------
 
