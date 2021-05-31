@@ -11,6 +11,7 @@
         "core_single_cardinal.h": "c",
         "stdheader.h": "c",
         "doublelinkedlisttest.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "functional": "c"
     }
 }

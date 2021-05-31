@@ -23,7 +23,7 @@ typedef struct strOrderDoubleLinkedList{
 /*  -   INTERNAL FUNCTIONS  -   */
 
 orderDoubleLinkedList* odllInit( comparisonFunction _comparison ){
-    orderDoubleLinkedList* newList = ( orderDoubleLinkedList* ) malloc( sizeof( orderDoubleLinkedList ) );
+    orderDoubleLinkedList* newList = ( orderDoubleLinkedList* ) malloc( sizeof( *newList ) );
     assert( _odllValidList( newList ) );
     newList->head = NULL;
     newList->size = 0;

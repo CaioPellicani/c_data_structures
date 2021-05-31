@@ -19,7 +19,7 @@ bNode* _dllGetBNodeAt( doubleLinkedList* _list, int pos );
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 doubleLinkedList* dllInit(){
-    doubleLinkedList* newList = ( doubleLinkedList* ) malloc( sizeof( doubleLinkedList ) );
+    doubleLinkedList* newList = ( doubleLinkedList* ) malloc( sizeof( *newList ) );
     assert( _dllValidList( newList ) );
     newList->head = NULL;
     newList->tail = NULL;

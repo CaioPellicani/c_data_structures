@@ -12,7 +12,7 @@ bool _validQueue( queue* _queue );
 
 queue* initQueue(){
     queue* newQueue;
-    newQueue = ( queue* ) malloc( sizeof( queue ) );
+    newQueue = ( queue* ) malloc( sizeof( *newQueue ) );
     assert( _validQueue( newQueue ) );
     newQueue->list = dllInit();
     return newQueue;

@@ -14,7 +14,7 @@ bool isLeaf( tNode *_thisNode ){
 }
 
 coordinates *allocCoordinates(){
-    coordinates *result = calloc( 0, sizeof( coordinates ) );
+    coordinates *result = calloc( 0, sizeof( *result ) );
     assert( result != NULL );
     assert( result->root == NULL );
     assert( result->position == 0 );
@@ -58,7 +58,7 @@ bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
 void _nullFunc( void* nullPointer ){ return; }
 
 tNode* _newBlankTNode(){
-    tNode* newNode = malloc( sizeof( tNode ) );
+    tNode* newNode = malloc( sizeof( *newNode ) );
     assert( newNode != NULL );
 
     newNode->data = NULL;

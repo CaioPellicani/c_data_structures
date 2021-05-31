@@ -12,7 +12,7 @@ bool  _validStack( stack* _stack );
 
 stack* initStack(){
     stack* newStack;
-    newStack = (stack*) malloc( sizeof( stack ) );
+    newStack = ( stack* ) malloc( sizeof( *newStack ) );
     assert( _validStack( newStack ) );
 
     newStack->list = llInit();

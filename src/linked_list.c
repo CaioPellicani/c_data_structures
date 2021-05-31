@@ -17,7 +17,7 @@ bool _llRemoveNextNode( linkedList* _list, int prevNodePostion );
 /*  -   INTERNAL FUNCTIONS  -   */
 
 linkedList* llInit(){
-    linkedList* newList = ( linkedList* ) malloc( sizeof( linkedList ) );
+    linkedList* newList = ( linkedList* ) malloc( sizeof( *newList ) );
     assert( _llValidList( newList ) );
     newList->head = NULL;    
     newList->size = 0;

@@ -21,7 +21,7 @@ typedef struct strOrderLinkedList{
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 orderLinkedList* ollInit( comparisonFunction _comparison ){
-    orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( orderLinkedList ) );
+    orderLinkedList* newList = ( orderLinkedList* ) malloc( sizeof( *newList ) );
     assert( _ollValidList( newList ) );
     newList->head = NULL;
     newList->size = 0;
