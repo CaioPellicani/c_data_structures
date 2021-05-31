@@ -24,5 +24,8 @@ run: test
 gdb: test
 	gdb ./test -x ./init.gdb
 
+valgrind: test
+	valgrind ./test
+
 clean: 
 	rm -f ${PATH_TOBJ}/*.o ./test

@@ -59,6 +59,9 @@ run_tests: lib
 gdb: lib
 	cd tests && touch ./src/main_tests.c && $(MAKE) gdb
 
+vgd:
+	cd tests && touch ./src/main_tests.c && $(MAKE) valgrind
+
 mtests: lib
 	cd tests && touch ./src/main_tests.c && $(MAKE) test	
 
