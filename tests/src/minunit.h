@@ -22,7 +22,7 @@ int closeTest( testGroup group );
 
 #define INIT_TESTS( groupName )                                  \
   testGroup thisGroup;                                           \
-  thisGroup.testsRun = 15;                                       \
+  thisGroup.testsRun = 0;                                        \
   strcpy( thisGroup.name, groupName );                           \
   data *searchTemplate = calloc( 0, sizeof( *searchTemplate ) ); \
   thisGroup.template = &searchTemplate;    

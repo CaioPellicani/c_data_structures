@@ -54,16 +54,16 @@ run: ${NAME}
 	${PATH_BIN}/exec_$^
 
 run_tests: lib
-	cd tests && touch ./src/main_tests.c && $(MAKE)
+	cd tests && touch ./src/minunit.c && $(MAKE)
 
 gdb: lib
-	cd tests && touch ./src/main_tests.c && $(MAKE) gdb
+	cd tests && touch ./src/minunit.c && $(MAKE) gdb
 
 vgd:
-	cd tests && touch ./src/main_tests.c && $(MAKE) valgrind
+	cd tests && touch ./src/minunit.c && $(MAKE) valgrind
 
 mtests: lib
-	cd tests && touch ./src/main_tests.c && $(MAKE) test	
+	cd tests && touch ./src/minunit.c && $(MAKE) test	
 
 ctests: 
 	cd tests && $(MAKE) clean

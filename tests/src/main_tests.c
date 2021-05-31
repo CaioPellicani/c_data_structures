@@ -7,10 +7,11 @@
 #include "orderDoubleLinkedListTests.h"
 #include "binarySearchTreeTests.h"
 #include "trieTests.h"
+#include "hashTableTests.h"
    
 int main( int argc, char** argv ){ 
     getData( NULL );
-    runStackTest();  
+    runStackTest();    
     runQueueTest(); 
     runLinkedListTest();
     runOrderLinkedListTest();
