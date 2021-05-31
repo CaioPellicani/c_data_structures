@@ -1,17 +1,21 @@
 #include "base_tests.h"
 
 data* newData( int _value ){
-    data* newData = ( data* ) malloc( sizeof( data ) );
+    data* newData = ( data* ) malloc( sizeof( *newData ) );
     newData->value = _value;
     return newData;
 }   
 void showData( void* _data ){
     data* aData = ( data* )_data;
+    char buf[10];
+    sprintf( buf, "%d", aData->value );
+    
     if( strcmp( result, "" ) == 0 ){
-        sprintf( result, "%d", aData->value );
+        strcpy( result, buf );
     }
     else{
-        sprintf( result, "%s; %d", result, aData->value );
+        strcat( result, "; " );
+        strcat( result, buf );
     }
 }
 

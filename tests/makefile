@@ -1,5 +1,5 @@
 #makefile DIY unity tests
-
+TEST_FLAG=-g -w
 LIB_CORE=-L../core/bin -lcore
 LIB_DS=-L../bin -ldatastructs 
 LIBS=${LIB_DS} ${LIB_CORE}
@@ -13,7 +13,7 @@ TOBJ=$(patsubst ${PATH_TSRC}/%.c, ${PATH_TOBJ}/%.o, ${TSRC} )
 all: run
 
 ${PATH_TOBJ}/%.o: ${PATH_TSRC}/%.c
-	${CC} ${FLAG} -c $^ -o $@
+	${CC} ${TEST_FLAG} -c $^ -o $@
 
 test: ${TOBJ}
 	${CC} $^ ${LIBS} -o $@ 
@@ -25,7 +25,7 @@ gdb: test
 	gdb ./test -x ./init.gdb
 
 valgrind: test
-	valgrind ./test
+	valgrind --leak-check=full ./test 
 
 clean: 
 	rm -f ${PATH_TOBJ}/*.o ./test
