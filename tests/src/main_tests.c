@@ -18,6 +18,7 @@ int main( int argc, char** argv ){
     runOrderDoubleLinkedListTest();
     runBinarySearchTreeTest();
     runTrieTest();
+    runHashTableTest();
     return 0;  
 }
  
