@@ -14,8 +14,12 @@ bool isLeaf( tNode *_thisNode ){
 }
 
 coordinates *allocCoordinates(){
-    coordinates *result = calloc( 0, sizeof( *result ) );
+    coordinates *result = malloc( sizeof( *result ) );
     assert( result != NULL );
+
+    result->position = 0;
+    result->root = NULL;
+    
     assert( result->root == NULL );
     assert( result->position == 0 );
     return result;

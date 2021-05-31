@@ -96,12 +96,15 @@ void* bstSearch( binarySearchTree* _tree, void* _searchData ){
     coords = _bstGetSearchCoordinates( coords, _tree, _searchData );
 
     if( coords->root != NULL ){
+        int position = coords->position;
+        
         void* lookUpTable[3];
         lookUpTable[ROOT] = ( *coords->root )->data;
         lookUpTable[RIGHT] = ( *coords->root )->right->data;
         lookUpTable[LEFT] = ( *coords->root )->left->data;
 
-        return lookUpTable[ coords->position ]; 
+        free( coords );
+        return lookUpTable[ position ]; 
     }
     free( coords );
     return NULL;

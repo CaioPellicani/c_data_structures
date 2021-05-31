@@ -35,10 +35,10 @@ int runStackTest(){
     EX_FALSE( "before emptyStack", stackIsEmpty( aStack ) );
     emptyStack( aStack );
     EX_TRUE( "after emptyStack", stackIsEmpty( aStack ) );
-/*
+
     top = (data*)getTopData( aStack );
     EX_NULL( "Fail getTopData", top );
-*/
+
     deleteStack( &aStack );
     EX_NULL( "deleteStack", aStack );
 
