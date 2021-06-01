@@ -24,5 +24,9 @@
 |[X]       |  Binary Search Tree
 |[ ]       |  Trie
 |[ ]       |  HashTable
+|[ ]       |  Red-Black Tree
+|[ ]       |  AVL Tree 
+|[ ]       |  B- Tree
+|[ ]       |  B+ Tree    
 
  -------
