@@ -1,6 +1,6 @@
 #makefile DIY unity tests
 TEST_FLAG=-g -w
-VGD_FLAG=--leak-check=full --show-leak-kinds=all
+VGD_FLAG=--leak-check=full --show-leak-kinds=all --track-origins=yes
 
 LIB_CORE=-L../core/bin -lcore
 LIB_DS=-L../bin -ldatastructs 

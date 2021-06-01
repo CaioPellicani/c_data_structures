@@ -23,8 +23,12 @@ coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _t
 
 binarySearchTree* bstInit( comparisonFunction _comparison ){
     binarySearchTree* newTree;
-    newTree = ( binarySearchTree* ) calloc( 0, sizeof( *newTree ) );
-    assert( ( _bstIsValid( newTree ) ) && ( newTree->mainRoot == NULL ) );
+    newTree = ( binarySearchTree* ) malloc( sizeof( *newTree ) );
+    assert( _bstIsValid( newTree ) );
+
+    newTree->mainRoot = NULL; 
+    assert ( newTree->mainRoot == NULL );
+
     newTree->comparison = _comparison;
     return newTree;
 }
