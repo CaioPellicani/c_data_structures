@@ -27,7 +27,7 @@ int runBinarySearchTreeTest(){
     aTree = bstInit( &comparison );
     EX_NOT_NULL( "llInit", aTree );
 
-    bstInsert( aTree, ( data* )newData(5) );
+    bstInsert( aTree, ( data* )newData(5) ); 
     EX_STR_EQ( "First bstInsert", "5", bstPreorder() );
 
     bstInsert( aTree, ( data* )newData(-10) );
@@ -52,7 +52,7 @@ int runBinarySearchTreeTest(){
     EX_STR_EQ( "bstInsert", "-10; -8; 5; 8; 10", bstPreorder() );
     EX_STR_EQ( "bstInorder", "5; -10; -8; 10; 8", bstInorder() );
     EX_STR_EQ( "bstPostorder", "-8; -10; 8; 10; 5", bstPostorder() );
-    
+ 
     bstInsert( aTree, ( data* )newData( -15 ) );
     bstInsert( aTree, ( data* )newData( 15 ) );
     bstInsert( aTree, ( data* )newData( 7 ) );
@@ -78,6 +78,10 @@ int runBinarySearchTreeTest(){
     searchTemplate->value = 8;
     dataSearch = ( data* ) bstSearch( aTree, searchTemplate );
     EX_INT_EQ( "bstSearch 8", 8, dataSearch->value );
+
+    searchTemplate->value = 7;
+    dataSearch = ( data* ) bstSearch( aTree, searchTemplate );
+    EX_INT_EQ( "bstSearch 8", 7, dataSearch->value ); 
 
     searchTemplate->value = 11;
     dataSearch = ( data* ) bstSearch( aTree, searchTemplate );

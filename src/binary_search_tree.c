@@ -102,13 +102,16 @@ void* bstSearch( binarySearchTree* _tree, void* _searchData ){
     if( coords->root != NULL ){
         int position = coords->position;
         
-        void* lookUpTable[3];
-        lookUpTable[ROOT] = ( *coords->root )->data;
-        lookUpTable[RIGHT] = ( *coords->root )->right->data;
-        lookUpTable[LEFT] = ( *coords->root )->left->data;
+        tNode* lookUpTable[3];
+        lookUpTable[ROOT] = ( *coords->root );
+        lookUpTable[RIGHT] = ( *coords->root )->right;
+        lookUpTable[LEFT] = ( *coords->root )->left;
 
         free( coords );
-        return lookUpTable[ position ]; 
+        
+        if( lookUpTable[ position ] != NULL ){
+            return lookUpTable[ position ]->data; 
+        }
     }
     free( coords );
     return NULL;
@@ -173,7 +176,7 @@ coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _t
 
     while ( !isLeaf( seeingNode ) ){            
         if( _tree->comparison( _searchData, seeingNode->data ) == SMALLER ){
-            if( seeingNode->right == NULL ){ break; }
+            if( seeingNode->left == NULL ){ break; }
             if( _tree->comparison( _searchData, seeingNode->left->data ) == EQUAL ){
                 result->root = &seeingNode;
                 result->position = LEFT;
