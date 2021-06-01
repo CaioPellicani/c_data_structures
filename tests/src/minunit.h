@@ -24,7 +24,8 @@ int closeTest( testGroup group );
   testGroup thisGroup;                                           \
   thisGroup.testsRun = 0;                                        \
   strcpy( thisGroup.name, groupName );                           \
-  data *searchTemplate = calloc( 0, sizeof( *searchTemplate ) ); \
+  data *searchTemplate = malloc( sizeof( *searchTemplate ) );    \
+  searchTemplate->value = 0;\
   thisGroup.template = &searchTemplate;    
 
 #define EX_STR_EQ( testName, expect, result )                 \

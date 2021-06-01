@@ -100,11 +100,11 @@ bNode* _newBlankBNode(){
     assert( newNode != NULL );
 
     newNode->data = NULL;
-    newNode->prevNode = NULL;
+    newNode->nextNode =NULL;
     newNode->prevNode = NULL;
 
     assert( newNode->data == NULL );
-    assert( newNode->prevNode == NULL );
+    assert( newNode->nextNode == NULL );
     assert( newNode->prevNode == NULL );
     return newNode;
 }
