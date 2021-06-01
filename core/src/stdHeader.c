@@ -13,7 +13,7 @@ void die(const char *fmt, ...){
 
 int getData( void *debugData ){
 	if( debugData != NULL ){
-		dData* dD = ( dData* ) debugData;
+		dData* dD = ( typeof( dD ) ) debugData;
 		return dD->value;
 	}
 	return 0;

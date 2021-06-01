@@ -14,10 +14,10 @@ bool _llValidList( linkedList* _list );
 bool _llInsertInBetween( linkedList* _list, void *_data, int prevNodePostion );
 bool _llRemoveNextNode( linkedList* _list, int prevNodePostion );
 
-/*  -   INTERNAL FUNCTIONS  -   */
+/*  -   EXTERNAL FUNCTIONS  -   */
 
 linkedList* llInit(){
-    linkedList* newList = ( linkedList* ) malloc( sizeof( *newList ) );
+    linkedList* newList = ( typeof( newList ) ) malloc( sizeof( *newList ) );
     assert( _llValidList( newList ) );
     newList->head = NULL;    
     newList->size = 0;
@@ -100,7 +100,7 @@ void llDelete( linkedList** _list ){
     assert( *_list == NULL );
 }
 
-/*  -   EXTERNAL FUNCTIONS  -   */
+/*  -   INTERNAL FUNCTIONS  -   */
 
 bool _llValidList( linkedList* _list ){
     return ( _list != NULL );

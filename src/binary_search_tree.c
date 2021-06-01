@@ -23,7 +23,7 @@ coordinates* _bstGetSearchCoordinates( coordinates* coords, binarySearchTree* _t
 
 binarySearchTree* bstInit( comparisonFunction _comparison ){
     binarySearchTree* newTree;
-    newTree = ( binarySearchTree* ) malloc( sizeof( *newTree ) );
+    newTree = ( typeof( newTree ) ) malloc( sizeof( *newTree ) );
     assert( _bstIsValid( newTree ) );
 
     newTree->mainRoot = NULL; 
@@ -107,9 +107,8 @@ void* bstSearch( binarySearchTree* _tree, void* _searchData ){
         lookUpTable[RIGHT] = ( *coords->root )->right;
         lookUpTable[LEFT] = ( *coords->root )->left;
 
-        free( coords );
-        
         if( lookUpTable[ position ] != NULL ){
+            free( coords );
             return lookUpTable[ position ]->data; 
         }
     }

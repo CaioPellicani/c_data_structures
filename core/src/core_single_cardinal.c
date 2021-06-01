@@ -91,7 +91,7 @@ bool dataUse( node* firstNode,dataUseFunction dataUseFunc ){
 /*  -   INTERNAL FUNCTIONS  -   */
 
 node* _newBlankNode(){
-    node* newNode = malloc( sizeof( *newNode ) );
+    node* newNode = ( typeof( newNode ) ) malloc( sizeof( *newNode ) );
     assert( newNode != NULL );
 
     newNode->data = NULL;

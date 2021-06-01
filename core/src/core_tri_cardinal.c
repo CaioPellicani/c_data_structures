@@ -14,7 +14,7 @@ bool isLeaf( tNode *_thisNode ){
 }
 
 coordinates *allocCoordinates(){
-    coordinates *result = malloc( sizeof( *result ) );
+    coordinates *result = ( typeof( result ) ) malloc( sizeof( *result ) );
     assert( result != NULL );
 
     result->position = 0;
@@ -36,7 +36,6 @@ bool insertNewTNode( coordinates *_coords, void* _data ){
     free( newNode );
     return false;
 }
-
 
 bool removeTNode( tNode** _mainRoot, coordinates *coords ){
     tNode* deadNode = _diconnectTNode( _mainRoot, coords );
@@ -62,7 +61,7 @@ bool tNodeDataUse( tNode* _mainRoot, dataUseFunction dataUseFunc, int type ){
 void _nullFunc( void* nullPointer ){ return; }
 
 tNode* _newBlankTNode(){
-    tNode* newNode = malloc( sizeof( *newNode ) );
+    tNode* newNode = ( typeof( newNode ) ) malloc( sizeof( *newNode ) );
     assert( newNode != NULL );
 
     newNode->data = NULL;
@@ -125,7 +124,7 @@ tNode** _positioning( coordinates *_coords ){
 
 tNode *_diconnectTNode( tNode** firstNode, coordinates * coords ){
     tNode* deadNode = NULL;
-    tNode** positionInRoot;
+    tNode** positionInRoot = NULL;
 
     enum { DEAD_NODE, ROOT_POS };   
      
