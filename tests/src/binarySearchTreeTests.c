@@ -113,5 +113,7 @@ int runBinarySearchTreeTest(){
     bstDelete( &aTree );
     EX_NULL( "bstDelete", aTree );
 
+    bstEmptyTree( aTree ); //try access to a freed data
+
     END_TESTS;
 }

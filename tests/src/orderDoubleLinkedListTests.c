@@ -79,5 +79,7 @@ int runOrderDoubleLinkedListTest(){
     odllDelete( &aList );
     EX_NULL( "odllDelete", aList );
 
+    odllEmptyList( aList );
+
     END_TESTS;
 }

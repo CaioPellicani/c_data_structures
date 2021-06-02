@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_DLL( LIST ) if( !_dllValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_DLL( LIST ) if( dllIsEmpty( LIST ) ){ return false; }
+#define NULL_VALID_DLL( LIST ) if( !_dllValidList( LIST ) ){ return; }
 #define NULL_EMPTY_DLL( LIST ) if( dllIsEmpty( LIST ) ){ return NULL; }
 
 typedef struct strList{
@@ -83,6 +84,7 @@ bool dllPopTail( doubleLinkedList* _list ){
 }
 
 void dllEmptyList( doubleLinkedList* _list ){
+    NULL_VALID_DLL( _list );
     while( _list->head != NULL ){
         dllPopTail( _list );  
     }

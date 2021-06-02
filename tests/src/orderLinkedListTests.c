@@ -87,5 +87,7 @@ int runOrderLinkedListTest(){
     ollDelete( &aList );
     EX_NULL( "ollDelete", aList );
 
+    ollEmptyList( aList ); //try access to a freed data
+
     END_TESTS;
 }

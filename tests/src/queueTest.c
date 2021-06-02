@@ -42,6 +42,8 @@ int runQueueTest(){
     deleteQueue( &aQueue);
     EX_NULL( "deleteQueue", aQueue );
 
+    emptyQueue( aQueue ); //try access to a freed data
+
     END_TESTS;
     return 0;
 }

@@ -2,6 +2,8 @@
 #include "double_linked_list.h"
 #include "../core/src/core_bi_cardinal.h"
 
+#define NULL_VALID_QUEUE( QUEUE ) if( !_validQueue( QUEUE ) ){ return; }
+
 typedef struct  strQueue{
     doubleLinkedList* list;
 }queue;
@@ -38,6 +40,7 @@ void* getEndData( queue* _queue ){
 }
 
 void emptyQueue( queue* _queue ){
+    NULL_VALID_QUEUE( _queue );
     dllEmptyList( _queue->list );
 }
 

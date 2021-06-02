@@ -42,5 +42,7 @@ int runStackTest(){
     deleteStack( &aStack );
     EX_NULL( "deleteStack", aStack );
 
+    emptyStack( aStack ); //try access to a freed data
+
     END_TESTS;
 }

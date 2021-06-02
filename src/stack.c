@@ -2,6 +2,9 @@
 #include "linked_list.h"
 #include "../core/src/core_single_cardinal.h"
 
+#define NULL_VALID_STACK( STACK ) if( !_validStack( STACK ) ){ return; }
+
+
 typedef struct _stack{
     linkedList* list;
 }stack;
@@ -39,6 +42,7 @@ void* getTopData( stack* _stack ){
 }
 
 void emptyStack( stack* _stack ){
+    NULL_VALID_STACK( _stack );
     llEmptyList( _stack->list );
 }
 

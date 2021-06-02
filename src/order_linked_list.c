@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_OLL( LIST ) if( !_ollValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return false; }
+#define NULL_VALID_OLL( LIST ) if( !_ollValidList( LIST ) ){ return; }
 #define NULL_EMPTY_OLL( LIST ) if( ollIsEmpty( LIST ) ){ return NULL; }
 
 bool _ollValidList( orderLinkedList *_list );
@@ -86,6 +87,7 @@ bool ollRemove( orderLinkedList* _list, void *_searchData ){
 }
 
 void ollEmptyList( orderLinkedList* _list ){
+    NULL_VALID_OLL( _list );
     while( ! ollIsEmpty( _list ) ){
         removeNextNode( &_list->head, &_list->size, NULL ); 
     }

@@ -67,5 +67,7 @@ int runDoubleLinkedListTest(){
     dllDelete( &aList );
     EX_NULL( "dllDelete", aList );
 
+    dllEmptyList( aList ); //try access to a freed data
+
     END_TESTS;
 }

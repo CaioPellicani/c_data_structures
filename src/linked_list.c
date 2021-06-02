@@ -3,6 +3,7 @@
 
 #define BOOL_VALID_LL( LIST ) if( !_llValidList( LIST ) ){ return false; }
 #define BOOL_EMPTY_LL( LIST ) if( llIsEmpty( LIST ) ){ return false; }
+#define NULL_VALID_LL( LIST ) if( !_llValidList( LIST ) ){ return; }
 #define NULL_EMPTY_LL( LIST ) if( llIsEmpty( LIST ) ){ return NULL; }
 
 typedef struct strLinkedList{
@@ -69,6 +70,7 @@ bool llPopTail( linkedList* _list ){
 }
 
 void llEmptyList( linkedList* _list ){
+    NULL_VALID_LL( _list );
     while( ! llIsEmpty( _list ) ){
         llPopHead( _list );  
     }

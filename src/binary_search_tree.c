@@ -72,6 +72,7 @@ bool bstRemove( binarySearchTree* _tree, void* _searchData ){
 }
 
 bool bstEmptyTree( binarySearchTree*_tree ){
+    BOOL_VALID_BST( _tree );
     while( ! bstIsEmpty( _tree ) ){
         bstRemove( _tree, bstGetBiggerData( _tree ) );
     }
