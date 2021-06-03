@@ -4,6 +4,7 @@ FLAG=-Wall -g
 LIB =ar rcs
 
 NAMES=stack queue linked_list order_linked_list double_linked_list order_double_linked_list
+NAMES+=trie
 NAMES+=binary_search_tree
 
 NAME=$(word 7, ${NAMES})

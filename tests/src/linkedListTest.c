@@ -75,5 +75,8 @@ int runLinkedListTest(){
 
     llDelete( &aList );
     EX_NULL( "llDelete", aList );
+
+    llEmptyList( aList ); //try access to a freed data
+    
     END_TESTS;
 }
