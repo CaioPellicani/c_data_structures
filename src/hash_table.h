@@ -3,5 +3,6 @@
 
 #include "../core/src/stdHeader.h"
 
+    typedef struct strHashTable hashTable;
 
 #endif
