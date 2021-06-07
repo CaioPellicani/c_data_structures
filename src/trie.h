@@ -3,12 +3,16 @@
 
     #include "../core/src/stdHeader.h"
 
+    #define TABLE_SIZE 128
+    
     typedef struct strTrie trie;
 
-    trie* initTrie();
+    trie* initTrie( char* _charPattern );
     void deleteTrie( trie** _trie );
 
     bool trieInsert( trie* _trie );
+
+    void getConvertTable( trie* _trie );
     
     void emptyTrie( trie* _trie );
 #endif

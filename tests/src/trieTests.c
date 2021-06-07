@@ -7,8 +7,10 @@ trie* aTrie;
 runTrieTest(){
     INIT_TESTS( "Trie" );
 
-    aTrie = initTrie();
-    EX_NOT_NULL( "init", aTrie ); 
+    aTrie = initTrie( "abc123" );
+    EX_NOT_NULL( "init", aTrie );
+
+    getConvertTable( aTrie ); 
 
     trieInsert( aTrie );
 
