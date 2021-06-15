@@ -10,7 +10,7 @@ int testFailure( testGroup group, char* testName, char* expect, char* get ){
     printf( "\n\033[31mTEST %s FAILED\n\033[0m", testName );
     printf( "EXPECT -> %s\n", expect );     
     if( strcmp( get, "" ) != 0 ){  
-        printf( "GET -> %s\n", expect );     
+        printf( "GET    -> %s\n", get );     
     }                     
     return closeTest( group );
 }
