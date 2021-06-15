@@ -10,10 +10,10 @@
     trie* initTrie( char* _charPattern );
     void deleteTrie( trie** _trie );
 
-    bool trieInsert( trie* _trie );
+    char* getConvertTable( char* dest, trie* _trie );
+    bool isEmptyTrie( trie* _trie );
 
-    void getConvertTable( trie* _trie );
-    
+    bool trieInsert( trie* _trie, char key[] );
     void emptyTrie( trie* _trie );
 #endif
 

@@ -12,6 +12,10 @@
         "stdheader.h": "c",
         "doublelinkedlisttest.h": "c",
         "limits.h": "c",
-        "functional": "c"
+        "functional": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }
