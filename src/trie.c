@@ -4,7 +4,7 @@
 #define BOOL_EMPTY_TRIE( TRIE ) if( isEmptyTrie( TRIE ) ){ return false; }
 #define VALID_TRIE( TRIE ) if( !_validTrie( TRIE ) ){ return; }
 #define NULL_EMPTY_TRIE( TRIE ) if( isEmptyTrie( TRIE ) ){ return NULL; }
-#define NULL_VALID_TRIE( TRIE ) if( !_validTrie( TRIE ) ){ return NULL; }
+
 
 typedef void ( *dataUseFunction ) ( void* data );
 
@@ -23,7 +23,6 @@ typedef struct strTrie{
 
 trieNode* _newBlankTrieNode( int size );
 trieNode** _allocNextNodesArray( int size );
-bool _insertTrieNode( trie* _trie, char key[] );
 
 bool _validTrie( trie *_trie );
 bool _isLeaf( trieNode *_node, int arraySize );
@@ -44,31 +43,44 @@ trie* initTrie( char* _charPattern ){
     return newTrie;
 }
 
-char* getConvertTable( char* dest, trie* _trie ){
-    NULL_VALID_TRIE( _trie );
-    //char temp[10] = {""};
-    //strcpy( dest, "" );
-    
-    
+bool getConvertTable( trie* _trie, char dest[], int destSize ){
+    BOOL_VALID_TRIE( _trie );
+
+    if( destSize < _trie->arraySize ) return false;
+
     for( int i = 0; i < _trie->arraySize; i++ ){
-        //sprintf( temp, "%d-'%c'|", i, _trie->intToChar[i] );
-        //strcat( dest, temp );
         dest[i] = _trie->intToChar[i];
     }
     dest[ _trie->arraySize ] = '\0';
-    return _trie->intToChar;
+
+    return true;
 }
 
 bool trieInsert( trie*_trie, char key[]  ){
+    BOOL_VALID_TRIE( _trie );
+    trieNode *seeingNode = _trie->mainRoot;
+
+    int i = -1;
+    int keyChar = -1;
+    while( key[++i] != '\0' ){
+        keyChar = _trie->charToInt[ abs( key[i] ) ];
+        if( seeingNode->nextNodes[ keyChar ] == NULL ){
+            seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
     return _insertTrieNode( _trie, key );
+        }
+        seeingNode = seeingNode->nextNodes[ keyChar ];
+    }
+    
+    return true;
 }
 
 bool isEmptyTrie( trie* _trie ){
+    BOOL_VALID_TRIE( _trie );
     return _isLeaf( _trie->mainRoot, _trie->arraySize );
 }
 
 void emptyTrie( trie* _trie ){
-    //VALID_TRIE( _trie );
+    VALID_TRIE( _trie );
     return;
 }
 
@@ -134,24 +146,6 @@ int _convertPattern( trie* _trie, const char *pattern ){
         _trie->intToChar[i] = i + _start;
     } 
     return _finish - _start + 1;
-}
-
-bool _insertTrieNode( trie* _trie, char key[] ){
-    BOOL_VALID_TRIE( _trie );
-
-    trieNode *seeingNode = _trie->mainRoot;
-
-    int i = -1;
-    int keyChar = -1;
-    while( key[++i] != '\0' ){
-        keyChar = _trie->charToInt[ abs( key[i] ) ];
-        if( seeingNode->nextNodes[ keyChar ] == NULL ){
-            seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
-        }
-        seeingNode = seeingNode->nextNodes[ keyChar ];
-    }
-    
-    return true;
 }
 
 trieNode* _newBlankTrieNode( int size ){

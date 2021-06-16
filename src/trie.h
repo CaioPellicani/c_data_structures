@@ -10,7 +10,7 @@
     trie* initTrie( char* _charPattern );
     void deleteTrie( trie** _trie );
 
-    char* getConvertTable( char* dest, trie* _trie );
+    bool getConvertTable( trie* _trie, char dest[], int destSize );
     bool isEmptyTrie( trie* _trie );
 
     bool trieInsert( trie* _trie, char key[] );
