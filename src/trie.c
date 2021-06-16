@@ -11,6 +11,7 @@ typedef void ( *dataUseFunction ) ( void* data );
 typedef struct trieNode{
     void * data;
     bool isTerminal;
+    struct trieNode* root;
     struct trieNode** nextNodes;
 }trieNode;
 
@@ -66,7 +67,7 @@ bool trieInsert( trie*_trie, char key[]  ){
         keyChar = _trie->charToInt[ abs( key[i] ) ];
         if( seeingNode->nextNodes[ keyChar ] == NULL ){
             seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
-    return _insertTrieNode( _trie, key );
+            seeingNode->nextNodes[ keyChar ] = seeingNode;
         }
         seeingNode = seeingNode->nextNodes[ keyChar ];
     }
@@ -154,6 +155,7 @@ trieNode* _newBlankTrieNode( int size ){
 
     newNode->data = NULL;
     newNode->isTerminal = false;
+    newNode->root = NULL;
     newNode->nextNodes = _allocNextNodesArray( size );
 
     return newNode;
