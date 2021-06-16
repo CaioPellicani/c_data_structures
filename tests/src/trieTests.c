@@ -13,7 +13,7 @@ runTrieTest(){
 
     Trie = initTrie( "teste_0123" );
     EX_NOT_NULL( "init", Trie );
-    getConvertTable( Trie, result, 500 );
+    getConvertTable( Trie, result, RESULT_SIZE );
     EX_STR_EQ( "getConvertTable", "tes_0123", result );
     EX_TRUE( "isEmptyTrie", isEmptyTrie( Trie ) ); 
 
@@ -26,7 +26,7 @@ runTrieTest(){
     /* NUMBERS */
     
     nTrie = initTrie( "-n" );
-    getConvertTable( nTrie, result, 500 );
+    getConvertTable( nTrie, result, RESULT_SIZE );
     EX_STR_EQ( "getConvertTable numbers", "0123456789", result );
     
     trieInsert( nTrie, "1978" );
@@ -37,14 +37,14 @@ runTrieTest(){
     /* LOWER ALPHABET */
 
     aTrie = initTrie( "-a" );
-    getConvertTable( aTrie, result, 500 );
+    getConvertTable( aTrie, result, RESULT_SIZE );
     EX_STR_EQ( "getConvertTable lower alphabet", "abcdefghijklmnopqrstuvwxyz", result );
     deleteTrie( &aTrie );
 
     /* UPPER ALPHABET */
 
     ATrie = initTrie( "-A" );
-    getConvertTable( ATrie, result, 500 );
+    getConvertTable( ATrie, result, RESULT_SIZE );
     EX_STR_EQ( "getConvertTable upper alphabet", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", result );
     deleteTrie( &ATrie );
 
@@ -52,7 +52,7 @@ runTrieTest(){
 
     vTrie = initTrie( "-v" ); 
     const char test[] = { " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" };
-    getConvertTable( vTrie, result, 500 );
+    getConvertTable( vTrie, result, RESULT_SIZE );
     EX_STR_EQ( "getConvertTable numbers", test, result );
 
     trieInsert( vTrie, "varchar_0" );

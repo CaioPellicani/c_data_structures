@@ -3,7 +3,8 @@
 
 #include "../../core/src/stdHeader.h"
 
-char result[500];
+#define RESULT_SIZE 500
+char result[RESULT_SIZE];
 
 typedef struct data{
     int value;
