@@ -23,6 +23,12 @@ typedef struct strTrie{
     char intToChar[TABLE_SIZE];
 }trie;
 
+typedef struct strKeyControl{
+    int steps;
+    char* key;
+    trieNode* seeingNode;
+}keyControl;
+
 trieNode* _newBlankTrieNode( int size );
 trieNode** _allocNextNodesArray( int size );
 
@@ -33,6 +39,7 @@ int _convertPattern( trie* _trie, const char *pattern );
 int _convertString( trie* _trie, const char *string );
 int _setConvertTable( trie *_trie, char* baseChar );
 
+bool _findLastTrieNode( trie* _trie, keyControl* _control );
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 trie* initTrie( char* _charPattern ){
@@ -57,43 +64,28 @@ bool getConvertTable( trie* _trie, char dest[], int destSize ){
 
     return true;
 }
-
 bool trieInsert( trie*_trie, char key[], void* _data ){
     BOOL_VALID_TRIE( _trie );
-    trieNode *seeingNode = _trie->mainRoot;
+    keyControl control = { -1, key, _trie->mainRoot };
 
-    int i = -1;
-    int keyChar = -1;
-    while( key[++i] != '\0' ){
-        keyChar = _trie->charToInt[ abs( key[i] ) ];
+    while( ! _findLastTrieNode( _trie, &control ) ){
+        int keyChar = _trie->charToInt[ abs( key[ control.steps ] ) ];
         if( keyChar == -1 ){ return false; }
 
-        if( seeingNode->nextNodes[ keyChar ] == NULL ){
-            seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
-            seeingNode->nextNodes[ keyChar ]->root = seeingNode;
-        }
-        seeingNode = seeingNode->nextNodes[ keyChar ];
+        control.seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
+        control.seeingNode->nextNodes[ keyChar ]->root = control.seeingNode;      
+        control.seeingNode = control.seeingNode->nextNodes[ keyChar ];      
     }
-    seeingNode->isTerminal = true;
-    seeingNode->data = _data;
+    control.seeingNode->isTerminal = true;
+    control.seeingNode->data = _data;
+
     return true;
 }
 
 bool trieSearch( trie* _trie, char key[] ){ 
-    BOOL_EMPTY_TRIE( _trie );
-    trieNode *seeingNode = _trie->mainRoot;
-
-    int i = -1;
-    int keyChar = -1;
-    while( key[++i] != '\0' ){
-        keyChar = _trie->charToInt[ abs( key[i] ) ];
-        if( ( keyChar == -1 ) || ( seeingNode->nextNodes[ keyChar ] == NULL ) ){
-            break;
-        }
-        seeingNode = seeingNode->nextNodes[ keyChar ];
-    }
-    
-    return ( ( i == strlen( key ) ) && ( seeingNode->isTerminal ) ); 
+    BOOL_VALID_TRIE( _trie );
+    keyControl control = { -1, key, _trie->mainRoot };
+    return ( ( _findLastTrieNode( _trie, &control ) ) && ( control.seeingNode->isTerminal ) );
 }
 
 void *trieGetData( trie* _trie, char key[] ){ 
@@ -103,7 +95,7 @@ void *trieGetData( trie* _trie, char key[] ){
 
 bool trieRemove( trie* _trie, char key[] ){ 
     BOOL_EMPTY_TRIE( _trie );   
-    return true; 
+    return true;
 }
 
 bool isEmptyTrie( trie* _trie ){
@@ -130,6 +122,8 @@ bool _validTrie( trie *_trie ){
 }
 
 bool _isLeaf( trieNode *_node, int arraySize ){
+    assert( _node != NULL );
+    assert( arraySize > 0 );
     size_t result = 0;
 
     for( int i = 0; i < arraySize; i++ ){
@@ -193,6 +187,7 @@ trieNode* _newBlankTrieNode( int size ){
 }
 
 trieNode** _allocNextNodesArray( int size ){
+    assert( size > 0 );
     trieNode** newArray = ( typeof( newArray ) ) malloc( sizeof( *newArray ) * size );
     assert( newArray != NULL );
 
@@ -200,4 +195,16 @@ trieNode** _allocNextNodesArray( int size ){
         newArray[i] = NULL;
     }
     return newArray;
+}
+
+bool _findLastTrieNode( trie* _trie, keyControl* _control ){
+    while( _control->key[ ++_control->steps ] != '\0' ){
+        int keyChar = _trie->charToInt[ abs( _control->key[ _control->steps ] ) ];
+        if( ( keyChar == -1 ) || ( _control->seeingNode->nextNodes[ keyChar ] == NULL ) ){
+            break;
+        }
+        _control->seeingNode = _control->seeingNode->nextNodes[ keyChar ];
+    }
+
+    return ( _control->steps == strlen( _control->key ) );
 }
