@@ -17,8 +17,15 @@ runTrieTest(){
     EX_STR_EQ( "getConvertTable", "tes_0123", result );
     EX_TRUE( "isEmptyTrie", isEmptyTrie( Trie ) ); 
 
-    trieInsert( Trie, "teste_0" );
+    trieInsert( Trie, "teste_0", NULL );
+    EX_TRUE( "trieSearch", trieSearch( Trie, "teste_0") );
+
     EX_FALSE( "isEmptyTrie", isEmptyTrie( Trie ) );
+
+    EX_FALSE( "trieSearch fail", trieSearch( Trie, "teste_1") );
+
+    EX_FALSE( "charValidation", trieInsert( Trie, "teste_0", NULL ) );
+    EX_FALSE( "charValidation", trieSearch( Trie, "failTest") );
 
     deleteTrie( &Trie );
     EX_NULL( "deleteTrie", Trie );
@@ -27,10 +34,10 @@ runTrieTest(){
     
     nTrie = initTrie( "-n" );
     getConvertTable( nTrie, result, RESULT_SIZE );
-    EX_STR_EQ( "getConvertTable numbers", "0123456789", result );
+    EX_STR_EQ( "getConvertTable", "0123456789", result );
     
-    trieInsert( nTrie, "1978" );
-    EX_FALSE( "isEmptyTrie", isEmptyTrie( nTrie ) );
+    trieInsert( nTrie, "1978", NULL );
+    EX_TRUE( "trieSearch", trieSearch( nTrie, "1978") );
     
     deleteTrie( &nTrie );
 
@@ -38,14 +45,14 @@ runTrieTest(){
 
     aTrie = initTrie( "-a" );
     getConvertTable( aTrie, result, RESULT_SIZE );
-    EX_STR_EQ( "getConvertTable lower alphabet", "abcdefghijklmnopqrstuvwxyz", result );
+    EX_STR_EQ( "getConvertTable", "abcdefghijklmnopqrstuvwxyz", result );
     deleteTrie( &aTrie );
 
     /* UPPER ALPHABET */
 
     ATrie = initTrie( "-A" );
     getConvertTable( ATrie, result, RESULT_SIZE );
-    EX_STR_EQ( "getConvertTable upper alphabet", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", result );
+    EX_STR_EQ( "getConvertTable", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", result );
     deleteTrie( &ATrie );
 
     /* VARCHAR */
@@ -53,10 +60,10 @@ runTrieTest(){
     vTrie = initTrie( "-v" ); 
     const char test[] = { " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" };
     getConvertTable( vTrie, result, RESULT_SIZE );
-    EX_STR_EQ( "getConvertTable numbers", test, result );
+    EX_STR_EQ( "getConvertTable", test, result );
 
-    trieInsert( vTrie, "varchar_0" );
-    EX_FALSE( "isEmptyTrie", isEmptyTrie( vTrie ) );
+    trieInsert( vTrie, "varchar_0", NULL );
+    EX_TRUE( "trieSearch", trieSearch( vTrie, "varchar_0") );
     deleteTrie( &vTrie );
     END_TESTS;
 }

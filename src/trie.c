@@ -5,6 +5,7 @@
 #define VALID_TRIE( TRIE ) if( !_validTrie( TRIE ) ){ return; }
 #define NULL_EMPTY_TRIE( TRIE ) if( isEmptyTrie( TRIE ) ){ return NULL; }
 
+#define BOOL_ARRAY_SIZE( ARRAY_SIZE, TRIE_SIZE ) if( ARRAY_SIZE < TRIE_SIZE ){ return false; }
 
 typedef void ( *dataUseFunction ) ( void* data );
 
@@ -57,7 +58,7 @@ bool getConvertTable( trie* _trie, char dest[], int destSize ){
     return true;
 }
 
-bool trieInsert( trie*_trie, char key[]  ){
+bool trieInsert( trie*_trie, char key[], void* _data ){
     BOOL_VALID_TRIE( _trie );
     trieNode *seeingNode = _trie->mainRoot;
 
@@ -65,14 +66,44 @@ bool trieInsert( trie*_trie, char key[]  ){
     int keyChar = -1;
     while( key[++i] != '\0' ){
         keyChar = _trie->charToInt[ abs( key[i] ) ];
+        if( keyChar == -1 ){ return false; }
+
         if( seeingNode->nextNodes[ keyChar ] == NULL ){
             seeingNode->nextNodes[ keyChar ] = _newBlankTrieNode( _trie->arraySize );
-            seeingNode->nextNodes[ keyChar ] = seeingNode;
+            seeingNode->nextNodes[ keyChar ]->root = seeingNode;
+        }
+        seeingNode = seeingNode->nextNodes[ keyChar ];
+    }
+    seeingNode->isTerminal = true;
+    seeingNode->data = _data;
+    return true;
+}
+
+bool trieSearch( trie* _trie, char key[] ){ 
+    BOOL_EMPTY_TRIE( _trie );
+    trieNode *seeingNode = _trie->mainRoot;
+
+    int i = -1;
+    int keyChar = -1;
+    while( key[++i] != '\0' ){
+        keyChar = _trie->charToInt[ abs( key[i] ) ];
+        if( ( keyChar == -1 ) || ( seeingNode->nextNodes[ keyChar ] == NULL ) ){
+            break;
         }
         seeingNode = seeingNode->nextNodes[ keyChar ];
     }
     
-    return true;
+    return ( ( i == strlen( key ) ) && ( seeingNode->isTerminal ) ); 
+}
+
+void *trieGetData( trie* _trie, char key[] ){ 
+    BOOL_EMPTY_TRIE( _trie );
+    return NULL; 
+}
+
+bool trieRemove( trie* _trie, char key[] ){ 
+    BOOL_EMPTY_TRIE( _trie );   
+    return true; 
 }
 
 bool isEmptyTrie( trie* _trie ){
