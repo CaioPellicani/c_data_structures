@@ -42,7 +42,7 @@ int _setConvertTable( trie *_trie, char* baseChar );
 bool _findLastTrieNode( trie* _trie, keyControl* _control );
 bool _deleteTrieNode( trieNode** deadNode, int _arraySize );
 void _recursiveRemove( trie* _trie, trieNode *seeingNode, char key[], int step );
-void _recursiveCleaning( trieNode** seeingNode, int* arraySize )
+void _recursiveCleaning( trieNode** seeingNode, int* arraySize );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -241,7 +241,7 @@ void _recursiveRemove( trie* _trie, trieNode *seeingNode, char key[], int step )
     }
     if( ( _isLeaf( seeingNode->nextNodes[keyChar], _trie->arraySize ) ) && 
         ( ( step + 1 == strlen( key ) ) || ( !seeingNode->nextNodes[keyChar]->isTerminal ) ) ){
-            
+        
         _deleteTrieNode( &seeingNode->nextNodes[keyChar], _trie->arraySize );
     }
 }
