@@ -17,7 +17,7 @@ typedef struct{
     data **template;
 }testGroup;
 
-int testFailure( testGroup group, char* testName, char* expect, char* get );
+int testFailure( testGroup group, char* testName, char*file, int line, char* expect, char* get );
 int closeTest( testGroup group );
 
 #define INIT_TESTS( groupName )                                  \
@@ -28,45 +28,45 @@ int closeTest( testGroup group );
   searchTemplate->value = 0;\
   thisGroup.template = &searchTemplate;    
 
-#define EX_STR_EQ( testName, expect, result )                 \
-  if( strcmp( expect, result ) != 0 ){                        \
-    return testFailure( thisGroup, testName, expect, result );\
-  }                                                           \
+#define EX_STR_EQ( testName, expect, result )                                     \
+  if( strcmp( expect, result ) != 0 ){                                            \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, expect, result );\
+  }                                                                               \
   thisGroup.testsRun++
 
 
-#define EX_INT_EQ( testName, expect, result )                \
-  if( expect != result ){                                    \
-    char exp[30], res[30];                                   \
-    sprintf( exp, "%d", expect );                            \
-    sprintf( res, "%d", result );                            \
-    return testFailure( thisGroup, testName, exp, res );     \
-  }                                                          \
+#define EX_INT_EQ( testName, expect, result )                                 \
+  if( expect != result ){                                                     \
+    char exp[30], res[30];                                                    \
+    sprintf( exp, "%d", expect );                                             \
+    sprintf( res, "%d", result );                                             \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, exp, res );  \
+  }                                                                           \
   thisGroup.testsRun++
 
 
-#define EX_NULL( testName , result )                         \
-  if( result != NULL ){                                      \
-    return testFailure( thisGroup, testName, "NULL", "" );   \
-  }                                                          \
+#define EX_NULL( testName , result )                                           \
+  if( result != NULL ){                                                        \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, "NULL", "" ); \
+  }                                                                            \
   thisGroup.testsRun++
 
-#define EX_NOT_NULL( testName , result )                      \
-  if( result == NULL ){                                       \
-    return testFailure( thisGroup, testName, "NOT_NULL", "" );\
-  }                                                           \
+#define EX_NOT_NULL( testName , result )                                          \
+  if( result == NULL ){                                                           \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, "NOT_NULL", "" );\
+  }                                                                               \
   thisGroup.testsRun++
 
-#define EX_TRUE( testName , result )                         \
-  if( !result ){                                             \
-    return testFailure( thisGroup, testName, "TRUE", "" );   \
-  }                                                          \
+#define EX_TRUE( testName , result )                                           \
+  if( !result ){                                                               \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, "TRUE", "" ); \
+  }                                                                            \
   thisGroup.testsRun++
 
-#define EX_FALSE( testName , result )                        \
-  if( result ){                                              \
-    return testFailure( thisGroup, testName, "FALSE", "" );  \
-  }                                                          \
+#define EX_FALSE( testName , result )                                           \
+  if( result ){                                                                 \
+    return testFailure( thisGroup, testName, __FILE__, __LINE__, "FALSE", "" ); \
+  }                                                                             \
   thisGroup.testsRun++
 
 #define END_TESTS                                              \
