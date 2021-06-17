@@ -40,6 +40,10 @@ int _convertString( trie* _trie, const char *string );
 int _setConvertTable( trie *_trie, char* baseChar );
 
 bool _findLastTrieNode( trie* _trie, keyControl* _control );
+bool _deleteTrieNode( trieNode** deadNode, int _arraySize );
+void _recursiveRemove( trie* _trie, trieNode *seeingNode, char key[], int step );
+void _recursiveCleaning( trieNode** seeingNode, int* arraySize )
+
 /*  -   EXTERNAL FUNCTIONS  -   */
 
 trie* initTrie( char* _charPattern ){
@@ -90,11 +94,18 @@ bool trieSearch( trie* _trie, char key[] ){
 
 void *trieGetData( trie* _trie, char key[] ){ 
     BOOL_EMPTY_TRIE( _trie );
+    keyControl control = { -1, key, _trie->mainRoot };
+    if( ( _findLastTrieNode( _trie, &control ) ) && ( control.seeingNode->isTerminal ) ){
+        return control.seeingNode->data;
+    }
     return NULL; 
 }
 
 bool trieRemove( trie* _trie, char key[] ){ 
     BOOL_EMPTY_TRIE( _trie );   
+    if( !trieSearch( _trie, key ) ) return false;
+
+    _recursiveRemove( _trie, _trie->mainRoot, key, 0 );
     return true;
 }
 
@@ -105,11 +116,14 @@ bool isEmptyTrie( trie* _trie ){
 
 void emptyTrie( trie* _trie ){
     VALID_TRIE( _trie );
-    return;
+    if( !_isLeaf( _trie->mainRoot, _trie->arraySize ) ){
+        _recursiveCleaning( &_trie->mainRoot, &_trie->arraySize );
+    }
 }
 
 void deleteTrie( trie** _trie ){
     emptyTrie( *_trie );
+    _deleteTrieNode( &( *_trie )->mainRoot, ( *_trie )->arraySize );
     free( *_trie );
     *_trie = NULL;
     assert( *_trie == NULL );
@@ -186,6 +200,17 @@ trieNode* _newBlankTrieNode( int size ){
     return newNode;
 }
 
+bool _deleteTrieNode( trieNode** deadNode, int _arraySize ){
+    assert( *deadNode != NULL );
+    assert( _isLeaf( *deadNode, _arraySize ) );
+
+    free( ( *deadNode )->data );
+    free( ( *deadNode )->nextNodes );
+    free( ( *deadNode ) );
+    *deadNode = NULL;
+    return true;
+}
+
 trieNode** _allocNextNodesArray( int size ){
     assert( size > 0 );
     trieNode** newArray = ( typeof( newArray ) ) malloc( sizeof( *newArray ) * size );
@@ -207,4 +232,25 @@ bool _findLastTrieNode( trie* _trie, keyControl* _control ){
     }
 
     return ( _control->steps == strlen( _control->key ) );
+}
+
+void _recursiveRemove( trie* _trie, trieNode *seeingNode, char key[], int step ){
+    int keyChar = _trie->charToInt[ abs( key[ step ] ) ];
+    if( key[ step + 1 ] != '\0' ){
+        _recursiveRemove( _trie, seeingNode->nextNodes[keyChar], key, step + 1 );
+    }
+    if( ( _isLeaf( seeingNode->nextNodes[keyChar], _trie->arraySize ) ) && 
+        ( ( step + 1 == strlen( key ) ) || ( !seeingNode->nextNodes[keyChar]->isTerminal ) ) ){
+            
+        _deleteTrieNode( &seeingNode->nextNodes[keyChar], _trie->arraySize );
+    }
+}
+
+void _recursiveCleaning( trieNode** seeingNode, int* arraySize ){
+    for( int i = 0; i < *arraySize; i++ ){
+        if( ( *seeingNode )->nextNodes[i] != NULL ){
+            _recursiveCleaning( &( *seeingNode )->nextNodes[i], arraySize );
+             _deleteTrieNode( &( *seeingNode )->nextNodes[i], *arraySize );
+        }
+    }
 }
