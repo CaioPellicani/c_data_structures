@@ -4,7 +4,6 @@
     #include "../core/src/stdHeader.h"
 
     #define TABLE_SIZE 128
-    #define CONTROL_CHAR 29 // GROUP SEPARATOR
 
     typedef struct strTrie trie;
 
@@ -19,7 +18,7 @@
     void *trieGetData( trie* _trie, char key[] );
     bool trieRemove( trie* _trie, char key[] );
 
-    bool getAllKeys( trie* _trie, char partialKey[], char dest[], int destSize );
+    bool getAllPartialKeys( trie* _trie, char partialKey[], char dest[], int destSize, char delimiter );
 
     void emptyTrie( trie* _trie );
 #endif

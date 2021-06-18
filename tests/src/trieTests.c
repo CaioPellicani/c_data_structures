@@ -20,12 +20,26 @@ runTrieTest(){
     trieInsert( Trie, "teste_0", NULL );
     EX_TRUE( "trieSearch", trieSearch( Trie, "teste_0") );
 
-    EX_FALSE( "isEmptyTrie", isEmptyTrie( Trie ) );
+    EX_FALSE( "trieSearch fail", trieSearch( Trie, "test_1") );
 
-    EX_FALSE( "trieSearch fail", trieSearch( Trie, "teste_1") );
+    trieInsert( Trie, "test_1", NULL );
+    trieInsert( Trie, "teste_1", NULL );
+    trieInsert( Trie, "a_1", NULL );
+    trieInsert( Trie, "test_2", NULL );
+    trieInsert( Trie, "teste_3", NULL );
 
-    EX_FALSE( "charValidation", trieInsert( Trie, "teste_0", NULL ) );
+    getAllPartialKeys( Trie, "tes", result, RESULT_SIZE, '#' );
+    EX_STR_EQ( "getAllPartialKeys", "te_0#te_1#te_3#t_1#t_2#", result );
+
+    EX_TRUE( "trieRemove", trieRemove( Trie, "teste_0" ) );
+    EX_TRUE( "trieSearch", trieSearch( Trie, "test_1") );
+
+    EX_FALSE( "charValidation", trieInsert( Trie, "failTest", NULL ) );
     EX_FALSE( "charValidation", trieSearch( Trie, "failTest") );
+
+    EX_FALSE( "isEmptyTrie", isEmptyTrie( Trie ) ); 
+    emptyTrie( Trie );
+    EX_TRUE( "isEmptyTrie", isEmptyTrie( Trie ) ); 
 
     deleteTrie( &Trie );
     EX_NULL( "deleteTrie", Trie );

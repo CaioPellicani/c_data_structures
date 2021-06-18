@@ -22,7 +22,7 @@
 |[X]       |  Order Linked List
 |[X]       |  Order Double Linked List
 |[X]       |  Binary Search Tree
-|[ ]       |  Trie
+|[X]       |  Trie
 |[ ]       |  HashTable
 |[ ]       |  Red-Black Tree
 |[ ]       |  AVL Tree 

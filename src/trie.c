@@ -1,5 +1,7 @@
 #include "trie.h"
 
+#define PARTIAL_KEY 500
+
 #define BOOL_VALID_TRIE( TRIE ) if( !_validTrie( TRIE ) ){ return false; }
 #define BOOL_EMPTY_TRIE( TRIE ) if( isEmptyTrie( TRIE ) ){ return false; }
 #define VALID_TRIE( TRIE ) if( !_validTrie( TRIE ) ){ return; }
@@ -29,6 +31,13 @@ typedef struct strKeyControl{
     trieNode* seeingNode;
 }keyControl;
 
+typedef struct strPartialKeyData{
+    char* buffer;
+    char partialKey[PARTIAL_KEY];
+    int destSize;
+    char delimiter;
+ }partialKeyData;
+
 trieNode* _newBlankTrieNode( int size );
 trieNode** _allocNextNodesArray( int size );
 
@@ -41,8 +50,10 @@ int _setConvertTable( trie *_trie, char* baseChar );
 
 bool _findLastTrieNode( trie* _trie, keyControl* _control );
 bool _deleteTrieNode( trieNode** deadNode, int _arraySize );
+
 void _recursiveRemove( trie* _trie, trieNode *seeingNode, char key[], int step );
 void _recursiveCleaning( trieNode** seeingNode, int* arraySize );
+void _recursiveGetKey( trie* _trie, trieNode* seeingNode, partialKeyData* _keyData, int pos );
 
 /*  -   EXTERNAL FUNCTIONS  -   */
 
@@ -99,6 +110,26 @@ void *trieGetData( trie* _trie, char key[] ){
         return control.seeingNode->data;
     }
     return NULL; 
+}
+
+bool getAllPartialKeys( trie* _trie, char partialKey[], char dest[], int destSize, char delimiter ){
+    BOOL_EMPTY_TRIE( _trie );
+    bool result = false;
+    dest[0] = '\0';
+    char* buffer = ( typeof( buffer ) ) malloc( sizeof( *buffer ) * destSize );
+    buffer[0] = '\0';
+
+    keyControl control = { -1, partialKey, _trie->mainRoot };
+    _findLastTrieNode( _trie, &control );
+
+    partialKeyData keyData = { buffer, "", destSize, delimiter };
+    _recursiveGetKey( _trie, control.seeingNode, &keyData, 0 );   
+    if( buffer[0] != '\0' ){
+        result = true;
+        strcpy( dest, buffer );
+    } 
+    free( buffer );
+    return result;
 }
 
 bool trieRemove( trie* _trie, char key[] ){ 
@@ -251,6 +282,30 @@ void _recursiveCleaning( trieNode** seeingNode, int* arraySize ){
         if( ( *seeingNode )->nextNodes[i] != NULL ){
             _recursiveCleaning( &( *seeingNode )->nextNodes[i], arraySize );
              _deleteTrieNode( &( *seeingNode )->nextNodes[i], *arraySize );
+        }
+    }
+}
+
+ 
+void _recursiveGetKey( trie* _trie, trieNode* seeingNode, partialKeyData* _keyData, int pos ){
+    assert( seeingNode != NULL );
+
+    for( int i = 0; i < _trie->arraySize; i++ ){
+        if( seeingNode->nextNodes[i] != NULL ){
+            _keyData->partialKey[pos] = _trie->intToChar[i];
+            _keyData->partialKey[pos + 1 ] = '\0';
+
+            _recursiveGetKey( _trie, seeingNode->nextNodes[i], _keyData, pos + 1 );
+            int end = strlen( _keyData->partialKey );
+            if( end + strlen( _keyData->buffer ) > _keyData->destSize ){
+                break;
+            }
+
+            if( seeingNode->nextNodes[i]->isTerminal ){ 
+                _keyData->partialKey[ end ] = _keyData->delimiter;
+                _keyData->partialKey[ end + 1 ] = '\0';
+                strcat( _keyData->buffer, _keyData->partialKey );
+            }
         }
     }
 }
